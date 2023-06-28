@@ -12,5 +12,4 @@ public class InlabApiApplication {
         application.addListeners(new ApplicationPidFileWriter());
         application.run(args);
     }
-
 }
