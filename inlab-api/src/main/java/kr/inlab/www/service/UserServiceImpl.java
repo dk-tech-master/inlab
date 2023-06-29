@@ -2,7 +2,7 @@ package kr.inlab.www.service;
 
 import java.util.Optional;
 import javax.transaction.Transactional;
-import kr.inlab.www.dto.request.UserCreateRequestDto;
+import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.entity.Role;
 import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.entity.User;
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean createUser(UserCreateRequestDto dto) {
+    public boolean createUser(RequestCreateUserDto dto) {
         User user = User.builder()
             .email(dto.getEmail())
             .nickname(dto.getNickname())

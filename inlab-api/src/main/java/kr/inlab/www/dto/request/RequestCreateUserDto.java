@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UserCreateRequestDto {
+public class RequestCreateUserDto {
 
     // todo validation
     private String email;

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginRequestDto {
+public class RequestLoginDto {
 
     // todo validation
     @Size(min = 2, message = "Email not be less than two characters")
