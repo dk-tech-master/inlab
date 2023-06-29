@@ -74,4 +74,16 @@ public class User {
         this.nickname = nickname;
         this.password = password;
     }
+
+    public void incrementLoginAttempt() {
+        this.loginAttempt++;
+    }
+
+    public void resetLoginAttempt() {
+        this.loginAttempt = 0;
+    }
+
+    public void updateUserStatusBlock() {
+        this.userStatus = UserStatus.BLOCK;
+    }
 }
