@@ -1,14 +1,17 @@
 package kr.inlab.www.service;
 
-import java.util.Optional;
+import java.util.Objects;
 import javax.transaction.Transactional;
+import kr.inlab.www.common.exception.AccountBlockedException;
+import kr.inlab.www.common.type.RoleType;
+import kr.inlab.www.common.type.UserStatus;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.entity.Role;
-import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.repository.RoleRepository;
 import kr.inlab.www.repository.UserRepository;
 import kr.inlab.www.security.CustomUserDetails;
+import kr.inlab.www.security.filter.AuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -48,18 +51,55 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     * user 를 찾았는데 없으면  {@link AuthenticationFilter} 의 unsuccessfulAuthentication 로 이동한다. user 의 상태가 Block 이면 {@link
+     * AuthenticationFilter} 의 unsuccessfulAuthentication 로 이동한다.
+     */
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepository.findByEmail(username);
-        if (optionalUser.isEmpty()) {
-            throw new UsernameNotFoundException("너의 이메일은 없다");
+        User user = userRepository.findByEmail(username).orElseThrow(() -> {
+            throw new UsernameNotFoundException("loadUserByUsername exception!!!");
+        });
+
+        if (Objects.equals(user.getUserStatus(), UserStatus.BLOCK)) {
+            throw new AccountBlockedException();
         }
-        // todo [Login]1-8. email 을 가지고 db 뒤졌는데 있다? db 에서 찾은 pwd 와 로그인 시 입력한 pwd 를 비교하기위한 클래스를 만들고 반환한다.
-        // think  question : 왜 귀찮게 클래스를 만들고 반환하죠? db 에서 찾은 암호화된 pwd 만 비교하면 되니까 pwd 만 반환해도되는데
-        // think  answer : 비밀번호만 반환하면 인증에 필요한 사용자의 아이디, 권한, 계정 잠금 상태 등의 중요한 정보를 알 수 없기 때문에 UserDetails 인터페이스를 구현한 객체를 생성하여 반환하는 것이 일반적입니다.
-        User user = optionalUser.get();
         user.getRoles().size(); // roles 컬렉션을 초기화하기 위해 Hibernate 세션을 강제로 호출합니다.
         return new CustomUserDetails(user);
+    }
+
+    @Override
+    @Transactional
+    public void resetLoginAttempt(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new UsernameNotFoundException("resetLoginAttempt exception!!!");
+        });
+        user.resetLoginAttempt();
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new UsernameNotFoundException("findUserByEmail exception!!!");
+        });
+    }
+
+    @Override
+    @Transactional
+    public void updateUserStatusBlock(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new UsernameNotFoundException("resetLoginAttempt exception!!!");
+        });
+        user.updateUserStatusBlock();
+    }
+
+    @Override
+    @Transactional
+    public void increaseLoginAttempt(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new UsernameNotFoundException("resetLoginAttempt exception!!!");
+        });
+        user.incrementLoginAttempt();
     }
 }

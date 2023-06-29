@@ -10,4 +10,12 @@ public interface UserService extends UserDetailsService {
     User findUserById(Long userId);
 
     boolean createUser(RequestCreateUserDto dto);
+
+    void resetLoginAttempt(String username);
+
+    User findUserByEmail(String username);
+
+    void updateUserStatusBlock(String email);
+
+    void increaseLoginAttempt(String email);
 }
