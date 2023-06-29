@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import kr.inlab.www.common.type.RoleType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
+    @Builder
     public Role(User user, RoleType roleType) {
         this.user = user;
         this.roleType = roleType;
