@@ -1,6 +1,6 @@
 package kr.inlab.www.service;
 
-import kr.inlab.www.dto.request.UserCreateRequestDto;
+import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -9,5 +9,5 @@ public interface UserService extends UserDetailsService {
 
     User findUserById(Long userId);
 
-    boolean createUser(UserCreateRequestDto dto);
+    boolean createUser(RequestCreateUserDto dto);
 }

@@ -1,6 +1,6 @@
 package kr.inlab.www.controller;
 
-import kr.inlab.www.dto.request.UserCreateRequestDto;
+import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity createUser(@RequestBody UserCreateRequestDto dto) {
+    public ResponseEntity createUser(@RequestBody RequestCreateUserDto dto) {
         userService.createUser(dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }

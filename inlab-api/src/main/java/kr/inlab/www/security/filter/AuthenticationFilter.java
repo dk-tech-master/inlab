@@ -10,7 +10,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import kr.inlab.www.dto.request.LoginRequestDto;
+import kr.inlab.www.dto.request.RequestLoginDto;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
 import kr.inlab.www.security.service.AuthenticationProviderService;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         try {
             // 사용자의 로그인 정보가 넘어오는데 자동으로 변환이 안된다. 그래서 ObjectMapper 를 사용하여 LoginRequestDto 로 변환해준다.
             //think 아니 controller 에서는 @RequestBody 붙히면 알아서 매핑해줬는데 이거는 왜 이렇게 불편하게 변환함?
-            LoginRequestDto creds = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
+            RequestLoginDto creds = new ObjectMapper().readValue(request.getInputStream(), RequestLoginDto.class);
             // Spring Security가 제공하는 인증 서비스와의 연동을 원활하게 하기 위해 LoginRequest를 UsernamePassword 토큰으로 변환해준다.
             // 토큰으로 변환해주었으니 이제 그 토큰을 처리하기 위한 AuthenticationManager 에 인증 작업을 요청해야한다.
             return this.getAuthenticationManager().authenticate(

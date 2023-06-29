@@ -2,8 +2,7 @@ package kr.inlab.www.service;
 
 import java.util.Optional;
 import javax.transaction.Transactional;
-import kr.inlab.www.common.util.DtoConverter;
-import kr.inlab.www.dto.request.UserCreateRequestDto;
+import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.entity.Role;
 import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.entity.User;
@@ -32,20 +31,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean createUser(UserCreateRequestDto dto) {
-        User user = DtoConverter.convert(dto);
-        // todo [Authorization]1-4. 암호화 해서 user를 저장한다.
-        user.setPassword(encoder.encode(user.getPassword()));
+    public boolean createUser(RequestCreateUserDto dto) {
+        User user = User.builder()
+            .email(dto.getEmail())
+            .nickname(dto.getNickname())
+            .password(encoder.encode(dto.getPassword()))
+            .build();
         userRepository.save(user);
-        roleRepository.save(new Role(user, RoleType.ROLE_GUEST));
+
+        Role role = Role.builder()
+            .user(user)
+            .roleType(RoleType.ROLE_GUEST)
+            .build();
+        roleRepository.save(role);
+        // todo 반환값을 true 할지 고민
         return true;
     }
 
-    // todo [Login]1-6. spring security 가 주관하는 인증 서비스이다. 여기서는 username(우리 서비스의 경우 이메일)을 가지고 db 에서 정보를 찾는다.
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // todo [Login]1-7. email 을 가지고 db 뒤졌는데 없다? 그러면 예외를 던진다.
         Optional<User> optionalUser = userRepository.findByEmail(username);
         if (optionalUser.isEmpty()) {
             throw new UsernameNotFoundException("너의 이메일은 없다");
