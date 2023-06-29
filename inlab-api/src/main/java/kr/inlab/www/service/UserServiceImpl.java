@@ -5,7 +5,7 @@ import javax.transaction.Transactional;
 import kr.inlab.www.common.util.DtoConverter;
 import kr.inlab.www.dto.request.UserCreateRequestDto;
 import kr.inlab.www.entity.Role;
-import kr.inlab.www.entity.RoleType;
+import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.repository.RoleRepository;
 import kr.inlab.www.repository.UserRepository;
