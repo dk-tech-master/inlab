@@ -10,20 +10,29 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import kr.inlab.www.common.exception.AccountBlockedException;
 import kr.inlab.www.dto.request.RequestLoginDto;
+import kr.inlab.www.entity.User;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
 import kr.inlab.www.security.service.AuthenticationProviderService;
+import kr.inlab.www.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    // todo [Login]1-2. 사용자 인증 처리를 위한 클래스 추가
+    private UserService userService;
     private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+
+    public AuthenticationFilter(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * 사용자가 로그인을 하면 가장 먼저 실행되는 메서드 UsernamePasswordAuthenticationFilter는 사용자의 아이디와 비밀번호를 받아 Spring Security의 인증 프로세스를
@@ -40,11 +49,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
         throws AuthenticationException {
         try {
-            // 사용자의 로그인 정보가 넘어오는데 자동으로 변환이 안된다. 그래서 ObjectMapper 를 사용하여 LoginRequestDto 로 변환해준다.
-            //think 아니 controller 에서는 @RequestBody 붙히면 알아서 매핑해줬는데 이거는 왜 이렇게 불편하게 변환함?
             RequestLoginDto creds = new ObjectMapper().readValue(request.getInputStream(), RequestLoginDto.class);
-            // Spring Security가 제공하는 인증 서비스와의 연동을 원활하게 하기 위해 LoginRequest를 UsernamePassword 토큰으로 변환해준다.
-            // 토큰으로 변환해주었으니 이제 그 토큰을 처리하기 위한 AuthenticationManager 에 인증 작업을 요청해야한다.
+            request.setAttribute("username", creds.getUsername());
+
             return this.getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(
                     creds.getUsername(),
@@ -64,6 +71,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         HttpServletResponse response,
         FilterChain chain,
         Authentication authResult) throws IOException, ServletException {
+        userService.resetLoginAttempt(authResult.getName());
+
         Claims claims = Jwts.claims();
 
         jwtTokenProvider.putPrincipalToClaims(claims, authResult);
@@ -77,6 +86,26 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException failed) throws IOException, ServletException {
-        response.addHeader("error", "error");
+
+        if (failed instanceof UsernameNotFoundException) {
+            // 올바르지 않은 이메일을 입력했을 경우
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
+        } else if (failed instanceof AccountBlockedException) {
+            // 사용자의 userStatus 가 Block 인경우
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
+        } else if (failed instanceof BadCredentialsException) {
+            // 비밀번호가 틀렸을 경우
+            User user = userService.findUserByEmail((String) request.getAttribute("username"));
+
+            int maxAttempts = 5; // 최대 실패 횟수
+            int currentAttempts = user.getLoginAttempt();
+            int remainingAttempts = maxAttempts - currentAttempts;
+            if (remainingAttempts <= 0) {
+                userService.updateUserStatusBlock(user.getEmail());
+            } else {
+                userService.increaseLoginAttempt(user.getEmail());
+            }
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
+        }
     }
 }
