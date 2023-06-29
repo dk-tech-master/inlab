@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import kr.inlab.www.common.type.RoleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
