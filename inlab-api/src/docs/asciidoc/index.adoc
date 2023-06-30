@@ -6,46 +6,48 @@
 :toclevels: 2
 :sectlinks:
 
-== GET 요청 REST DOCS 테스트
+== TEST CONTROLLER
+
+=== GET 요청 REST DOCS 테스트
 GET 요청에 대한 REST DOCS 생성을 테스트합니다.
 
-=== 요청 URL
+==== 요청 URL
 
 include::{snippets}/get-test-rest-docs/http-request.adoc[]
 
-=== Path Variables
+==== Path Variables
 
 include::{snippets}/get-test-rest-docs/path-parameters.adoc[]
 
-=== Headers
+==== Headers
 
 include::{snippets}/get-test-rest-docs/request-headers.adoc[]
 
-=== Parameters
+==== Parameters
 
 include::{snippets}/get-test-rest-docs/request-parameters.adoc[]
 
-=== 응답 Body
+==== 응답 Body
 
 include::{snippets}/get-test-rest-docs/http-response.adoc[]
 include::{snippets}/get-test-rest-docs/response-fields.adoc[]
 
-== POST 요청 REST DOCS 테스트
+=== POST 요청 REST DOCS 테스트
 POST 요청에 대한 REST DOCS 생성을 테스트합니다.
 
-=== 요청 URL
+==== 요청 URL
 
 include::{snippets}/post-test-rest-docs/http-request.adoc[]
 
-=== Headers
+==== Headers
 
 include::{snippets}/post-test-rest-docs/request-headers.adoc[]
 
-=== 요청 Body
+==== 요청 Body
 
 include::{snippets}/post-test-rest-docs/request-fields.adoc[]
 
-=== 응답 Body
+==== 응답 Body
 
 include::{snippets}/post-test-rest-docs/http-response.adoc[]
 include::{snippets}/post-test-rest-docs/response-fields.adoc[]

@@ -446,21 +446,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_get_요청_rest_docs_테스트">GET 요청 REST DOCS 테스트</a>
+<li><a href="#_test_controller">TEST CONTROLLER</a>
 <ul class="sectlevel2">
-<li><a href="#_요청_url">요청 URL</a></li>
-<li><a href="#_path_variables">Path Variables</a></li>
-<li><a href="#_headers">Headers</a></li>
-<li><a href="#_parameters">Parameters</a></li>
-<li><a href="#_응답_body">응답 Body</a></li>
-</ul>
-</li>
-<li><a href="#_post_요청_rest_docs_테스트">POST 요청 REST DOCS 테스트</a>
-<ul class="sectlevel2">
-<li><a href="#_요청_url_2">요청 URL</a></li>
-<li><a href="#_headers_2">Headers</a></li>
-<li><a href="#_요청_body">요청 Body</a></li>
-<li><a href="#_응답_body_2">응답 Body</a></li>
+<li><a href="#_get_요청_rest_docs_테스트">GET 요청 REST DOCS 테스트</a></li>
+<li><a href="#_post_요청_rest_docs_테스트">POST 요청 REST DOCS 테스트</a></li>
 </ul>
 </li>
 </ul>
@@ -468,13 +457,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_get_요청_rest_docs_테스트"><a class="link" href="#_get_요청_rest_docs_테스트">GET 요청 REST DOCS 테스트</a></h2>
+<h2 id="_test_controller"><a class="link" href="#_test_controller">TEST CONTROLLER</a></h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_get_요청_rest_docs_테스트"><a class="link" href="#_get_요청_rest_docs_테스트">GET 요청 REST DOCS 테스트</a></h3>
 <div class="paragraph">
 <p>GET 요청에 대한 REST DOCS 생성을 테스트합니다.</p>
 </div>
-<div class="sect2">
-<h3 id="_요청_url"><a class="link" href="#_요청_url">요청 URL</a></h3>
+<div class="sect3">
+<h4 id="_요청_url"><a class="link" href="#_요청_url">요청 URL</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/test-rest-docs/path?testParam=queryparam HTTP/1.1
@@ -484,8 +475,8 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_path_variables"><a class="link" href="#_path_variables">Path Variables</a></h3>
+<div class="sect3">
+<h4 id="_path_variables"><a class="link" href="#_path_variables">Path Variables</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. /api/test-rest-docs/{testPath}</caption>
 <colgroup>
@@ -506,8 +497,8 @@ Host: localhost:8080</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect2">
-<h3 id="_headers"><a class="link" href="#_headers">Headers</a></h3>
+<div class="sect3">
+<h4 id="_headers"><a class="link" href="#_headers">Headers</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -527,8 +518,8 @@ Host: localhost:8080</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect2">
-<h3 id="_parameters"><a class="link" href="#_parameters">Parameters</a></h3>
+<div class="sect3">
+<h4 id="_parameters"><a class="link" href="#_parameters">Parameters</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -548,8 +539,8 @@ Host: localhost:8080</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect2">
-<h3 id="_응답_body"><a class="link" href="#_응답_body">응답 Body</a></h3>
+<div class="sect3">
+<h4 id="_응답_body"><a class="link" href="#_응답_body">응답 Body</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -582,15 +573,13 @@ Content-Length: 37
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_post_요청_rest_docs_테스트"><a class="link" href="#_post_요청_rest_docs_테스트">POST 요청 REST DOCS 테스트</a></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_post_요청_rest_docs_테스트"><a class="link" href="#_post_요청_rest_docs_테스트">POST 요청 REST DOCS 테스트</a></h3>
 <div class="paragraph">
 <p>POST 요청에 대한 REST DOCS 생성을 테스트합니다.</p>
 </div>
-<div class="sect2">
-<h3 id="_요청_url_2"><a class="link" href="#_요청_url_2">요청 URL</a></h3>
+<div class="sect3">
+<h4 id="_요청_url_2"><a class="link" href="#_요청_url_2">요청 URL</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/test-rest-docs HTTP/1.1
@@ -604,8 +593,8 @@ Host: localhost:8080
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_headers_2"><a class="link" href="#_headers_2">Headers</a></h3>
+<div class="sect3">
+<h4 id="_headers_2"><a class="link" href="#_headers_2">Headers</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -625,8 +614,8 @@ Host: localhost:8080
 </tbody>
 </table>
 </div>
-<div class="sect2">
-<h3 id="_요청_body"><a class="link" href="#_요청_body">요청 Body</a></h3>
+<div class="sect3">
+<h4 id="_요청_body"><a class="link" href="#_요청_body">요청 Body</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -659,8 +648,8 @@ Host: localhost:8080
 </tbody>
 </table>
 </div>
-<div class="sect2">
-<h3 id="_응답_body_2"><a class="link" href="#_응답_body_2">응답 Body</a></h3>
+<div class="sect3">
+<h4 id="_응답_body_2"><a class="link" href="#_응답_body_2">응답 Body</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
@@ -695,10 +684,11 @@ Content-Length: 86
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-06-30 10:26:00 +0900
+Last updated 2023-06-30 11:05:44 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
