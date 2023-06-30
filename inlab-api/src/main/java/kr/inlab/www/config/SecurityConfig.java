@@ -2,8 +2,10 @@ package kr.inlab.www.config;
 
 import kr.inlab.www.security.filter.AuthenticationFilter;
 import kr.inlab.www.security.filter.AuthorizationHeaderFilter;
+import kr.inlab.www.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +18,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationProvider authenticationProvider;
+    private final UserService userService;
+    private final Environment environment;
 
     // todo [Authorization]1-1. 권한 작업을 configure(HttpSecurity http) 오버라이
     @Override
@@ -31,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // todo [Login]1-3. 사용자 인증 필터를 생성하고 AuthenticationManager 가 set 되게 하고 반환
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(userService,environment);
         authenticationFilter.setAuthenticationManager(authenticationManager());
         authenticationFilter.setFilterProcessesUrl("/login");
 
