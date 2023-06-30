@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import kr.inlab.www.security.jwt.JwtTokenProvider;
 import kr.inlab.www.security.service.AuthenticationProviderService;
 import kr.inlab.www.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,10 +30,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private UserService userService;
+    private Environment environment;
     private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
 
-    public AuthenticationFilter(UserService userService) {
+    public AuthenticationFilter(UserService userService, Environment environment) {
         this.userService = userService;
+        this.environment = environment;
     }
 
     /**
@@ -96,8 +100,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         } else if (failed instanceof BadCredentialsException) {
             // 비밀번호가 틀렸을 경우
             User user = userService.findUserByEmail((String) request.getAttribute("username"));
-
-            int maxAttempts = 5; // 최대 실패 횟수
+            int maxAttempts = Integer.parseInt(Objects.requireNonNull(environment.getProperty("myapp.max-attempt")));
             int currentAttempts = user.getLoginAttempt();
             int remainingAttempts = maxAttempts - currentAttempts;
             if (remainingAttempts <= 0) {

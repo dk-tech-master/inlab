@@ -21,3 +21,4 @@ spring:
 logging:
   level:
     org.hibernate.type: TRACE
+myapp.max-attempt: 5
