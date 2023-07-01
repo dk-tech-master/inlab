@@ -7,13 +7,11 @@ import lombok.*;
 public class RequestPositionDto {
 
     private String positionName;
-    private int page;
 
     @Builder
-    public RequestPositionDto(String positionName, int page) {
+    public RequestPositionDto(String positionName) {
 
         this.positionName = positionName;
-        this.page = page;
     }
 
 }
