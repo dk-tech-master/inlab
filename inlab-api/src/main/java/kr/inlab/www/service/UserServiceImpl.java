@@ -1,8 +1,11 @@
 package kr.inlab.www.service;
 
 import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import kr.inlab.www.common.exception.AccountBlockedException;
+import kr.inlab.www.common.exception.EmailMismatchException;
+import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.common.type.UserStatus;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
@@ -12,6 +15,7 @@ import kr.inlab.www.repository.RoleRepository;
 import kr.inlab.www.repository.UserRepository;
 import kr.inlab.www.security.CustomUserDetails;
 import kr.inlab.www.security.filter.AuthenticationFilter;
+import kr.inlab.www.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
     private final BCryptPasswordEncoder encoder;
     // todo [Authorization]1-2. 초기 기동을 할 때 빈을 주입을 받는데 encoder 는 빈으로 등록하지 않았다 따라서 bean 을 등록해야한다.
 
@@ -33,8 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public boolean createUser(RequestCreateUserDto dto) {
+    public void createUser(RequestCreateUserDto dto) {
         User user = User.builder()
             .email(dto.getEmail())
             .nickname(dto.getNickname())
@@ -47,8 +51,39 @@ public class UserServiceImpl implements UserService {
             .roleType(RoleType.ROLE_GUEST)
             .build();
         roleRepository.save(role);
-        // todo 반환값을 true 할지 고민
-        return true;
+    }
+
+    @Override
+    @Transactional
+    public void createUser(HttpServletRequest request, RequestCreateUserDto dto) throws EmailNotVerifiedException {
+        compareEmailFromTokenAndForm(request, dto);
+        User user = User.builder()
+            .email(dto.getEmail())
+            .nickname(dto.getNickname())
+            .password(encoder.encode(dto.getPassword()))
+            .build();
+        userRepository.save(user);
+
+        Role role = Role.builder()
+            .user(user)
+            .roleType(RoleType.ROLE_GUEST)
+            .build();
+        roleRepository.save(role);
+    }
+
+    private void compareEmailFromTokenAndForm(HttpServletRequest request, RequestCreateUserDto dto)
+        throws EmailNotVerifiedException {
+        if (!Objects.equals(dto.getEmail(), getEmailFromToken(request))) {
+            throw new EmailMismatchException();
+        }
+    }
+
+    private String getEmailFromToken(HttpServletRequest request) throws EmailNotVerifiedException {
+        String emailToken = jwtTokenProvider.getEmailTokenFromRequest(request);
+        if (Objects.isNull(emailToken)) {
+            throw new EmailNotVerifiedException();
+        }
+        return jwtTokenProvider.getEmailFromToken(emailToken);
     }
 
     /**

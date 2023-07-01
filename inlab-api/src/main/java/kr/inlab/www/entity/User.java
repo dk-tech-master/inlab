@@ -49,9 +49,6 @@ public class User {
     @CreatedDate
     private LocalDateTime passwordModifiedAt;
 
-    @Column(columnDefinition = "varchar(1) default 'N'")
-    private Boolean verificationStatus;
-
     @Column(columnDefinition = "tinyint default 0")
     private Integer loginAttempt;
 

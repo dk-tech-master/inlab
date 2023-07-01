@@ -30,6 +30,7 @@ public class JwtTokenProvider {
     public static final String REFRESH = "Refresh";
     public static final String USERNAME = "username";
     public static final String ROLES = "roles";
+    public static final String EMAIL = "email";
     public static final long JWT_TOKEN_VALIDITY = 1000 * 60 * 60;
     public static final SecretKey key = Keys.hmacShaKeyFor(KEY.getBytes(StandardCharsets.UTF_8));
 
@@ -51,16 +52,26 @@ public class JwtTokenProvider {
         return null;
     }
 
+    public String getEmailTokenFromRequest(HttpServletRequest request) {
+        return request.getHeader(EMAIL);
+    }
+
     // token으로 사용자 id 조회
     public String getUsernameFromToken(String jwt) {
         final Claims claims = getAllClaimsFromToken(jwt);
         return claims.get(USERNAME, String.class);
     }
 
+
     public List<String> getRolesFromToken(String jwt) {
         final Claims claims = getAllClaimsFromToken(jwt);
         List<String> list = claims.get(ROLES, List.class);
         return list;
+    }
+
+    public String getEmailFromToken(String emailTokenFromRequest) {
+        final Claims claims = getAllClaimsFromToken(emailTokenFromRequest);
+        return claims.get(EMAIL, String.class);
     }
 
     // token으로 사용자 속성정보 조회
@@ -89,7 +100,7 @@ public class JwtTokenProvider {
     public String generateAccessToken(Map<String, Object> claims) {
         return Jwts.builder()
             .setClaims(claims)
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 30))// 1시간
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1))// 1시간
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .signWith(key, SignatureAlgorithm.HS256)  // 사  용할 암호화 알고리즘과 secret 값 세팅
             .compact();
@@ -103,6 +114,19 @@ public class JwtTokenProvider {
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .signWith(key, SignatureAlgorithm.HS256)  // 사  용할 암호화 알고리즘과 secret 값 세팅
             .compact();
+    }
+
+    // JWT accessToken 생성
+    public Map<String, String> generateEmailToken(Map<String, Object> claims) {
+        Map<String, String> tokens = new HashMap<String, String>();
+        String emailToken = Jwts.builder()
+            .setClaims(claims)
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY)) // 5시간
+            .setIssuedAt(new Date(System.currentTimeMillis()))
+            .signWith(key, SignatureAlgorithm.HS256)  // 사  용할 암호화 알고리즘과 secret 값 세팅
+            .compact();
+        tokens.put(EMAIL, emailToken);
+        return tokens;
     }
 
     // JWT accessToken, refreshToken 생성
@@ -153,4 +177,9 @@ public class JwtTokenProvider {
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.toList())); // 사용자 역할(role)을 JWT에 추가
     }
+
+    public void putEmailToClaims(Claims claims, String email) {
+        claims.put(EMAIL, email);
+    }
+
 }

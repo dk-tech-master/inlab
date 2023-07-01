@@ -1,5 +1,7 @@
 package kr.inlab.www.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.service.UserService;
@@ -31,9 +33,20 @@ public class UserController {
         return userService.findUserById(userId);
     }
 
-    @PostMapping
-    public ResponseEntity createUser(@RequestBody RequestCreateUserDto dto) {
+    /**
+     * 원래 회원가입은 이메일 인증을 하고 jwt 토큰 까서 내가 가입시키려는 이메일이 유효한 이메일인지 확인하는데
+     *
+     * 개발할 때 간단하게 회원 집어넣는 메서드 입니다.
+     */
+    @PostMapping("/easy")
+    public ResponseEntity createEasyUser(@RequestBody RequestCreateUserDto dto) {
         userService.createUser(dto);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+    @PostMapping
+    public ResponseEntity createUser(HttpServletRequest request, @RequestBody RequestCreateUserDto dto)
+        throws EmailNotVerifiedException {
+        userService.createUser(request, dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

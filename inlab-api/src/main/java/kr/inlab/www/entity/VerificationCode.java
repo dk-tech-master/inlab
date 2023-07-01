@@ -22,6 +22,9 @@ public class VerificationCode {
     private Long verificationCodeId;
 
     @NotNull
+    private String email;
+
+    @NotNull
     private String code;
 
     @CreatedDate
@@ -29,13 +32,10 @@ public class VerificationCode {
 
     private LocalDateTime expiredAt;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Builder
-    public VerificationCode(String code, User user) {
+    public VerificationCode(String email, String code, LocalDateTime expiredAt) {
+        this.email = email;
         this.code = code;
-        this.user = user;
+        this.expiredAt = expiredAt;
     }
 }
