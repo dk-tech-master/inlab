@@ -5,9 +5,11 @@
     <div
       class="flex flex-col items-center justify-center w-full px-6 py-8 md:h-screen lg:py-0"
     >
-      <a href="#" class="flex items-center w-1/12 mb-8">
-        <img class="w-full" src="../../images/logo-color.svg" alt="logo" />
-      </a>
+      <div class="w-1/3 flex items-center">
+        <a href="#" class="flex w-1/3 items-center mx-auto mb-10">
+          <img class="w-full" src="../../images/logo-color.svg" alt="logo" />
+        </a>
+      </div>
       <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <form class="" action="#">
@@ -49,7 +51,9 @@
               >
             </div>
             <button type="submit" class="btn basicBtn mt-10">로그인</button>
-            <button type="submit" class="btn basicOutlineBtn mt-2">회원가입</button>
+            <button type="submit" class="btn basicOutlineBtn mt-2">
+              회원가입
+            </button>
           </form>
         </div>
       </div>
@@ -57,5 +61,4 @@
   </section>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

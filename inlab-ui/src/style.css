@@ -9,7 +9,8 @@
     }
 
     .basicOutlineBtn {
-        @apply w-full mt-1 bg-white border-indigo-600 font-medium text-indigo-600 transition duration-300 hover:bg-gray-50 hover:border-gray-400;
+        @apply w-full bg-white border-indigo-600 font-medium text-indigo-600 transition duration-300 hover:bg-gray-50 hover:border-gray-400;
     }
+
 
 }
