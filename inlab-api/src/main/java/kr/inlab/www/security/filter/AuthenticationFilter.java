@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
@@ -12,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import kr.inlab.www.common.exception.AccountBlockedException;
+import kr.inlab.www.common.util.CreateHeaders;
 import kr.inlab.www.dto.request.RequestLoginDto;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
@@ -75,7 +78,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         HttpServletResponse response,
         FilterChain chain,
         Authentication authResult) throws IOException, ServletException {
-        userService.resetLoginAttempt(authResult.getName());
+        String email = authResult.getName();
+        userService.resetLoginAttempt(email);
 
         Claims claims = Jwts.claims();
 
@@ -83,8 +87,21 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         jwtTokenProvider.putRolesToClaims(claims, authResult);
 
         Map<String, String> stringStringMap = jwtTokenProvider.generateTokenSet(claims);
-
         stringStringMap.forEach(response::addHeader);
+        checkPasswordChangeRequiredAndThenSetHeader(email, response); // 최근 비밀번호 변경이 필요한지 여부 확인
+    }
+
+    private void checkPasswordChangeRequiredAndThenSetHeader(String email, HttpServletResponse response) {
+        if(isPasswordChangeRequired(userService.findUserByEmail(email).getPasswordModifiedAt())){
+            response.addHeader(CreateHeaders.PASSWORD_CHANGE_REQUIRED,CreateHeaders.TRUE);
+        }
+    }
+
+    private boolean isPasswordChangeRequired(LocalDateTime passwordModifiedAt) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime threeMonthsAgo = now.minus(3, ChronoUnit.MONTHS);
+
+        return passwordModifiedAt.isBefore(threeMonthsAgo);
     }
 
     @Override

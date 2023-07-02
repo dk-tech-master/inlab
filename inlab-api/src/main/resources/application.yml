@@ -18,17 +18,19 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  spring:
-    mail:
-      host: smtp.gmail.com
-      port: 587
-      username: techmasterinlab
-      password: fjsbeutolwjhpbup
-      properties:
-        mail:
-          smtp:
-            auth: true
-            starttls.enable: true
+    hiddenmethod:
+      filter:
+        enabled: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: techmasterinlab
+    password: fjsbeutolwjhpbup
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
 logging:
   level:
     org.hibernate.type: TRACE

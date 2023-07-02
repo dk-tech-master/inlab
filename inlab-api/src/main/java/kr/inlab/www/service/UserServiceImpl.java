@@ -4,11 +4,15 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import kr.inlab.www.common.exception.AccountBlockedException;
+import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailMismatchException;
+import kr.inlab.www.common.exception.EmailNotFoundException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
+import kr.inlab.www.common.exception.NicknameDuplicateException;
 import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.common.type.UserStatus;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
+import kr.inlab.www.dto.request.RequestUpdateUserDto;
 import kr.inlab.www.entity.Role;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.repository.RoleRepository;
@@ -38,7 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(RequestCreateUserDto dto) {
+    public void createUser(RequestCreateUserDto dto) throws EmailDuplicateException {
+        if (isEmailDuplicate(dto.getEmail())){
+            throw new EmailDuplicateException();
+        }
+        if (isNicknameDuplicate(dto.getNickname())){
+            throw new NicknameDuplicateException();
+        }
         User user = User.builder()
             .email(dto.getEmail())
             .nickname(dto.getNickname())
@@ -55,7 +65,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createUser(HttpServletRequest request, RequestCreateUserDto dto) throws EmailNotVerifiedException {
+    public void createUser(HttpServletRequest request, RequestCreateUserDto dto)
+        throws EmailNotVerifiedException, EmailDuplicateException {
+        if (isEmailDuplicate(dto.getEmail())){
+            throw new EmailDuplicateException();
+        }
+        if (isNicknameDuplicate(dto.getNickname())){
+            throw new NicknameDuplicateException();
+        }
         compareEmailFromTokenAndForm(request, dto);
         User user = User.builder()
             .email(dto.getEmail())
@@ -71,7 +88,26 @@ public class UserServiceImpl implements UserService {
         roleRepository.save(role);
     }
 
+    @Override
+    @Transactional
+    public void updateUser(HttpServletRequest request, RequestUpdateUserDto dto) throws EmailNotVerifiedException {
+        compareEmailFromTokenAndForm(request, dto);
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(EmailNotFoundException::new);
+        if (isNicknameDuplicateForUpdate(dto.getNickname(),dto.getEmail())){
+            throw new NicknameDuplicateException();
+        }
+        user.updatePassword(encoder.encode(dto.getPassword()));
+        user.updateNickname(dto.getNickname());
+    }
+
     private void compareEmailFromTokenAndForm(HttpServletRequest request, RequestCreateUserDto dto)
+        throws EmailNotVerifiedException {
+        if (!Objects.equals(dto.getEmail(), getEmailFromToken(request))) {
+            throw new EmailMismatchException();
+        }
+    }
+
+    private void compareEmailFromTokenAndForm(HttpServletRequest request, RequestUpdateUserDto dto)
         throws EmailNotVerifiedException {
         if (!Objects.equals(dto.getEmail(), getEmailFromToken(request))) {
             throw new EmailMismatchException();
@@ -136,5 +172,23 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("resetLoginAttempt exception!!!");
         });
         user.incrementLoginAttempt();
+    }
+
+    @Override
+    @Transactional
+    public boolean isEmailDuplicate(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public boolean isNicknameDuplicate(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    @Override
+    @Transactional
+    public boolean isNicknameDuplicateForUpdate(String nickname, String email) {
+        return userRepository.existsByNicknameAndEmailNot(nickname, email);
     }
 }

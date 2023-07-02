@@ -1,9 +1,11 @@
 package kr.inlab.www.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
-import kr.inlab.www.common.util.ClearTokenHeaders;
+import kr.inlab.www.common.util.CreateHeaders;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
+import kr.inlab.www.dto.request.RequestUpdateUserDto;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
 import kr.inlab.www.service.UserService;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,11 +40,10 @@ public class UserController {
 
     /**
      * 원래 회원가입은 이메일 인증을 하고 jwt 토큰 까서 내가 가입시키려는 이메일이 유효한 이메일인지 확인하는데
-     *
-     * 개발할 때 간단하게 회원 집어넣는 메서드 입니다.
+     * 개발할 때 간단하게 회원을 추가하기 위한 메서드 입니다.(추후 삭제 예정)
      */
     @PostMapping("/easy")
-    public ResponseEntity createEasyUser(@RequestBody RequestCreateUserDto dto) {
+    public ResponseEntity createEasyUser(@RequestBody RequestCreateUserDto dto) throws EmailDuplicateException {
         userService.createUser(dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -51,9 +53,17 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity createUser(HttpServletRequest request, @RequestBody RequestCreateUserDto dto)
-        throws EmailNotVerifiedException {
+        throws EmailNotVerifiedException, EmailDuplicateException {
         userService.createUser(request, dto);
-        HttpHeaders headers = ClearTokenHeaders.createHeaders(JwtTokenProvider.EMAIL);
+        HttpHeaders headers = CreateHeaders.createClearTokenHeaders(JwtTokenProvider.EMAIL);
         return new ResponseEntity(headers, HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity updateUser(HttpServletRequest request, @RequestBody RequestUpdateUserDto dto)
+        throws EmailNotVerifiedException {
+        userService.updateUser(request, dto);
+        HttpHeaders headers = CreateHeaders.createClearTokenHeaders(JwtTokenProvider.EMAIL);
+        return new ResponseEntity(headers, HttpStatus.OK);
     }
 }
