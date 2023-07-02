@@ -59,11 +59,17 @@ public class UserController {
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/{userId}")
     public ResponseEntity updateUser(HttpServletRequest request, @RequestBody RequestUpdateUserDto dto)
         throws EmailNotVerifiedException {
         userService.updateUser(request, dto);
         HttpHeaders headers = CreateHeaders.createClearTokenHeaders(JwtTokenProvider.EMAIL);
         return new ResponseEntity(headers, HttpStatus.OK);
+    }
+
+    @PutMapping("/{userId}/role")
+    public ResponseEntity updateUserRoleGuestToUser(@PathVariable Long userId) {
+        userService.updateUserRoleGuestToUser(userId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

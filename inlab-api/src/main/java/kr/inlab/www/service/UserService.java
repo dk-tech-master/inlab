@@ -33,4 +33,6 @@ public interface UserService extends UserDetailsService {
     boolean isNicknameDuplicate(String nickname);
 
     boolean isNicknameDuplicateForUpdate(String nickname, String email);
+
+    void updateUserRoleGuestToUser(Long userId);
 }

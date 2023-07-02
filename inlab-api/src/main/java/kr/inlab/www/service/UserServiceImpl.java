@@ -2,13 +2,13 @@ package kr.inlab.www.service;
 
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import kr.inlab.www.common.exception.AccountBlockedException;
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailMismatchException;
 import kr.inlab.www.common.exception.EmailNotFoundException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.common.exception.NicknameDuplicateException;
+import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.common.type.UserStatus;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -150,6 +151,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> {
             throw new UsernameNotFoundException("findUserByEmail exception!!!");
@@ -175,20 +177,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean isEmailDuplicate(String email) {
         return userRepository.existsByEmail(email);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean isNicknameDuplicate(String nickname) {
         return userRepository.existsByNickname(nickname);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean isNicknameDuplicateForUpdate(String nickname, String email) {
         return userRepository.existsByNicknameAndEmailNot(nickname, email);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserRoleGuestToUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new UserNotFoundException();
+        });
+        Role role = Role.builder()
+            .user(user)
+            .roleType(RoleType.ROLE_USER)
+            .build();
+        roleRepository.save(role);
     }
 }
