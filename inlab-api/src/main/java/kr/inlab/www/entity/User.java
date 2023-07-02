@@ -86,6 +86,7 @@ public class User {
 
     public void updatePassword(String encodedPassword) {
         this.password = encodedPassword;
+        this.passwordModifiedAt = LocalDateTime.now();
     }
 
     public void updateNickname(String nickname) {
