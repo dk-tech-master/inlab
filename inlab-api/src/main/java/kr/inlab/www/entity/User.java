@@ -83,4 +83,12 @@ public class User {
     public void updateUserStatusBlock() {
         this.userStatus = UserStatus.BLOCK;
     }
+
+    public void updatePassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
