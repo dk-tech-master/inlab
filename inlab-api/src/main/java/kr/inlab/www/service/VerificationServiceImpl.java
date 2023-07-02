@@ -52,7 +52,7 @@ public class VerificationServiceImpl implements VerificationService {
         VerificationCode verificationCode = verificationRepository.findByEmail(request.getEmail())
             .orElseThrow(EmailNotFoundException::new);
         checkExpiredVerificationCode(verificationCode);
-        return Objects.equals(verificationCode.getCode(), request.getVerificationCode());
+        return verificationCode.getCode().equalsIgnoreCase(request.getVerificationCode());
     }
 
     private void checkExpiredVerificationCode(VerificationCode verificationCode)
