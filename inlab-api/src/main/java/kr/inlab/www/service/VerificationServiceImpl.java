@@ -35,6 +35,26 @@ public class VerificationServiceImpl implements VerificationService {
             .code(randomCode)
             .expiredAt(LocalDateTime.now().plusMinutes(VERIFICATION_CODE_VALIDITY_MINUTE))
             .build();
+        checkVerificationAlreadyIssuedAndThenUpdate(email, verificationCode);
+
+        return randomCode;
+    }
+
+    @Override
+    @Transactional
+    public String createVerificationCodeForUpdate(String email) {
+        String randomCode = UUID.randomUUID().toString();
+        VerificationCode verificationCode = VerificationCode.builder()
+            .email(email)
+            .code(randomCode)
+            .expiredAt(LocalDateTime.now().plusMinutes(VERIFICATION_CODE_VALIDITY_MINUTE))
+            .build();
+        checkVerificationAlreadyIssuedAndThenUpdate(email, verificationCode);
+
+        return randomCode;
+    }
+
+    private void checkVerificationAlreadyIssuedAndThenUpdate(String email, VerificationCode verificationCode) {
         Optional<VerificationCode> verificationCodeByEmail = verificationRepository.findByEmail(email);
 
         if(verificationCodeByEmail.isEmpty()){
@@ -43,8 +63,6 @@ public class VerificationServiceImpl implements VerificationService {
             verificationRepository.delete(verificationCodeByEmail.get());
             verificationRepository.save(verificationCode);
         }
-
-        return randomCode;
     }
 
     @Override
