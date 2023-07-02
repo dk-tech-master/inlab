@@ -107,6 +107,8 @@ public class AuthorizationHeaderFilter extends OncePerRequestFilter {
             request.getServletPath().equals("/api/users/health_check")
                 || request.getServletPath().equals("/api/users")
                 || request.getServletPath().equals("/login")
+                || request.getServletPath().equals("/api/verification_code")
+                || request.getServletPath().equals("/api/verification_code/check")
                 || request.getServletPath().equals("/docs/index.html");
     }
 }

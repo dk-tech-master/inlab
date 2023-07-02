@@ -1,5 +1,7 @@
 package kr.inlab.www.service;
 
+import javax.servlet.http.HttpServletRequest;
+import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,7 +11,9 @@ public interface UserService extends UserDetailsService {
 
     User findUserById(Long userId);
 
-    boolean createUser(RequestCreateUserDto dto);
+    void createUser(RequestCreateUserDto dto);
+
+    void createUser(HttpServletRequest request, RequestCreateUserDto dto) throws EmailNotVerifiedException;
 
     void resetLoginAttempt(String username);
 

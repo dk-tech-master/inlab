@@ -26,8 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/", "/login", "/docs/index.html").permitAll(); // 로그인과 메인화면과 회원가입 페이지는 누구나 접근 가능하게 설정
-        http.authorizeRequests().antMatchers("/users/test").hasRole("GUEST");
-        http.authorizeRequests().antMatchers("/users/health_check").permitAll();
+        http.authorizeRequests().antMatchers("/api/users/test").hasRole("GUEST");
+        http.authorizeRequests().antMatchers("/api/users/health_check").permitAll();
+        http.authorizeRequests().antMatchers("/api/verification_code").permitAll();
+        http.authorizeRequests().antMatchers("/api/verification_code/*").permitAll();
         http.addFilterBefore(getAuthorizationHeaderFilter(), AuthenticationFilter.class);
         // todo [Login]1-4. 사용자 요청에 대해 AuthenticationFilter 를 거치도록 수정
         http.addFilter(getAuthenticationFilter());
