@@ -70,6 +70,7 @@ public class JwtTokenProvider {
     }
 
     public String getEmailFromToken(String emailTokenFromRequest) {
+        validateToken(emailTokenFromRequest);
         final Claims claims = getAllClaimsFromToken(emailTokenFromRequest);
         return claims.get(EMAIL, String.class);
     }
@@ -112,7 +113,7 @@ public class JwtTokenProvider {
             .setClaims(claims)
             .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 5)) // 5시간
             .setIssuedAt(new Date(System.currentTimeMillis()))
-            .signWith(key, SignatureAlgorithm.HS256)  // 사  용할 암호화 알고리즘과 secret 값 세팅
+            .signWith(key, SignatureAlgorithm.HS256)  // 사용할 암호화 알고리즘과 secret 값 세팅
             .compact();
     }
 
@@ -121,9 +122,9 @@ public class JwtTokenProvider {
         Map<String, String> tokens = new HashMap<String, String>();
         String emailToken = Jwts.builder()
             .setClaims(claims)
-            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY)) // 5시간
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 24)) // 24시간
             .setIssuedAt(new Date(System.currentTimeMillis()))
-            .signWith(key, SignatureAlgorithm.HS256)  // 사  용할 암호화 알고리즘과 secret 값 세팅
+            .signWith(key, SignatureAlgorithm.HS256)  // 사용할 암호화 알고리즘과 secret 값 세팅
             .compact();
         tokens.put(EMAIL, emailToken);
         return tokens;
