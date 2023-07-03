@@ -58,6 +58,9 @@ public class User {
     private UserStatus userStatus;
 
     @CreatedDate
+    private LocalDateTime loginBlockUntil;
+
+    @CreatedDate
     private LocalDateTime createdAt;
 
     @LastModifiedDate
@@ -81,10 +84,6 @@ public class User {
         this.loginAttempt = 0;
     }
 
-    public void updateUserStatusBlock() {
-        this.userStatus = UserStatus.BLOCK;
-    }
-
     public void updatePassword(String encodedPassword) {
         this.password = encodedPassword;
         this.passwordModifiedAt = LocalDateTime.now();
@@ -100,5 +99,9 @@ public class User {
 
     public void updateUserStatusDelete() {
         this.userStatus = UserStatus.DELETE;
+    }
+
+    public void updateLoginBlockUntil(){
+        this.loginBlockUntil = LocalDateTime.now().plusMinutes(30);
     }
 }
