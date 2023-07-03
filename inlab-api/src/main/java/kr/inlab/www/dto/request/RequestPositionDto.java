@@ -1,17 +1,14 @@
 package kr.inlab.www.dto.request;
 
+import kr.inlab.www.dto.common.RequestListDto;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RequestPositionDto {
+@AllArgsConstructor
+@SuperBuilder
+public class RequestPositionDto extends RequestListDto {
 
     private String positionName;
-
-    @Builder
-    public RequestPositionDto(String positionName) {
-
-        this.positionName = positionName;
-    }
-
 }

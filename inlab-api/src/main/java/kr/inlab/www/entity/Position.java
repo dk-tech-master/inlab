@@ -1,15 +1,14 @@
 package kr.inlab.www.entity;
 
+import kr.inlab.www.dto.response.ResponsePositionDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,8 +22,12 @@ public class Position {
     @NotNull
     private String positionName;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Question> questionList;
+
     @Builder
     public Position(String positionName) {
         this.positionName = positionName;
     }
+
 }
