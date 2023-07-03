@@ -1,12 +1,10 @@
 package kr.inlab.www.service;
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.dto.request.RequestUpdateUserDto;
-import kr.inlab.www.dto.response.ResponseGetUsersDto;
 import kr.inlab.www.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -23,8 +21,6 @@ public interface UserService extends UserDetailsService {
     void resetLoginAttempt(String username);
 
     User findUserByEmail(String username);
-
-    void updateUserStatusBlock(String email);
 
     void increaseLoginAttempt(String email);
 
@@ -43,4 +39,6 @@ public interface UserService extends UserDetailsService {
     void updateUserStatusDelete(Long userId);
 
     void updateUserStatusDelete(String username, Long userId);
+
+    void updateUserBlockUntil(String email);
 }
