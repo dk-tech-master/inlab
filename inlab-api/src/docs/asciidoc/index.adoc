@@ -52,3 +52,25 @@ include::{snippets}/post-test-rest-docs/request-fields.adoc[]
 include::{snippets}/post-test-rest-docs/http-response.adoc[]
 include::{snippets}/post-test-rest-docs/response-fields.adoc[]
 
+== POSITION CONTROLLER
+
+=== 직무 생성 / POST
+직무 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-position/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/create-position/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-position/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-position/http-response.adoc[]
+include::{snippets}/create-position/response-fields.adoc[]
+
