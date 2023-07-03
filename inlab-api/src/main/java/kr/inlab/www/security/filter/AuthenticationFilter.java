@@ -13,7 +13,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import kr.inlab.www.common.exception.AccountBlockedException;
+import kr.inlab.www.common.exception.AccountDeletedException;
 import kr.inlab.www.common.util.CreateHeaders;
 import kr.inlab.www.dto.request.RequestLoginDto;
 import kr.inlab.www.entity.User;
@@ -92,8 +92,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     private void checkPasswordChangeRequiredAndThenSetHeader(String email, HttpServletResponse response) {
-        if(isPasswordChangeRequired(userService.findUserByEmail(email).getPasswordModifiedAt())){
-            response.addHeader(CreateHeaders.PASSWORD_CHANGE_REQUIRED,CreateHeaders.TRUE);
+        if (isPasswordChangeRequired(userService.findUserByEmail(email).getPasswordModifiedAt())) {
+            response.addHeader(CreateHeaders.PASSWORD_CHANGE_REQUIRED, CreateHeaders.TRUE);
         }
     }
 
@@ -111,8 +111,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         if (failed instanceof UsernameNotFoundException) {
             // 올바르지 않은 이메일을 입력했을 경우
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
-        } else if (failed instanceof AccountBlockedException) {
-            // 사용자의 userStatus 가 Block 인경우
+        } else if (failed instanceof AccountDeletedException) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
         } else if (failed instanceof BadCredentialsException) {
             // 비밀번호가 틀렸을 경우

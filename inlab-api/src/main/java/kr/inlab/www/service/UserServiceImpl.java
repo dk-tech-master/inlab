@@ -2,12 +2,14 @@ package kr.inlab.www.service;
 
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
-import kr.inlab.www.common.exception.AccountBlockedException;
+import kr.inlab.www.common.exception.AccountDeletedException;
+import kr.inlab.www.common.exception.AdminCouldNotDeleteException;
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailMismatchException;
 import kr.inlab.www.common.exception.EmailNotFoundException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.common.exception.NicknameDuplicateException;
+import kr.inlab.www.common.exception.UnAuthorizedException;
 import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.common.type.UserStatus;
@@ -44,10 +46,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(RequestCreateUserDto dto) throws EmailDuplicateException {
-        if (isEmailDuplicate(dto.getEmail())){
+        if (isEmailDuplicate(dto.getEmail())) {
             throw new EmailDuplicateException();
         }
-        if (isNicknameDuplicate(dto.getNickname())){
+        if (isNicknameDuplicate(dto.getNickname())) {
             throw new NicknameDuplicateException();
         }
         User user = User.builder()
@@ -68,10 +70,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void createUser(HttpServletRequest request, RequestCreateUserDto dto)
         throws EmailNotVerifiedException, EmailDuplicateException {
-        if (isEmailDuplicate(dto.getEmail())){
+        if (isEmailDuplicate(dto.getEmail())) {
             throw new EmailDuplicateException();
         }
-        if (isNicknameDuplicate(dto.getNickname())){
+        if (isNicknameDuplicate(dto.getNickname())) {
             throw new NicknameDuplicateException();
         }
         compareEmailFromTokenAndForm(request, dto);
@@ -94,7 +96,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(HttpServletRequest request, RequestUpdateUserDto dto) throws EmailNotVerifiedException {
         compareEmailFromTokenAndForm(request, dto);
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(EmailNotFoundException::new);
-        if (isNicknameDuplicateForUpdate(dto.getNickname(),dto.getEmail())){
+        if (isNicknameDuplicateForUpdate(dto.getNickname(), dto.getEmail())) {
             throw new NicknameDuplicateException();
         }
         user.updatePassword(encoder.encode(dto.getPassword()));
@@ -131,11 +133,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username).orElseThrow(() -> {
-            throw new UsernameNotFoundException("loadUserByUsername exception!!!");
+            throw new UserNotFoundException();
         });
 
-        if (Objects.equals(user.getUserStatus(), UserStatus.BLOCK)) {
-            throw new AccountBlockedException();
+        if (Objects.equals(user.getUserStatus(), UserStatus.DELETE)) {
+            throw new AccountDeletedException();
         }
         user.getRoles().size(); // roles 컬렉션을 초기화하기 위해 Hibernate 세션을 강제로 호출합니다.
         return new CustomUserDetails(user);
@@ -145,7 +147,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void resetLoginAttempt(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> {
-            throw new UsernameNotFoundException("resetLoginAttempt exception!!!");
+            throw new UserNotFoundException();
         });
         user.resetLoginAttempt();
     }
@@ -154,7 +156,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> {
-            throw new UsernameNotFoundException("findUserByEmail exception!!!");
+            throw new UserNotFoundException();
         });
     }
 
@@ -162,7 +164,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUserStatusBlock(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> {
-            throw new UsernameNotFoundException("resetLoginAttempt exception!!!");
+            throw new UserNotFoundException();
         });
         user.updateUserStatusBlock();
     }
@@ -171,7 +173,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void increaseLoginAttempt(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> {
-            throw new UsernameNotFoundException("resetLoginAttempt exception!!!");
+            throw new UserNotFoundException();
         });
         user.incrementLoginAttempt();
     }
@@ -205,5 +207,31 @@ public class UserServiceImpl implements UserService {
             .roleType(RoleType.ROLE_USER)
             .build();
         roleRepository.save(role);
+    }
+
+//    @Override
+//    public List<ResponseGetUsersDto> getUsers() {
+//        return userRepository.findAll().stream().map(User::toResponseGetUsersDto).collect(Collectors.toList());
+//    }
+
+    @Override
+    @Transactional
+    public void updateUserStatusDelete(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        if (user.getRoles().stream().map(Role::getRoleType)
+            .anyMatch(roleType -> roleType.equals(RoleType.ROLE_ADMIN))) {
+            throw new AdminCouldNotDeleteException();
+        }
+        user.updateUserStatusDelete();
+    }
+
+    @Override
+    @Transactional
+    public void updateUserStatusDelete(String username, Long userId) {
+        User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
+        if (!user.getUserId().equals(userId)) {
+            throw new UnAuthorizedException();
+        }
+        user.updateUserStatusDelete();
     }
 }
