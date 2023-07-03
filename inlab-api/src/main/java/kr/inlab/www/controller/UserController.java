@@ -1,13 +1,11 @@
 package kr.inlab.www.controller;
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.common.util.CreateHeaders;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.dto.request.RequestUpdateUserDto;
-import kr.inlab.www.dto.response.ResponseGetUsersDto;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
 import kr.inlab.www.service.UserService;
@@ -27,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
@@ -43,8 +41,7 @@ public class UserController {
     }
 
     /**
-     * 원래 회원가입은 이메일 인증을 하고 jwt 토큰 까서 내가 가입시키려는 이메일이 유효한 이메일인지 확인하는데
-     * 개발할 때 간단하게 회원을 추가하기 위한 메서드 입니다.(추후 삭제 예정)
+     * 원래 회원가입은 이메일 인증을 하고 jwt 토큰 까서 내가 가입시키려는 이메일이 유효한 이메일인지 확인하는데 개발할 때 간단하게 회원을 추가하기 위한 메서드 입니다.(추후 삭제 예정)
      */
     @PostMapping("/users/easy")
     public ResponseEntity createEasyUser(@RequestBody RequestCreateUserDto dto) throws EmailDuplicateException {
