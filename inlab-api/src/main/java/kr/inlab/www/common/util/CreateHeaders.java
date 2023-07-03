@@ -10,6 +10,7 @@ public class CreateHeaders {
 
     public static final String CLEAR_TOKEN = "Clear-Token";
     public static final String PASSWORD_CHANGE_REQUIRED = "Password-Change-Required";
+    public static final String X_UNAUTHORIZED_USER = "X-Unauthorized-User";
     public static final String TRUE = "true";
 
     public static HttpHeaders createClearTokenHeaders(String... tokenKeys) {

@@ -2,8 +2,10 @@ package kr.inlab.www.config;
 
 import kr.inlab.www.security.filter.AuthenticationFilter;
 import kr.inlab.www.security.filter.AuthorizationHeaderFilter;
+import kr.inlab.www.security.handler.CustomAccessDeniedHandler;
 import kr.inlab.www.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,13 +29,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/", "/login", "/docs/index.html").permitAll(); // 로그인과 메인화면과 회원가입 페이지는 누구나 접근 가능하게 설정
-        http.authorizeRequests().antMatchers("/api/users/test").hasRole("GUEST");
-        http.authorizeRequests().antMatchers("/api/users/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/users/health_check").hasRole("USER");
+        http.authorizeRequests().antMatchers("/api/users/*/role").hasRole("ADMIN");
+        http.authorizeRequests().antMatchers("/api/users").permitAll();
         http.authorizeRequests().antMatchers("/api/verification_code").permitAll();
         http.authorizeRequests().antMatchers("/api/verification_code/*").permitAll();
         http.addFilterBefore(getAuthorizationHeaderFilter(), AuthenticationFilter.class);
-        // todo [Login]1-4. 사용자 요청에 대해 AuthenticationFilter 를 거치도록 수정
         http.addFilter(getAuthenticationFilter());
+        http.exceptionHandling()
+            .accessDeniedHandler(customAccessDeniedHandler());
     }
 
     // todo [Login]1-3. 사용자 인증 필터를 생성하고 AuthenticationManager 가 set 되게 하고 반환
@@ -46,6 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private AuthorizationHeaderFilter getAuthorizationHeaderFilter() throws Exception {
         return new AuthorizationHeaderFilter();
+    }
+
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandler(){
+        return new CustomAccessDeniedHandler();
     }
 
     // 인증에 관한 설정을 하는 메서드다.
