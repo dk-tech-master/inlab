@@ -1,10 +1,9 @@
 package kr.inlab.www.service;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.AccountBlockedException;
+import kr.inlab.www.common.exception.AdminCouldNotDeleteException;
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailMismatchException;
 import kr.inlab.www.common.exception.EmailNotFoundException;
@@ -16,7 +15,6 @@ import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.common.type.UserStatus;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.dto.request.RequestUpdateUserDto;
-import kr.inlab.www.dto.response.ResponseGetUsersDto;
 import kr.inlab.www.entity.Role;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.repository.RoleRepository;
@@ -220,6 +218,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUserStatusDelete(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        if (user.getRoles().stream().map(Role::getRoleType)
+            .anyMatch(roleType -> roleType.equals(RoleType.ROLE_ADMIN))) {
+            throw new AdminCouldNotDeleteException();
+        }
         user.updateUserStatusDelete();
     }
 
