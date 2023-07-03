@@ -1,14 +1,9 @@
 package kr.inlab.www.dto.request;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
-public class RequestQuestionDto {
+public class RequestCreateQuestionDto {
 
 	// private Long positonId;
 	// private Long questionTypeId;

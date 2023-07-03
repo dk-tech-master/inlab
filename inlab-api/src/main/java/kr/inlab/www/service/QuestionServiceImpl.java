@@ -1,16 +1,10 @@
 package kr.inlab.www.service;
 
-import java.time.LocalDateTime;
-
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import kr.inlab.www.common.type.YesNo;
-import kr.inlab.www.dto.request.RequestQuestionDto;
-import kr.inlab.www.entity.Position;
+import kr.inlab.www.dto.request.RequestCreateQuestionDto;
 import kr.inlab.www.entity.Question;
-import kr.inlab.www.entity.QuestionType;
 import kr.inlab.www.entity.QuestionVersion;
 import kr.inlab.www.repository.QuestionRepository;
 import kr.inlab.www.repository.QuestionVersionRepository;
@@ -27,10 +21,10 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Transactional
 	@Override
-	public void createQuestion(RequestQuestionDto requestDto) {
+	public void createQuestion(RequestCreateQuestionDto requestDto) {
 		// positionId, questionTypeId 받아오기
 		// Position position = positionRepository.findById(requestDto.getPositionId())
-		// 	.orElseThrow(() -> new RuntimeException("Position not found")); // customize this exception as needed
+		// 	.orElseThrow(() -> new RuntimeException("Position not found"));
 		// QuestionType questionType = questionTypeRepository.findById(requestDto.getQuestionTypeId())
 		// 	.orElseThrow(() -> new RuntimeException("Question type not found"));
 
@@ -42,8 +36,6 @@ public class QuestionServiceImpl implements QuestionService {
 
 		// question_version 저장
 		questionVersionRepository.save(QuestionVersion.builder()
-			.createdAt(LocalDateTime.now())
-			.isLatest(YesNo.Y)
 			.title(requestDto.getTitle())
 			.version(requestDto.getVersion())
 			.question(question)

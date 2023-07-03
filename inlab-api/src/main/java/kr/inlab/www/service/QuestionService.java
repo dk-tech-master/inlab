@@ -1,7 +1,7 @@
 package kr.inlab.www.service;
 
-import kr.inlab.www.dto.request.RequestQuestionDto;
+import kr.inlab.www.dto.request.RequestCreateQuestionDto;
 
 public interface QuestionService {
-	void createQuestion(RequestQuestionDto requestDto);
+	void createQuestion(RequestCreateQuestionDto requestDto);
 }

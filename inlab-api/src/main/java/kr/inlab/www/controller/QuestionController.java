@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.inlab.www.dto.request.RequestQuestionDto;
+import kr.inlab.www.dto.request.RequestCreateQuestionDto;
 import kr.inlab.www.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ public class QuestionController {
 	private final QuestionService questionService;
 
 	@PostMapping
-	public ResponseEntity createQuestion(@RequestBody RequestQuestionDto requestDto) {
+	public ResponseEntity createQuestion(@RequestBody RequestCreateQuestionDto requestDto) {
 		questionService.createQuestion(requestDto);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}

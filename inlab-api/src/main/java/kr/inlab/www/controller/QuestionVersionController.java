@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/question-versions")
+@RequestMapping("/api/question_versions")
 public class QuestionVersionController {
 
 }

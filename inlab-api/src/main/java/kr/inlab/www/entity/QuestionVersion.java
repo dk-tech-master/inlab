@@ -42,11 +42,9 @@ public class QuestionVersion {
     private Question question;
 
     @Builder
-    public QuestionVersion(String title, Integer version, YesNo isLatest, LocalDateTime createdAt, Question question) {
+    public QuestionVersion(String title, Integer version, Question question) {
         this.title = title;
         this.version = version;
-        this.isLatest = isLatest;
-        this.createdAt = createdAt;
         this.question = question;
     }
 }
