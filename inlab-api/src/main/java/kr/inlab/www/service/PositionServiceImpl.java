@@ -1,7 +1,9 @@
 package kr.inlab.www.service;
 
+import kr.inlab.www.common.exception.PositionNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.request.RequestPositionDto;
+import kr.inlab.www.dto.request.RequestPositionNameDto;
 import kr.inlab.www.dto.response.ResponsePositionDto;
 import kr.inlab.www.dto.response.ResponsePositionListDto;
 import kr.inlab.www.entity.Position;
@@ -22,13 +24,11 @@ public class PositionServiceImpl implements PositionService{
 
     @Override
     @Transactional
-    public boolean createPosition(String name) {
+    public void createPosition(RequestPositionNameDto requestDto) {
         Position position = Position.builder()
-                .positionName(name)
+                .positionName(requestDto.getPositionName())
                 .build();
         positionRepository.save(position);
-
-        return true;
     }
 
     @Override
@@ -41,5 +41,23 @@ public class PositionServiceImpl implements PositionService{
                 .positionList(positionList.toList())
                 .build();
         return responsePositionListDto;
+    }
+
+    @Override
+    @Transactional
+    public void deletePosition(Integer positionId) {
+        Position position = positionRepository.findById(positionId)
+                .orElseThrow(PositionNotFoundException::new);
+
+        positionRepository.delete(position);
+    }
+
+    @Override
+    @Transactional
+    public void updatePosition(Integer positionId , RequestPositionNameDto requestDto) {
+        Position position = positionRepository.findById(positionId)
+                .orElseThrow(PositionNotFoundException::new);
+
+
     }
 }
