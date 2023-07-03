@@ -37,8 +37,14 @@ public class QuestionVersion {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Question question;
+
     @Builder
-    public QuestionVersion(String title) {
+    public QuestionVersion(String title, Integer version, Question question) {
         this.title = title;
+        this.version = version;
+        this.question = question;
     }
 }
