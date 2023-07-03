@@ -1,5 +1,6 @@
 package kr.inlab.www.service;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.AccountDeletedException;
@@ -8,6 +9,7 @@ import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailMismatchException;
 import kr.inlab.www.common.exception.EmailNotFoundException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
+import kr.inlab.www.common.exception.LoginBlockedException;
 import kr.inlab.www.common.exception.NicknameDuplicateException;
 import kr.inlab.www.common.exception.UnAuthorizedException;
 import kr.inlab.www.common.exception.UserNotFoundException;
@@ -139,6 +141,10 @@ public class UserServiceImpl implements UserService {
         if (Objects.equals(user.getUserStatus(), UserStatus.DELETE)) {
             throw new AccountDeletedException();
         }
+
+        if (user.getLoginBlockUntil().isAfter(LocalDateTime.now())){
+            throw new LoginBlockedException();
+        }
         user.getRoles().size(); // roles 컬렉션을 초기화하기 위해 Hibernate 세션을 강제로 호출합니다.
         return new CustomUserDetails(user);
     }
@@ -158,15 +164,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> {
             throw new UserNotFoundException();
         });
-    }
-
-    @Override
-    @Transactional
-    public void updateUserStatusBlock(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> {
-            throw new UserNotFoundException();
-        });
-        user.updateUserStatusBlock();
     }
 
     @Override
@@ -233,5 +230,13 @@ public class UserServiceImpl implements UserService {
             throw new UnAuthorizedException();
         }
         user.updateUserStatusDelete();
+    }
+
+    @Override
+    @Transactional
+    public void updateUserBlockUntil(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        user.updateLoginBlockUntil();
+        user.resetLoginAttempt();
     }
 }
