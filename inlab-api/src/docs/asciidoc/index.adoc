@@ -74,3 +74,24 @@ include::{snippets}/create-position/request-fields.adoc[]
 include::{snippets}/create-position/http-response.adoc[]
 include::{snippets}/create-position/response-fields.adoc[]
 
+=== 직무 조회 / GET
+직무 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-position/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/get-position/request-headers.adoc[]
+
+==== Parameters
+
+include::{snippets}/get-position/request-parameters.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-position/http-response.adoc[]
+include::{snippets}/get-position/response-fields.adoc[]
+
+
