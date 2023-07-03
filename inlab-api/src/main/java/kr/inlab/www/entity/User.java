@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import kr.inlab.www.common.type.UserStatus;
+import kr.inlab.www.dto.response.ResponseGetUsersDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -91,5 +92,13 @@ public class User {
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+//    public ResponseGetUsersDto toResponseGetUsersDto() {
+//        return new ResponseGetUsersDto();
+//    }
+
+    public void updateUserStatusDelete() {
+        this.userStatus = UserStatus.DELETE;
     }
 }
