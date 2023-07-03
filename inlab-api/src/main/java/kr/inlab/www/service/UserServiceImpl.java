@@ -2,7 +2,7 @@ package kr.inlab.www.service;
 
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
-import kr.inlab.www.common.exception.AccountBlockedException;
+import kr.inlab.www.common.exception.AccountDeletedException;
 import kr.inlab.www.common.exception.AdminCouldNotDeleteException;
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailMismatchException;
@@ -133,11 +133,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username).orElseThrow(() -> {
-            throw new UsernameNotFoundException("loadUserByUsername exception!!!");
+            throw new UserNotFoundException();
         });
 
-        if (Objects.equals(user.getUserStatus(), UserStatus.BLOCK)) {
-            throw new AccountBlockedException();
+        if (Objects.equals(user.getUserStatus(), UserStatus.DELETE)) {
+            throw new AccountDeletedException();
         }
         user.getRoles().size(); // roles 컬렉션을 초기화하기 위해 Hibernate 세션을 강제로 호출합니다.
         return new CustomUserDetails(user);
@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void resetLoginAttempt(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> {
-            throw new UsernameNotFoundException("resetLoginAttempt exception!!!");
+            throw new UserNotFoundException();
         });
         user.resetLoginAttempt();
     }
@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> {
-            throw new UsernameNotFoundException("findUserByEmail exception!!!");
+            throw new UserNotFoundException();
         });
     }
 
@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void increaseLoginAttempt(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> {
-            throw new UsernameNotFoundException("resetLoginAttempt exception!!!");
+            throw new UserNotFoundException();
         });
         user.incrementLoginAttempt();
     }
