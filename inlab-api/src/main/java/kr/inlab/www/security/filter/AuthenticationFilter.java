@@ -13,7 +13,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import kr.inlab.www.common.exception.AccountBlockedException;
 import kr.inlab.www.common.exception.AccountDeletedException;
 import kr.inlab.www.common.util.CreateHeaders;
 import kr.inlab.www.dto.request.RequestLoginDto;
@@ -112,12 +111,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         if (failed instanceof UsernameNotFoundException) {
             // 올바르지 않은 이메일을 입력했을 경우
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
-        } else if (failed instanceof AccountBlockedException) {
-            // 사용자의 userStatus 가 Block 인경우
+        } else if (failed instanceof AccountDeletedException) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
-        } else if (failed instanceof AccountDeletedException){
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
-        }else if (failed instanceof BadCredentialsException) {
+        } else if (failed instanceof BadCredentialsException) {
             // 비밀번호가 틀렸을 경우
             User user = userService.findUserByEmail((String) request.getAttribute("username"));
             int maxAttempts = Integer.parseInt(Objects.requireNonNull(environment.getProperty("myapp.max-attempt")));
