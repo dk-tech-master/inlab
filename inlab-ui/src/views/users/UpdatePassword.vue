@@ -9,7 +9,7 @@
         <h1
           class="mb-12 text-center text-3xl font-bold tracking-tight text-gray-800"
         >
-          회원가입
+          비밀번호 변경
         </h1>
         <form class="space-y-4 md:space-y-6" action="#">
           <div>
@@ -65,7 +65,7 @@
           <div>
             <label
               for="password"
-              class="block mb-2 text-sm font-medium text-gray-900"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >비밀번호 확인</label
             >
             <input
@@ -78,30 +78,10 @@
             />
           </div>
 
-          <div>
-            <label
-              for="nickname"
-              class="block mb-2 text-sm font-medium text-gray-900"
-              >닉네임</label
-            >
-            <input
-              type="confirm-password"
-              name="confirm-password"
-              id="confirm-password"
-              placeholder="••••••••"
-              class="input input-bordered w-full mr-2 border-gray-300 text-sm"
-              required=""
-            />
-          </div>
-
           <div class="pt-5">
-            <button type="submit" class="mt-15 btn basicBtn">회원가입</button>
-            <p class="mt-3 text-center text-sm font-light text-gray-500">
-              계정이 벌써 있으신가요?
-              <a href="#" class="font-medium text-indigo-500 hover:underline"
-                >로그인 바로가기</a
-              >
-            </p>
+            <button type="submit" class="mt-15 btn basicBtn">
+              비밀번호 변경
+            </button>
           </div>
         </form>
       </div>
