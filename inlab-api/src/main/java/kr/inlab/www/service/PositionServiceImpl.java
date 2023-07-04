@@ -58,6 +58,6 @@ public class PositionServiceImpl implements PositionService{
         Position position = positionRepository.findById(positionId)
                 .orElseThrow(PositionNotFoundException::new);
 
-
+        position.updateName(requestDto.getPositionName());
     }
 }

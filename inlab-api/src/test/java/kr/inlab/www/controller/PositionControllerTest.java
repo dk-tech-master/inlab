@@ -126,7 +126,7 @@ class PositionControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(
-                                "update-position",
+                                "put-position",
                                 requestHeaders(headerWithName("Authorization").description("JWT Token")),
                                 pathParameters(parameterWithName("positionId").description("직무의 ID path variable")),
                                 requestFields(
