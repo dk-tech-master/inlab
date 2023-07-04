@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import kr.inlab.www.common.type.UserStatus;
-import kr.inlab.www.dto.response.ResponseGetUsersDto;
+import kr.inlab.www.dto.response.ResponseUserDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -93,15 +93,21 @@ public class User {
         this.nickname = nickname;
     }
 
-//    public ResponseGetUsersDto toResponseGetUsersDto() {
-//        return new ResponseGetUsersDto();
-//    }
-
     public void updateUserStatusDelete() {
         this.userStatus = UserStatus.DELETE;
     }
 
     public void updateLoginBlockUntil(){
         this.loginBlockUntil = LocalDateTime.now().plusMinutes(30);
+    }
+
+    public ResponseUserDto toResponseUserDto() {
+        return ResponseUserDto.builder()
+            .userId(this.userId)
+            .createAt(this.createdAt)
+            .nickname(this.nickname)
+            .email(this.email)
+            .isVerified(this.userStatus.equals(UserStatus.ACTIVE))
+            .build();
     }
 }

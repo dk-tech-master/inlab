@@ -3,8 +3,10 @@ package kr.inlab.www.service;
 import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
+import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.dto.request.RequestUpdateUserDto;
+import kr.inlab.www.dto.request.RequestUsersDto;
 import kr.inlab.www.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -34,7 +36,7 @@ public interface UserService extends UserDetailsService {
 
     void updateUserRoleGuestToUser(Long userId);
 
-//    List<ResponseGetUsersDto> getUsers();
+    ResponseListDto getUsers(RequestUsersDto requestDto);
 
     void updateUserStatusDelete(Long userId);
 
