@@ -31,8 +31,13 @@ public class Checklist {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_version_id")
+    private QuestionVersion questionVersion;
+
     @Builder
-    public Checklist(String content) {
+    public Checklist(String content, QuestionVersion questionVersion) {
         this.content = content;
+        this.questionVersion = questionVersion;
     }
 }
