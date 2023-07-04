@@ -2,5 +2,5 @@ package kr.inlab.www.common.type;
 
 public enum UserStatus {
 
-    ACTIVE, BLOCK, DELETE;
+    ACTIVE, DELETE;
 }
