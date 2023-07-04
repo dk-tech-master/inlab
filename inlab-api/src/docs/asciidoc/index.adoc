@@ -135,4 +135,29 @@ include::{snippets}/put-position/request-fields.adoc[]
 
 include::{snippets}/put-position/http-response.adoc[]
 
+== VerificationCode CONTROLLER
+
+=== 인증번호 생성(회원가입 시) / POST
+인증번호 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-verification-code/http-request.adoc[]
+
+
+==== 응답 Body
+
+include::{snippets}/create-verification-code/http-response.adoc[]
+
+=== 인증번호 생성(회원 정보 수정 시) / PUT
+개인정보 변경을 위한 인증번호 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-verification-code-for-update/http-request.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-verification-code-for-update/http-response.adoc[]
+
 
