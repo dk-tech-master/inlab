@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
+@DynamicInsert
 public class QuestionVersion {
 
     @Id
@@ -29,7 +32,6 @@ public class QuestionVersion {
     @Column(columnDefinition = "tinyint default 1")
     private Integer version;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(1) default 'Y'")
     private YesNo isLatest;
@@ -41,10 +43,15 @@ public class QuestionVersion {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_level_id")
+    private QuestionLevel questionLevel;
+
     @Builder
-    public QuestionVersion(String title, Integer version, Question question) {
+    public QuestionVersion(String title, Integer version, Question question, QuestionLevel questionLevel) {
         this.title = title;
         this.version = version;
         this.question = question;
+        this.questionLevel = questionLevel;
     }
 }

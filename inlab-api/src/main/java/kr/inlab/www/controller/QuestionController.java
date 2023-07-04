@@ -2,6 +2,7 @@ package kr.inlab.www.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,26 @@ public class QuestionController {
 
 	private final QuestionService questionService;
 
+	// 질문 등록 (#15)
+	// 데이터 : title, question_type, position, question_level, version, checklist[]
 	@PostMapping
 	public ResponseEntity createQuestion(@RequestBody RequestCreateQuestionDto requestDto) {
 		questionService.createQuestion(requestDto);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+
+	// 질문 전체 조회 (#12)
+	// 데이터 : title, position, question_type, question_level, version(isLatest = Y 값만),
+
+	// 질문 검색 조회 (#12)
+	// 데이터 : title, position, question_type, question_level, version(isLatest = Y 값만),
+
+	// 해당 질문에 대한 질문 버전 전체 조회 (#13)
+	// 데이터 : title, position, question_type, question_level, version(전부),
+
+	// 질문 상세 조회 (#14)
+	// 데이터 : title, position, question_type, question_level, version(전부),
+
+	// 질문 수정 (#16) - 버전 카운팅도 있어야됨
+
 }
