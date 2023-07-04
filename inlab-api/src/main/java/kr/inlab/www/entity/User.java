@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import kr.inlab.www.common.type.UserStatus;
+import kr.inlab.www.dto.response.ResponseGetUsersDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,6 +58,9 @@ public class User {
     private UserStatus userStatus;
 
     @CreatedDate
+    private LocalDateTime loginBlockUntil;
+
+    @CreatedDate
     private LocalDateTime createdAt;
 
     @LastModifiedDate
@@ -80,10 +84,6 @@ public class User {
         this.loginAttempt = 0;
     }
 
-    public void updateUserStatusBlock() {
-        this.userStatus = UserStatus.BLOCK;
-    }
-
     public void updatePassword(String encodedPassword) {
         this.password = encodedPassword;
         this.passwordModifiedAt = LocalDateTime.now();
@@ -91,5 +91,17 @@ public class User {
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+//    public ResponseGetUsersDto toResponseGetUsersDto() {
+//        return new ResponseGetUsersDto();
+//    }
+
+    public void updateUserStatusDelete() {
+        this.userStatus = UserStatus.DELETE;
+    }
+
+    public void updateLoginBlockUntil(){
+        this.loginBlockUntil = LocalDateTime.now().plusMinutes(30);
     }
 }

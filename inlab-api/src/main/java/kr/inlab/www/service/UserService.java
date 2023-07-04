@@ -22,8 +22,6 @@ public interface UserService extends UserDetailsService {
 
     User findUserByEmail(String username);
 
-    void updateUserStatusBlock(String email);
-
     void increaseLoginAttempt(String email);
 
     void updateUser(HttpServletRequest request, RequestUpdateUserDto dto) throws EmailNotVerifiedException;
@@ -35,4 +33,12 @@ public interface UserService extends UserDetailsService {
     boolean isNicknameDuplicateForUpdate(String nickname, String email);
 
     void updateUserRoleGuestToUser(Long userId);
+
+//    List<ResponseGetUsersDto> getUsers();
+
+    void updateUserStatusDelete(Long userId);
+
+    void updateUserStatusDelete(String username, Long userId);
+
+    void updateUserBlockUntil(String email);
 }
