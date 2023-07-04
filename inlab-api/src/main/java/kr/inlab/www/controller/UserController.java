@@ -4,8 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.common.util.CreateHeaders;
+import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.dto.request.RequestUpdateUserDto;
+import kr.inlab.www.dto.request.RequestUsersDto;
+import kr.inlab.www.dto.response.ResponseUserDto;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
 import kr.inlab.www.service.UserService;
@@ -60,10 +63,11 @@ public class UserController {
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
-//    @GetMapping("/admin/users")
-//    public ResponseEntity<List<ResponseGetUsersDto>> getUsers(){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.getUsers());
-//    }
+    @GetMapping("/admin/users")
+    public ResponseEntity<ResponseListDto> getUsers(@RequestBody RequestUsersDto requestDto) {
+        ResponseListDto<ResponseUserDto> users = userService.getUsers(requestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
 
     @PutMapping("/users/{userId}")
     public ResponseEntity updateUser(HttpServletRequest request, @RequestBody RequestUpdateUserDto dto)

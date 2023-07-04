@@ -1,7 +1,9 @@
 package kr.inlab.www.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.AccountDeletedException;
 import kr.inlab.www.common.exception.AdminCouldNotDeleteException;
@@ -15,8 +17,12 @@ import kr.inlab.www.common.exception.UnAuthorizedException;
 import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.common.type.UserStatus;
+import kr.inlab.www.common.util.PagingUtil;
+import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.dto.request.RequestUpdateUserDto;
+import kr.inlab.www.dto.request.RequestUsersDto;
+import kr.inlab.www.dto.response.ResponseUserDto;
 import kr.inlab.www.entity.Role;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.repository.RoleRepository;
@@ -25,6 +31,8 @@ import kr.inlab.www.security.CustomUserDetails;
 import kr.inlab.www.security.filter.AuthenticationFilter;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -142,7 +150,7 @@ public class UserServiceImpl implements UserService {
             throw new AccountDeletedException();
         }
 
-        if (user.getLoginBlockUntil().isAfter(LocalDateTime.now())){
+        if (user.getLoginBlockUntil().isAfter(LocalDateTime.now())) {
             throw new LoginBlockedException();
         }
         user.getRoles().size(); // roles 컬렉션을 초기화하기 위해 Hibernate 세션을 강제로 호출합니다.
@@ -206,10 +214,27 @@ public class UserServiceImpl implements UserService {
         roleRepository.save(role);
     }
 
-//    @Override
-//    public List<ResponseGetUsersDto> getUsers() {
-//        return userRepository.findAll().stream().map(User::toResponseGetUsersDto).collect(Collectors.toList());
-//    }
+    @Override
+    @Transactional(readOnly = true)
+    public ResponseListDto<ResponseUserDto> getUsers(RequestUsersDto requestDto) {
+        if (requestDto.getColumn() == null || "".equals(requestDto.getColumn())) {
+            requestDto.setColumn("user_id");
+        }
+
+        PageRequest pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
+            requestDto.getSortDirection(), requestDto.getColumn());
+        // todo findAll 채우기
+        Page<User> userList = userRepository.findUsers(requestDto.getNickname(),
+            requestDto.getIsVerified(), pageable);
+
+        List<ResponseUserDto> collect = userList.getContent().stream().map(User::toResponseUserDto)
+            .collect(Collectors.toList());
+
+        PagingUtil pagingUtil = new PagingUtil(userList.getTotalElements(), userList.getTotalPages(),
+            userList.getNumber(),
+            userList.getSize());
+        return new ResponseListDto<>(collect, pagingUtil);
+    }
 
     @Override
     @Transactional
