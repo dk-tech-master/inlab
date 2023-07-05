@@ -10,7 +10,5 @@ public class PositionNotFoundException extends InlabException{
         super(MESSAGE);
     }
     @Override
-    public int getStatusCode() {
-        return HttpStatus.NOT_FOUND.value();
-    }
+    public int getStatusCode() { return HttpStatus.NOT_FOUND.value();}
 }

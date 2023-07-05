@@ -27,8 +27,15 @@ public class QuestionType {
     @NotNull
     private String questionTypeName;
 
+    @OneToMany(mappedBy = "questionType" , fetch = FetchType.LAZY)
+    private List<Question> questionList;
+
     @Builder
     public QuestionType(String questionTypeName) {
+        this.questionTypeName = questionTypeName;
+    }
+
+    public void updateQuestionTypeName(String questionTypeName){
         this.questionTypeName = questionTypeName;
     }
 }

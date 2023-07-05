@@ -88,9 +88,9 @@ class PositionControllerTest {
                                 fieldWithPath("pagingUtil.endPage").description("끝 페이지"),
                                 fieldWithPath("pagingUtil.existPrePageGroup").description("이전 페이지 그룹 존재 여부"),
                                  fieldWithPath("pagingUtil.existNextPageGroup").description("다음 페이지 그룹 존재 여부"),
-                                fieldWithPath("positionList[].positionId").description("직책의 ID"),
-                                fieldWithPath("positionList[].positionName").description("직책의 이름"),
-                                fieldWithPath("positionList[].questionCount").description("직책에 대한 질문 수")))
+                                fieldWithPath("responseList[].positionId").description("직책의 ID"),
+                                fieldWithPath("responseList[].positionName").description("직책의 이름"),
+                                fieldWithPath("responseList[].questionCount").description("직책에 대한 질문 수")))
                 );
     }
 
@@ -112,9 +112,8 @@ class PositionControllerTest {
     }
 
     @Test
-    @Transactional
     void POSITION_PUT_TEST() throws Exception {
-        RequestPositionNameDto requestDto = RequestPositionNameDto.builder().positionName("프론트 앤").build();
+        RequestPositionNameDto requestDto = RequestPositionNameDto.builder().positionName("백앤드").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(put("/api/position/{positionId}", 1)

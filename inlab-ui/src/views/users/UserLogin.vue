@@ -31,7 +31,7 @@ import VModal from "@/components/teleport/VModal.vue";
                 id="email"
                 class="input input-bordered border-gray-300 w-full text-sm"
                 placeholder="user@dktechin.com"
-                required=""
+                required
               />
             </div>
             <div>
@@ -46,7 +46,7 @@ import VModal from "@/components/teleport/VModal.vue";
                 id="password"
                 placeholder="비밀번호 입력"
                 class="input input-bordered border-gray-300 w-full text-sm"
-                required=""
+                required
               />
             </div>
             <div class="flex justify-end">
