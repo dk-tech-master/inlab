@@ -6,9 +6,6 @@
   >
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50">
       <ul class="space-y-2 font-medium">
-        <div class="w-3/5 pt-5 pb-10 px-2">
-          <img src="../../images/logo-color.svg" alt="logo" />
-        </div>
         <!--        1. 면접관 관리-->
         <li>
           <a
