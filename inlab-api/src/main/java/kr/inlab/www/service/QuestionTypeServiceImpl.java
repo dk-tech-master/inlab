@@ -1,7 +1,8 @@
 package kr.inlab.www.service;
 
-import kr.inlab.www.common.exception.DeleteNotAllowedException;
+import kr.inlab.www.common.exception.PositionDeleteNotAllowedException;
 import kr.inlab.www.common.exception.QuestionTypeAlreadyExistsException;
+import kr.inlab.www.common.exception.QuestionTypeDeleteNotAllowedException;
 import kr.inlab.www.common.exception.QuestionTypeNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.ResponseListDto;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -41,8 +43,7 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
 
     @Override
     public ResponseListDto<ResponseQuestionTypeDto> getQuestionType(RequestQuestionTypeDto requestDto) {
-        requestDto.setColumn("questionTypeId");
-        Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), requestDto.getSortDirection(), requestDto.getColumn());
+        Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), Sort.by(Sort.Direction.DESC, "questionTypeId"));
         Page<ResponseQuestionTypeDto> questionTypeList = questionTypeRepository.getQuestionTypeList(requestDto.getQuestionTypeName(), pageable);
 
         PagingUtil pagingUtil = new PagingUtil(questionTypeList.getTotalElements(), questionTypeList.getTotalPages(), questionTypeList.getNumber(), questionTypeList.getSize());
@@ -67,7 +68,7 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
                 .orElseThrow(QuestionTypeNotFoundException::new);
 
         if(questionRepository.countByQuestionType(questionType) > 0)
-            throw new DeleteNotAllowedException(questionType.getQuestionTypeName());
+            throw new QuestionTypeDeleteNotAllowedException();
 
         questionTypeRepository.delete(questionType);
     }

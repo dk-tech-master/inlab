@@ -1,6 +1,6 @@
 package kr.inlab.www.service;
 
-import kr.inlab.www.common.exception.DeleteNotAllowedException;
+import kr.inlab.www.common.exception.PositionDeleteNotAllowedException;
 import kr.inlab.www.common.exception.PositionAlreadyExistsException;
 import kr.inlab.www.common.exception.PositionNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -40,8 +41,7 @@ public class PositionServiceImpl implements PositionService{
 
     @Override
     public ResponseListDto<ResponsePositionDto> getPosition(RequestPositionDto requestDto) {
-        requestDto.setColumn("positionId");
-        Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), requestDto.getSortDirection(), requestDto.getColumn());
+        Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), Sort.Direction.DESC, "positionId");
         Page<ResponsePositionDto> positionList = positionRepository.getPositionsList(requestDto.getPositionName(), pageable);
 
         PagingUtil pagingUtil = new PagingUtil(positionList.getTotalElements(), positionList.getTotalPages(), positionList.getNumber(), positionList.getSize());
@@ -67,7 +67,7 @@ public class PositionServiceImpl implements PositionService{
                 .orElseThrow(PositionNotFoundException::new);
 
         if(questionRepository.countByPosition(position) > 0)
-            throw new DeleteNotAllowedException(position.getPositionName());
+            throw new PositionDeleteNotAllowedException();
 
         position.updateName(requestDto.getPositionName());
     }
