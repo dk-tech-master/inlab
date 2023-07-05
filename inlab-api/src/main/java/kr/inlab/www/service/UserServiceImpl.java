@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
     private final BCryptPasswordEncoder encoder;
-    // todo [Authorization]1-2. 초기 기동을 할 때 빈을 주입을 받는데 encoder 는 빈으로 등록하지 않았다 따라서 bean 을 등록해야한다.
 
     @Override
     public ResponseGetUserDto findUserById(Long userId) {
@@ -56,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createUser(RequestCreateUserDto dto) throws EmailDuplicateException {
+    public void createUser(RequestCreateUserDto dto) {
         if (isEmailDuplicate(dto.getEmail())) {
             throw new EmailDuplicateException();
         }
@@ -79,8 +78,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createUser(HttpServletRequest request, RequestCreateUserDto dto)
-        throws EmailNotVerifiedException, EmailDuplicateException {
+    public void createUser(HttpServletRequest request, RequestCreateUserDto dto) {
         if (isEmailDuplicate(dto.getEmail())) {
             throw new EmailDuplicateException();
         }
@@ -104,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(HttpServletRequest request, RequestUpdateUserDto dto) throws EmailNotVerifiedException {
+    public void updateUser(HttpServletRequest request, RequestUpdateUserDto dto) {
         compareEmailFromTokenAndForm(request, dto);
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(EmailNotFoundException::new);
         if (isNicknameDuplicateForUpdate(dto.getNickname(), dto.getEmail())) {
@@ -114,15 +112,13 @@ public class UserServiceImpl implements UserService {
         user.updateNickname(dto.getNickname());
     }
 
-    private void compareEmailFromTokenAndForm(HttpServletRequest request, RequestCreateUserDto dto)
-        throws EmailNotVerifiedException {
+    private void compareEmailFromTokenAndForm(HttpServletRequest request, RequestCreateUserDto dto) {
         if (!Objects.equals(dto.getEmail(), getEmailFromToken(request))) {
             throw new EmailMismatchException();
         }
     }
 
-    private void compareEmailFromTokenAndForm(HttpServletRequest request, RequestUpdateUserDto dto)
-        throws EmailNotVerifiedException {
+    private void compareEmailFromTokenAndForm(HttpServletRequest request, RequestUpdateUserDto dto) {
         if (!Objects.equals(dto.getEmail(), getEmailFromToken(request))) {
             throw new EmailMismatchException();
         }
@@ -142,7 +138,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByEmail(username).orElseThrow(() -> {
             throw new UserNotFoundException();
         });
@@ -219,13 +215,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public ResponseListDto<ResponseGetUserDto> getUsers(RequestUsersDto requestDto) {
+        // todo 손보기
         if (requestDto.getColumn() == null || "".equals(requestDto.getColumn())) {
             requestDto.setColumn("user_id");
         }
 
         PageRequest pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
             requestDto.getSortDirection(), requestDto.getColumn());
-        // todo findAll 채우기
+
         Page<User> userList = userRepository.findUsers(requestDto.getNickname(),
             requestDto.getIsVerified(), pageable);
 
@@ -235,7 +232,7 @@ public class UserServiceImpl implements UserService {
         PagingUtil pagingUtil = new PagingUtil(userList.getTotalElements(), userList.getTotalPages(),
             userList.getNumber(),
             userList.getSize());
-        return new ResponseListDto<>(collect, pagingUtil);
+        return new ResponseListDto<ResponseGetUserDto>(collect, pagingUtil);
     }
 
     @Override
@@ -251,8 +248,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserStatusDelete(String username, Long userId) {
-        User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
+    public void updateUserStatusDelete(String email, Long userId) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         if (!user.getUserId().equals(userId)) {
             throw new UnAuthorizedException();
         }
