@@ -16,4 +16,6 @@ public interface QuestionTypeRepository extends JpaRepository<QuestionType, Inte
             "WHERE qt.questionTypeName LIKE CONCAT('%', :name, '%') " +
             "GROUP BY qt.questionTypeId, qt.questionTypeName")
     Page<ResponseQuestionTypeDto> getQuestionTypeList(@Param("name") String name, Pageable pageable);
+
+    boolean existsByQuestionTypeName(String name);
 }

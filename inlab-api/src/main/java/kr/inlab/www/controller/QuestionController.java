@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
-import kr.inlab.www.dto.response.ResponseGetUsersDto;
 import kr.inlab.www.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 

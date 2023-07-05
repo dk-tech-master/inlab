@@ -15,4 +15,6 @@ public interface PositionRepository extends JpaRepository<Position, Integer> {
             "WHERE p.positionName LIKE CONCAT('%', :name, '%') " +
             "GROUP BY p.positionId, p.positionName")
     Page<ResponsePositionDto> getPositionsList(@Param("name") String name, Pageable pageable);
+
+    boolean existsByPositionName(String name);
 }
