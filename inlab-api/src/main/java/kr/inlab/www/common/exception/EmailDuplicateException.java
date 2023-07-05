@@ -1,6 +1,6 @@
 package kr.inlab.www.common.exception;
 
-public class EmailDuplicateException extends Throwable {
+public class EmailDuplicateException extends RuntimeException {
 
     public static final String MESSAGE = "Email 중복 예외";
 
