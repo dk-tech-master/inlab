@@ -9,4 +9,5 @@ public interface QuestionService {
 	void createQuestion(RequestCreateQuestionDto requestDto);
 
 	ResponseGetQuestionDto getQuestion(Long questionId);
+
 }
