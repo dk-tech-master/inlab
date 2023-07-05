@@ -11,6 +11,6 @@ public class RequestCreateQuestionDto {
 	private Integer questionTypeId;
 	private Integer questionLevelId;
 	private String title;
-	private int version;
+	private Integer version;
 	private List<String> checklists;
 }
