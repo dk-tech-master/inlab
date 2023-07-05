@@ -6,7 +6,7 @@ import kr.inlab.www.dto.request.RequestCreateInterviewResultDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewResultDto.ChecklistResultDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewResultDto.CommentDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewResultDto.InterviewAnswerDto;
-import kr.inlab.www.dto.request.RequestCreateInterviewResultDto.InterviewResultDto;
+import kr.inlab.www.dto.request.RequestCreateInterviewResultDto.InterviewQuestionResultDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,50 +47,50 @@ class InterviewResultControllerTest {
     @Transactional
     @Test
     void 면접결과_생성_테스트() throws Exception {
-        List<ChecklistResultDto> checklistResultDtos1 = new ArrayList<>();
-        checklistResultDtos1.add(ChecklistResultDto.builder()
+        List<ChecklistResultDto> checklistResultDtoList1 = new ArrayList<>();
+        checklistResultDtoList1.add(ChecklistResultDto.builder()
                 .checklistId(1L)
                 .isChecked(YesNo.Y)
                 .build());
-        checklistResultDtos1.add(ChecklistResultDto.builder()
+        checklistResultDtoList1.add(ChecklistResultDto.builder()
                 .checklistId(2L)
                 .isChecked(YesNo.Y)
                 .build());
-        checklistResultDtos1.add(ChecklistResultDto.builder()
+        checklistResultDtoList1.add(ChecklistResultDto.builder()
                 .checklistId(3L)
                 .isChecked(YesNo.Y)
                 .build());
 
-        List<ChecklistResultDto> checklistResultDtos2 = new ArrayList<>();
-        checklistResultDtos2.add(ChecklistResultDto.builder()
+        List<ChecklistResultDto> checklistResultDtoList2 = new ArrayList<>();
+        checklistResultDtoList2.add(ChecklistResultDto.builder()
                 .checklistId(4L)
                 .isChecked(YesNo.N)
                 .build());
-        checklistResultDtos2.add(ChecklistResultDto.builder()
+        checklistResultDtoList2.add(ChecklistResultDto.builder()
                 .checklistId(5L)
                 .isChecked(YesNo.N)
                 .build());
-        checklistResultDtos2.add(ChecklistResultDto.builder()
+        checklistResultDtoList2.add(ChecklistResultDto.builder()
                 .checklistId(6L)
                 .isChecked(YesNo.N)
                 .build());
 
-        List<ChecklistResultDto> checklistResultDtos3 = new ArrayList<>();
-        checklistResultDtos3.add(ChecklistResultDto.builder()
+        List<ChecklistResultDto> checklistResultDtoList3 = new ArrayList<>();
+        checklistResultDtoList3.add(ChecklistResultDto.builder()
                 .checklistId(7L)
                 .isChecked(YesNo.Y)
                 .build());
-        checklistResultDtos3.add(ChecklistResultDto.builder()
+        checklistResultDtoList3.add(ChecklistResultDto.builder()
                 .checklistId(8L)
                 .isChecked(YesNo.Y)
                 .build());
-        checklistResultDtos3.add(ChecklistResultDto.builder()
+        checklistResultDtoList3.add(ChecklistResultDto.builder()
                 .checklistId(9L)
                 .isChecked(YesNo.N)
                 .build());
 
-        List<InterviewResultDto> interviewResultDtos = new ArrayList<>();
-        interviewResultDtos.add(InterviewResultDto.builder()
+        List<InterviewQuestionResultDto> interviewQuestionResultDtoList = new ArrayList<>();
+        interviewQuestionResultDtoList.add(InterviewQuestionResultDto.builder()
                 .interviewQuestionId(1L)
                 .commentDto(CommentDto.builder()
                         .content("좋은 답변입니다.")
@@ -98,10 +98,10 @@ class InterviewResultControllerTest {
                 .interviewAnswerDto(InterviewAnswerDto.builder()
                         .content("OOP에 대해 설명했습니다.")
                         .build())
-                .checklistResultDtos(checklistResultDtos1)
+                .checklistResultDtoList(checklistResultDtoList1)
                 .build());
 
-        interviewResultDtos.add(InterviewResultDto.builder()
+        interviewQuestionResultDtoList.add(InterviewQuestionResultDto.builder()
                 .interviewQuestionId(2L)
                 .commentDto(CommentDto.builder()
                         .content("답변을 제대로 못했습니다.")
@@ -109,10 +109,10 @@ class InterviewResultControllerTest {
                 .interviewAnswerDto(InterviewAnswerDto.builder()
                         .content("질문1에 대해 모르겠습니다.")
                         .build())
-                .checklistResultDtos(checklistResultDtos2)
+                .checklistResultDtoList(checklistResultDtoList2)
                 .build());
 
-        interviewResultDtos.add(InterviewResultDto.builder()
+        interviewQuestionResultDtoList.add(InterviewQuestionResultDto.builder()
                 .interviewQuestionId(3L)
                 .commentDto(CommentDto.builder()
                         .content("체크리스트 한 개 빼고 답변했습니다.")
@@ -120,13 +120,13 @@ class InterviewResultControllerTest {
                 .interviewAnswerDto(InterviewAnswerDto.builder()
                         .content("질문2에 대해 둘은 알고있고 하나는 모르겠습니다.")
                         .build())
-                .checklistResultDtos(checklistResultDtos3)
+                .checklistResultDtoList(checklistResultDtoList3)
                 .build());
 
         RequestCreateInterviewResultDto requestDto = RequestCreateInterviewResultDto.builder()
                 .intervieweeName("김철진")
                 .interviewId(1L)
-                .interviewResultDtos(interviewResultDtos)
+                .interviewQuestionResultDtoList(interviewQuestionResultDtoList)
                 .build();
 
         String json = objectMapper.writeValueAsString(requestDto);
@@ -146,15 +146,15 @@ class InterviewResultControllerTest {
                         requestFields(
                                 fieldWithPath("intervieweeName").description("면접자 이름"),
                                 fieldWithPath("interviewId").description("면접 결과를 저장하고 싶은 면접 ID"),
-                                fieldWithPath("interviewResultDtos[]").description("면접 결과가 담긴 DTO 리스트"),
-                                fieldWithPath("interviewResultDtos[].interviewQuestionId").description("면접 질문 ID"),
-                                fieldWithPath("interviewResultDtos[].commentDto").description("면접자의 답변에 대한 면접관의 코멘트가 담긴 DTO"),
-                                fieldWithPath("interviewResultDtos[].commentDto.content").description("코멘트 내용"),
-                                fieldWithPath("interviewResultDtos[].interviewAnswerDto").description("면접 질문에 대한 면접자의 답변이 담긴 DTO"),
-                                fieldWithPath("interviewResultDtos[].interviewAnswerDto.content").description("답변 내용"),
-                                fieldWithPath("interviewResultDtos[].checklistResultDtos[]").description("질문에 해당하는 평가 체크리스트가 담긴 DTO"),
-                                fieldWithPath("interviewResultDtos[].checklistResultDtos[].checklistId").description("체크리스트 ID"),
-                                fieldWithPath("interviewResultDtos[].checklistResultDtos[].isChecked").description("체크 여부")
+                                fieldWithPath("interviewQuestionResultDtoList[]").description("면접 결과가 담긴 DTO 리스트"),
+                                fieldWithPath("interviewQuestionResultDtoList[].interviewQuestionId").description("면접 질문 ID"),
+                                fieldWithPath("interviewQuestionResultDtoList[].commentDto").description("면접자의 답변에 대한 면접관의 코멘트가 담긴 DTO"),
+                                fieldWithPath("interviewQuestionResultDtoList[].commentDto.content").description("코멘트 내용"),
+                                fieldWithPath("interviewQuestionResultDtoList[].interviewAnswerDto").description("면접 질문에 대한 면접자의 답변이 담긴 DTO"),
+                                fieldWithPath("interviewQuestionResultDtoList[].interviewAnswerDto.content").description("답변 내용"),
+                                fieldWithPath("interviewQuestionResultDtoList[].checklistResultDtoList[]").description("질문에 해당하는 평가 체크리스트가 담긴 DTO"),
+                                fieldWithPath("interviewQuestionResultDtoList[].checklistResultDtoList[].checklistId").description("체크리스트 ID"),
+                                fieldWithPath("interviewQuestionResultDtoList[].checklistResultDtoList[].isChecked").description("체크 여부")
                         )
                 ));
     }
