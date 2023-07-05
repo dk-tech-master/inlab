@@ -33,19 +33,14 @@ public class GptComment {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interview_question_id")
-    private InterviewQuestion interviewQuestion;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interview_result_id")
-    private InterviewResult interviewResult;
+    @JoinColumn(name = "interview_question_result_id")
+    private InterviewQuestionResult interviewQuestionResult;
 
     @Builder
-    public GptComment(String requestContent, String responseContent, InterviewQuestion interviewQuestion, InterviewResult interviewResult) {
+    public GptComment(String requestContent, String responseContent, InterviewQuestionResult interviewQuestionResult) {
         this.requestContent = requestContent;
         this.responseContent = responseContent;
-        this.interviewQuestion = interviewQuestion;
-        this.interviewResult = interviewResult;
+        this.interviewQuestionResult = interviewQuestionResult;
     }
 }

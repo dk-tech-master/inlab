@@ -38,19 +38,14 @@ public class ChecklistResult {
     @JoinColumn(name = "checklist_id")
     private Checklist checklist;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interview_question_id")
-    private InterviewQuestion interviewQuestion;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interview_result_id")
-    private InterviewResult interviewResult;
+    @JoinColumn(name = "interview_question_result_id")
+    private InterviewQuestionResult interviewQuestionResult;
 
     @Builder
-    public ChecklistResult(YesNo isChecked, Checklist checklist, InterviewQuestion interviewQuestion, InterviewResult interviewResult) {
+    public ChecklistResult(YesNo isChecked, Checklist checklist, InterviewQuestionResult interviewQuestionResult) {
         this.isChecked = isChecked;
         this.checklist = checklist;
-        this.interviewQuestion = interviewQuestion;
-        this.interviewResult = interviewResult;
+        this.interviewQuestionResult = interviewQuestionResult;
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,14 +20,18 @@ public class InterviewResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long interviewResultId;
 
-    @NotNull
     private String intervieweeName;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "interview_id")
+    private Interview interview;
+
     @Builder
-    public InterviewResult(String intervieweeName) {
+    public InterviewResult(String intervieweeName, Interview interview) {
         this.intervieweeName = intervieweeName;
+        this.interview = interview;
     }
 }
