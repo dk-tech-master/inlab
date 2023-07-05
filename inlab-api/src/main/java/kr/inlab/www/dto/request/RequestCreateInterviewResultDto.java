@@ -1,7 +1,6 @@
 package kr.inlab.www.dto.request;
 
 import kr.inlab.www.common.type.YesNo;
-import kr.inlab.www.entity.InterviewResult;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,11 +16,11 @@ public class RequestCreateInterviewResultDto {
 
     private Long interviewId;
 
-    private List<InterviewResultDto> interviewResultDtos;
+    private List<InterviewQuestionResultDto> interviewQuestionResultDtoList;
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class InterviewResultDto {
+    public static class InterviewQuestionResultDto {
 
         private Long interviewQuestionId;
 
@@ -29,14 +28,14 @@ public class RequestCreateInterviewResultDto {
 
         private InterviewAnswerDto interviewAnswerDto;
 
-        private List<ChecklistResultDto> checklistResultDtos;
+        private List<ChecklistResultDto> checklistResultDtoList;
 
         @Builder
-        public InterviewResultDto(Long interviewQuestionId, CommentDto commentDto, InterviewAnswerDto interviewAnswerDto, List<ChecklistResultDto> checklistResultDtos) {
+        public InterviewQuestionResultDto(Long interviewQuestionId, CommentDto commentDto, InterviewAnswerDto interviewAnswerDto, List<ChecklistResultDto> checklistResultDtoList) {
             this.interviewQuestionId = interviewQuestionId;
             this.commentDto = commentDto;
             this.interviewAnswerDto = interviewAnswerDto;
-            this.checklistResultDtos = checklistResultDtos;
+            this.checklistResultDtoList = checklistResultDtoList;
         }
     }
 
@@ -80,15 +79,9 @@ public class RequestCreateInterviewResultDto {
     }
 
     @Builder
-    public RequestCreateInterviewResultDto(String intervieweeName, Long interviewId, List<InterviewResultDto> interviewResultDtos) {
+    public RequestCreateInterviewResultDto(String intervieweeName, Long interviewId, List<InterviewQuestionResultDto> interviewQuestionResultDtoList) {
         this.intervieweeName = intervieweeName;
         this.interviewId = interviewId;
-        this.interviewResultDtos = interviewResultDtos;
-    }
-
-    public InterviewResult toInterviewResultEntity() {
-        return InterviewResult.builder()
-                .intervieweeName(this.intervieweeName)
-                .build();
+        this.interviewQuestionResultDtoList = interviewQuestionResultDtoList;
     }
 }
