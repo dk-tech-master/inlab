@@ -8,7 +8,7 @@ import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.dto.request.RequestUpdateUserDto;
 import kr.inlab.www.dto.request.RequestUsersDto;
-import kr.inlab.www.dto.response.ResponseUserDto;
+import kr.inlab.www.dto.response.ResponseGetUserDto;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
 import kr.inlab.www.service.UserService;
@@ -65,7 +65,7 @@ public class UserController {
 
     @GetMapping("/admin/users")
     public ResponseEntity<ResponseListDto> getUsers(@RequestBody RequestUsersDto requestDto) {
-        ResponseListDto<ResponseUserDto> users = userService.getUsers(requestDto);
+        ResponseListDto<ResponseGetUserDto> users = userService.getUsers(requestDto);
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 

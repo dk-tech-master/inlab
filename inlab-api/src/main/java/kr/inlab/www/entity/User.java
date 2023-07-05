@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import kr.inlab.www.common.type.UserStatus;
-import kr.inlab.www.dto.response.ResponseUserDto;
+import kr.inlab.www.dto.response.ResponseGetUserDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -101,8 +101,8 @@ public class User {
         this.loginBlockUntil = LocalDateTime.now().plusMinutes(30);
     }
 
-    public ResponseUserDto toResponseUserDto() {
-        return ResponseUserDto.builder()
+    public ResponseGetUserDto toResponseGetUserDto() {
+        return ResponseGetUserDto.builder()
             .userId(this.userId)
             .createAt(this.createdAt)
             .nickname(this.nickname)

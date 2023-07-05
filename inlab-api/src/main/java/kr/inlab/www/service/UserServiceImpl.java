@@ -22,7 +22,7 @@ import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.dto.request.RequestUpdateUserDto;
 import kr.inlab.www.dto.request.RequestUsersDto;
-import kr.inlab.www.dto.response.ResponseUserDto;
+import kr.inlab.www.dto.response.ResponseGetUserDto;
 import kr.inlab.www.entity.Role;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.repository.RoleRepository;
@@ -217,7 +217,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseListDto<ResponseUserDto> getUsers(RequestUsersDto requestDto) {
+    public ResponseListDto<ResponseGetUserDto> getUsers(RequestUsersDto requestDto) {
         if (requestDto.getColumn() == null || "".equals(requestDto.getColumn())) {
             requestDto.setColumn("user_id");
         }
@@ -228,7 +228,7 @@ public class UserServiceImpl implements UserService {
         Page<User> userList = userRepository.findUsers(requestDto.getNickname(),
             requestDto.getIsVerified(), pageable);
 
-        List<ResponseUserDto> collect = userList.getContent().stream().map(User::toResponseUserDto)
+        List<ResponseGetUserDto> collect = userList.getContent().stream().map(User::toResponseGetUserDto)
             .collect(Collectors.toList());
 
         PagingUtil pagingUtil = new PagingUtil(userList.getTotalElements(), userList.getTotalPages(),

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 @Setter
 @NoArgsConstructor
-public class ResponseUserDto {
+public class ResponseGetUserDto {
 
     private Long userId;
 
@@ -24,7 +24,7 @@ public class ResponseUserDto {
     private Boolean isVerified;
 
     @Builder
-    public ResponseUserDto(Long userId, LocalDateTime createAt, String nickname, String email,
+    public ResponseGetUserDto(Long userId, LocalDateTime createAt, String nickname, String email,
         Boolean isVerified) {
         this.userId = userId;
         this.createAt = createAt;
