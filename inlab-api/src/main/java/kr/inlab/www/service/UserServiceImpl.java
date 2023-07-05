@@ -207,6 +207,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new UserNotFoundException();
         });
+        roleRepository.deleteAll(roleRepository.findByUser(user));
         Role role = Role.builder()
             .user(user)
             .roleType(RoleType.ROLE_USER)
