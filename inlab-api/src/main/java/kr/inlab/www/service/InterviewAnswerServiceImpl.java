@@ -1,8 +1,7 @@
 package kr.inlab.www.service;
 
 import kr.inlab.www.entity.InterviewAnswer;
-import kr.inlab.www.entity.InterviewQuestion;
-import kr.inlab.www.entity.InterviewResult;
+import kr.inlab.www.entity.InterviewQuestionResult;
 import kr.inlab.www.repository.InterviewAnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,11 +16,10 @@ public class InterviewAnswerServiceImpl implements InterviewAnswerService {
 
     @Transactional
     @Override
-    public InterviewAnswer createInterviewAnswer(InterviewQuestion interviewQuestion, InterviewResult interviewResult, String content) {
+    public InterviewAnswer createInterviewAnswer(InterviewQuestionResult interviewQuestionResult, String content) {
         InterviewAnswer interviewAnswer = InterviewAnswer.builder()
                 .content(content)
-                .interviewQuestion(interviewQuestion)
-                .interviewResult(interviewResult)
+                .interviewQuestionResult(interviewQuestionResult)
                 .build();
 
         return interviewAnswerRepository.save(interviewAnswer);

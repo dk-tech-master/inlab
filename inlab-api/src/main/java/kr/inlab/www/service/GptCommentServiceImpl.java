@@ -3,11 +3,12 @@ package kr.inlab.www.service;
 import kr.inlab.www.entity.Checklist;
 import kr.inlab.www.entity.GptComment;
 import kr.inlab.www.entity.InterviewQuestion;
-import kr.inlab.www.entity.InterviewResult;
+import kr.inlab.www.entity.InterviewQuestionResult;
 import kr.inlab.www.repository.GptCommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -17,14 +18,14 @@ public class GptCommentServiceImpl implements GptCommentService {
     private final GptCommentRepository gptCommentRepository;
     private final ChecklistService checklistService;
 
+    @Transactional
     @Override
-    public void createGptComment(InterviewQuestion interviewQuestion, InterviewResult interviewResult, String interviewAnswerContent) {
+    public void createGptComment(InterviewQuestion interviewQuestion, InterviewQuestionResult interviewQuestionResult, String interviewAnswerContent) {
         String questionVersionTitle = interviewQuestion.getQuestionVersion().getTitle();
         List<Checklist> checklists = checklistService.getChecklists(interviewQuestion.getQuestionVersion());
         GptComment gptComment = GptComment.builder()
-                .interviewQuestion(interviewQuestion)
-                .interviewResult(interviewResult)
                 .requestContent(getRequestContent(questionVersionTitle, checklists, interviewAnswerContent))
+                .interviewQuestionResult(interviewQuestionResult)
                 .build();
 
         gptCommentRepository.save(gptComment);
