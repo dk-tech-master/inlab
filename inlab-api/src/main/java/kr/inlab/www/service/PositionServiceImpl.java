@@ -41,7 +41,6 @@ public class PositionServiceImpl implements PositionService{
 
         return new ResponseListDto<ResponsePositionDto>(positionList.getContent(),pagingUtil);
 
-
     }
 
     @Override

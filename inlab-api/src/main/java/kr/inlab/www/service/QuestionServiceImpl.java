@@ -1,16 +1,21 @@
 package kr.inlab.www.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import kr.inlab.www.common.exception.PositionNotFoundException;
+import kr.inlab.www.common.util.PagingUtil;
+import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
+import kr.inlab.www.dto.request.RequestGetQuestionsDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
+import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
 import kr.inlab.www.entity.Checklist;
 import kr.inlab.www.entity.Position;
 import kr.inlab.www.entity.Question;
@@ -103,5 +108,27 @@ public class QuestionServiceImpl implements QuestionService {
 			.version(questionVersion.getVersion())
 			.checklists(checklists)
 			.build();
+	}
+
+	@Override
+	public ResponseListDto<ResponseGetQuestionsDto> getQuestions(RequestGetQuestionsDto requestDto,
+		Integer positionId,
+		Integer questionTypeId,
+		Integer questionLevelId,
+		String titleKeyword) {
+
+		Sort sort  = Sort.by(Sort.Direction.DESC, "questionVersionId");
+		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), sort);
+		Page<ResponseGetQuestionsDto> questionList = questionVersionRepository.findQuestions(
+			positionId,
+			questionTypeId,
+			questionLevelId,
+			titleKeyword,
+			pageable
+		);
+
+		PagingUtil pagingUtil = new PagingUtil(questionList.getTotalElements(), questionList.getTotalPages(), questionList.getNumber(), questionList.getSize());
+
+		return new ResponseListDto<ResponseGetQuestionsDto>(questionList.getContent(), pagingUtil);
 	}
 }

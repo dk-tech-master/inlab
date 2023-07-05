@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
+import kr.inlab.www.dto.request.RequestGetQuestionsDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
-import kr.inlab.www.dto.response.ResponseGetUsersDto;
+import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
 import kr.inlab.www.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 
@@ -29,16 +32,22 @@ public class QuestionController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	// 질문 전체 조회 (#12)
+	// 질문 검색 및 전체 조회 (#12)
 	// 데이터 : title, position, question_type, question_level, version(isLatest = Y 값만),
-	// @GetMapping
-	// public ResponseEntity getAllQuestions
+	@GetMapping
+	public ResponseEntity getQuestions(RequestGetQuestionsDto requestDto,
+		@RequestParam(required = false) Integer positionId,
+		@RequestParam(required = false) Integer questionTypeId,
+		@RequestParam(required = false) Integer questionLevelId,
+		@RequestParam(required = false) String titleKeyword) {
+		ResponseListDto<ResponseGetQuestionsDto> responseDto = questionService.getQuestions(requestDto, positionId, questionTypeId, questionLevelId, titleKeyword);
 
-	// 질문 검색 조회 (#12)
-	// 데이터 : title, position, question_type, question_level, version(isLatest = Y 값만),
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
 
 	// 해당 질문에 대한 질문 버전 전체 조회 (#13)
 	// 데이터 : title, position, question_type, question_level, version(전부),
+
 
 	// 질문 상세 조회 (#14)
 	@GetMapping("/{questionId}")
