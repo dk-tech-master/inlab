@@ -53,7 +53,7 @@ public class VerificationCodeController {
             Map<String, String> stringStringMap = jwtTokenProvider.generateEmailToken(claims);
             stringStringMap.forEach(response::addHeader);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
