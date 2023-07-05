@@ -29,18 +29,13 @@ public class InterviewAnswer {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interview_question_id")
-    private InterviewQuestion interviewQuestion;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interview_result_id")
-    private InterviewResult interviewResult;
+    @JoinColumn(name = "interview_question_result_id")
+    private InterviewQuestionResult interviewQuestionResult;
 
     @Builder
-    public InterviewAnswer(String content, InterviewQuestion interviewQuestion, InterviewResult interviewResult) {
+    public InterviewAnswer(String content, InterviewQuestionResult interviewQuestionResult) {
         this.content = content;
-        this.interviewQuestion = interviewQuestion;
-        this.interviewResult = interviewResult;
+        this.interviewQuestionResult = interviewQuestionResult;
     }
 }
