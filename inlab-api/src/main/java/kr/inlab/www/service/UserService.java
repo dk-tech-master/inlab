@@ -7,13 +7,14 @@ import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateUserDto;
 import kr.inlab.www.dto.request.RequestUpdateUserDto;
 import kr.inlab.www.dto.request.RequestUsersDto;
+import kr.inlab.www.dto.response.ResponseGetUserDto;
 import kr.inlab.www.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 // todo [Login]1-5. spring security 가 주관하는 인증 서비스를 사용할 수 있도록 UserDetailsService 상속한다.
 public interface UserService extends UserDetailsService {
 
-    User findUserById(Long userId);
+    ResponseGetUserDto findUserById(Long userId);
 
     void createUser(RequestCreateUserDto dto) throws EmailDuplicateException;
 

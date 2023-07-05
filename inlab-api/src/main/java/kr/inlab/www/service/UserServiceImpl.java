@@ -50,11 +50,12 @@ public class UserServiceImpl implements UserService {
     // todo [Authorization]1-2. 초기 기동을 할 때 빈을 주입을 받는데 encoder 는 빈으로 등록하지 않았다 따라서 bean 을 등록해야한다.
 
     @Override
-    public User findUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow();
+    public ResponseGetUserDto findUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new).toResponseGetUserDto();
     }
 
     @Override
+    @Transactional
     public void createUser(RequestCreateUserDto dto) throws EmailDuplicateException {
         if (isEmailDuplicate(dto.getEmail())) {
             throw new EmailDuplicateException();
