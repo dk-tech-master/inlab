@@ -1,5 +1,8 @@
 package kr.inlab.www.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kr.inlab.www.common.type.YesNo;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,6 +27,9 @@ public class Question {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(1) default 'N'")
     private YesNo isDeleted;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    private List<QuestionVersion> questionVersionList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")

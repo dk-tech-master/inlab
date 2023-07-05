@@ -1,12 +1,16 @@
 package kr.inlab.www.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.inlab.www.common.exception.PositionNotFoundException;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
+import kr.inlab.www.dto.response.ResponseGetQuestionDto;
 import kr.inlab.www.entity.Checklist;
 import kr.inlab.www.entity.Position;
 import kr.inlab.www.entity.Question;
@@ -39,7 +43,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 		// positionId, questionTypeId 받아오기
 		Position position = positionRepository.findById(requestDto.getPositionId())
-			.orElseThrow(() -> new RuntimeException("Position not found"));
+			.orElseThrow(() -> new RuntimeException("Question type not found"));
 		QuestionType questionType = questionTypeRepository.findById(requestDto.getQuestionTypeId())
 			.orElseThrow(() -> new RuntimeException("Question type not found"));
 
@@ -74,5 +78,30 @@ public class QuestionServiceImpl implements QuestionService {
 		}
 
 		checklistRepository.saveAll(checklistEntities);
+	}
+
+	@Override
+	public ResponseGetQuestionDto getQuestion(Long questionId) {
+		// Join되어 있는 데이터 조회
+		QuestionVersion questionVersion = questionVersionRepository.findByQuestionQuestionId(questionId)
+			.orElseThrow(() -> new RuntimeException("QuestionVersion type not found"));
+		// 체크리스트 조회
+		List<Checklist> checklistEntities = checklistRepository.findAllByQuestionVersion(questionVersion);
+		// 형변환
+		List<String> checklists = checklistEntities.stream()
+			.map(Checklist::getContent)
+			.collect(Collectors.toList());
+
+		return ResponseGetQuestionDto.builder()
+			.title(questionVersion.getTitle())
+			.questionTypeId(questionVersion.getQuestion().getQuestionType().getQuestionTypeId())
+			.questionTypeName(questionVersion.getQuestion().getQuestionType().getQuestionTypeName())
+			.positionId(questionVersion.getQuestion().getPosition().getPositionId())
+			.positionName(questionVersion.getQuestion().getPosition().getPositionName())
+			.questionLevelId(questionVersion.getQuestionLevel().getQuestionLevelId())
+			.questionLevelName(questionVersion.getQuestionLevel().getQuestionLevelName())
+			.version(questionVersion.getVersion())
+			.checklists(checklists)
+			.build();
 	}
 }
