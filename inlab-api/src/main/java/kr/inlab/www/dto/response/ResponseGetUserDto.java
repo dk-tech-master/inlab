@@ -15,7 +15,7 @@ public class ResponseGetUserDto {
 
     private Long userId;
 
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     private String nickname;
 
@@ -24,10 +24,10 @@ public class ResponseGetUserDto {
     private Boolean isVerified;
 
     @Builder
-    public ResponseGetUserDto(Long userId, LocalDateTime createAt, String nickname, String email,
+    public ResponseGetUserDto(Long userId, LocalDateTime createdAt, String nickname, String email,
         Boolean isVerified) {
         this.userId = userId;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.nickname = nickname;
         this.email = email;
         this.isVerified = isVerified;

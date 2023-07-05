@@ -70,7 +70,8 @@ public class User {
     private List<Role> roles = new ArrayList<>();
 
     @Builder
-    public User(String email, String nickname, String password) {
+    public User(Long userId, String email, String nickname, String password) {
+        this.userId = userId;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
@@ -104,7 +105,7 @@ public class User {
     public ResponseGetUserDto toResponseGetUserDto() {
         return ResponseGetUserDto.builder()
             .userId(this.userId)
-            .createAt(this.createdAt)
+            .createdAt(this.createdAt)
             .nickname(this.nickname)
             .email(this.email)
             .isVerified(this.userStatus.equals(UserStatus.ACTIVE))
