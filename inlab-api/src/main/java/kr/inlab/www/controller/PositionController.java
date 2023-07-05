@@ -1,8 +1,9 @@
 package kr.inlab.www.controller;
 
+import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestPositionDto;
 import kr.inlab.www.dto.request.RequestPositionNameDto;
-import kr.inlab.www.dto.response.ResponsePositionListDto;
+import kr.inlab.www.dto.response.ResponsePositionDto;
 import kr.inlab.www.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,8 @@ public class PositionController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponsePositionListDto> getPosition(RequestPositionDto requestDto) {
-        ResponsePositionListDto responseDto = positionService.getPosition(requestDto);
+    public ResponseEntity getPosition(RequestPositionDto requestDto) {
+        ResponseListDto<ResponsePositionDto> responseDto = positionService.getPosition(requestDto);
         return ResponseEntity.ok(responseDto);
     }
 

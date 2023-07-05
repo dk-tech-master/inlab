@@ -21,7 +21,7 @@ public class Position {
     @NotNull
     private String positionName;
 
-    @OneToMany(mappedBy = "position", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "position")
     private List<Question> questionList;
 
     @Builder

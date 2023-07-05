@@ -2,10 +2,10 @@ package kr.inlab.www.service;
 
 import kr.inlab.www.common.exception.PositionNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
+import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestPositionDto;
 import kr.inlab.www.dto.request.RequestPositionNameDto;
 import kr.inlab.www.dto.response.ResponsePositionDto;
-import kr.inlab.www.dto.response.ResponsePositionListDto;
 import kr.inlab.www.entity.Position;
 import kr.inlab.www.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +32,16 @@ public class PositionServiceImpl implements PositionService{
     }
 
     @Override
-    public ResponsePositionListDto getPosition(RequestPositionDto requestDto) {
+    public ResponseListDto<ResponsePositionDto> getPosition(RequestPositionDto requestDto) {
         requestDto.setColumn("positionId");
         Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), requestDto.getSortDirection(), requestDto.getColumn());
         Page<ResponsePositionDto> positionList = positionRepository.getPositionsList(requestDto.getPositionName(), pageable);
-        ResponsePositionListDto responsePositionListDto = ResponsePositionListDto.builder()
-                .pagingUtil(new PagingUtil(positionList.getTotalElements(), positionList.getTotalPages(), positionList.getNumber(), positionList.getSize()))
-                .positionList(positionList.toList())
-                .build();
-        return responsePositionListDto;
+
+        PagingUtil pagingUtil = new PagingUtil(positionList.getTotalElements(), positionList.getTotalPages(), positionList.getNumber(), positionList.getSize());
+
+        return new ResponseListDto<ResponsePositionDto>(positionList.getContent(),pagingUtil);
+
+
     }
 
     @Override
