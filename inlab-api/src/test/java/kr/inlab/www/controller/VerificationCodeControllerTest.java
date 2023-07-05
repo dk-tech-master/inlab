@@ -70,7 +70,7 @@ class VerificationCodeControllerTest {
 
         // Assert
         resultActions.andDo(
-            document("create-verification-code",
+            document("update-verification-code",
                 requestParameters(
                     parameterWithName("email").description("이메일")
                 )
