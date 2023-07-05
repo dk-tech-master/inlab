@@ -47,7 +47,8 @@ public class ChecklistResult {
     private InterviewResult interviewResult;
 
     @Builder
-    public ChecklistResult(Checklist checklist, InterviewQuestion interviewQuestion, InterviewResult interviewResult) {
+    public ChecklistResult(YesNo isChecked, Checklist checklist, InterviewQuestion interviewQuestion, InterviewResult interviewResult) {
+        this.isChecked = isChecked;
         this.checklist = checklist;
         this.interviewQuestion = interviewQuestion;
         this.interviewResult = interviewResult;

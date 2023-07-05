@@ -135,4 +135,24 @@ include::{snippets}/put-position/request-fields.adoc[]
 
 include::{snippets}/put-position/http-response.adoc[]
 
+== INTERVIEW RESULT CONTROLLER
 
+=== 면접결과 생성 / POST
+면접결과 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-interview-result/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/create-interview-result/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-interview-result/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-interview-result/http-response.adoc[]
+include::{snippets}/create-interview-result/response-body.adoc[]
