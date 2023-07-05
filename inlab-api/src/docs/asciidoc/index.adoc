@@ -135,4 +135,81 @@ include::{snippets}/put-position/request-fields.adoc[]
 
 include::{snippets}/put-position/http-response.adoc[]
 
+== VerificationCode CONTROLLER
 
+=== 인증번호 생성(회원가입 시) / POST
+인증번호 생성에 대한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/create-verification-code/http-request.adoc[]
+
+==== 요청 Parameter
+
+include::{snippets}/create-verification-code/request-parameters.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/create-verification-code/http-response.adoc[]
+
+---
+
+=== 인증번호 생성(회원 정보 수정 시) / PUT
+개인정보 변경을 위한 인증번호 생성에 대한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/update-verification-code/http-request.adoc[]
+
+==== 요청 Parameter
+
+include::{snippets}/update-verification-code/request-parameters.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/update-verification-code/http-response.adoc[]
+
+---
+
+=== 인증번호 인증 / POST
+인증번호 확인에 대한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/check-verification-code/http-request.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/check-verification-code/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/check-verification-code/http-response.adoc[]
+
+==== 응답 HTTP Header
+
+include::{snippets}/check-verification-code/response-headers.adoc[]
+
+---
+
+== INTERVIEW RESULT CONTROLLER
+
+=== 면접결과 생성 / POST
+면접결과 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-interview-result/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/create-interview-result/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-interview-result/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-interview-result/http-response.adoc[]
+include::{snippets}/create-interview-result/response-body.adoc[]

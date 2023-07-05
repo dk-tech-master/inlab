@@ -43,7 +43,7 @@ public class QuestionTypeControllerTest {
     @Test
     @Transactional
     void QUESTION_TYPE_CREATE_TEST() throws Exception {
-        RequestQuestionTypeNameDto requestDto = RequestQuestionTypeNameDto.builder().questionTypeName("네트워크").build();
+        RequestQuestionTypeNameDto requestDto = RequestQuestionTypeNameDto.builder().questionTypeName("JAVA").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(post("/api/question-type")
