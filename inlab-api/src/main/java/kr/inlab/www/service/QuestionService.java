@@ -6,6 +6,7 @@ import java.util.Optional;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
 import kr.inlab.www.dto.request.RequestGetQuestionsDto;
+import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
 
@@ -19,4 +20,6 @@ public interface QuestionService {
 		Integer questionTypeId,
 		Integer questionLevelId,
 		String titleKeyword);
+
+	void updateQuestion(RequestUpdateQuestionDto requestDto, Long questionId);
 }

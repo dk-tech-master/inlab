@@ -54,4 +54,24 @@ public class QuestionVersion {
         this.question = question;
         this.questionLevel = questionLevel;
     }
+
+    public void updateTitle(String newTitle) {
+        this.title = newTitle;
+    }
+
+    public void updateVersion(Integer newVersion) {
+        this.version = newVersion;
+    }
+
+    public void updateQuestion(Question newQuestion) {
+        this.question = newQuestion;
+    }
+
+    public void updateQuestionLevel(QuestionLevel newQuestionLevel) {
+        this.questionLevel = newQuestionLevel;
+    }
+
+	public void updateIsLatest(YesNo newStatus) {
+        this.isLatest = newStatus;
+	}
 }
