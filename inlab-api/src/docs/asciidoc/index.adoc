@@ -135,7 +135,7 @@ include::{snippets}/put-position/request-fields.adoc[]
 
 include::{snippets}/put-position/http-response.adoc[]
 
-== VerificationCode CONTROLLER
+== VERIFICATIONCODE CONTROLLER
 
 === 인증번호 생성(회원가입 시) / POST
 인증번호 생성에 대한 API 입니다.
@@ -190,7 +190,136 @@ include::{snippets}/check-verification-code/http-response.adoc[]
 
 include::{snippets}/check-verification-code/response-headers.adoc[]
 
----
+== VERIFICATIONCODE CONTROLLER
+
+=== 회원 조회(자신의 정보) / GET
+회원 정보 조회에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/get-user/http-request.adoc[]
+
+==== 요청 PathParameter
+
+include::{snippets}/get-user/path-parameters.adoc[]
+
+==== 요청 Header
+
+include::{snippets}/get-user/request-headers.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/get-user/http-response.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/get-user/response-body.adoc[]
+
+==== 응답 Field
+
+include::{snippets}/get-user/response-fields.adoc[]
+
+=== 회원 생성(자신의 정보) / POST
+회원 생성에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/create-user/http-request.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-user/request-body.adoc[]
+
+==== 요청 Field
+
+include::{snippets}/create-user/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/create-user/http-response.adoc[]
+
+==== 응답 HTTP Header
+
+include::{snippets}/create-user/response-headers.adoc[]
+
+=== 회원 조회(관리자의 다건조회) / GET
+관리자의 회원 정보 다건 조회에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/create-user/http-request.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/get-users/request-body.adoc[]
+
+==== 요청 Field
+
+include::{snippets}/get-users/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/get-users/http-response.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/get-users/response-body.adoc[]
+
+=== 회원 수정(자신의 정보) / PUT
+회원 정보 수정에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/update-user/http-request.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/update-user/request-body.adoc[]
+
+==== 요청 Field
+
+include::{snippets}/update-user/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/update-user/http-response.adoc[]
+
+==== 응답 HTTP Header
+
+include::{snippets}/update-user/response-headers.adoc[]
+
+=== 회원 승인(관리자) / PUT
+회원 승인(role 을 ROLE_GUEST -> ROLE_USER)에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/update-user-role/http-request.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/update-user-role/http-response.adoc[]
+
+=== 회원 삭제(관리자) / DELETE
+관리자의 회원 삭제(status 를 ACTIVE -> DELETE)에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/delete-user-by-admin/http-request.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/delete-user-by-admin/http-response.adoc[]
+
+=== 회원 탈퇴 / DELETE
+회원 탈퇴(status 를 ACTIVE -> DELETE)에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/delete-user/http-request.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/delete-user/http-response.adoc[]
 
 == INTERVIEW RESULT CONTROLLER
 
