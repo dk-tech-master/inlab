@@ -13,7 +13,6 @@ import kr.inlab.www.common.exception.EmailNotFoundException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.common.exception.LoginBlockedException;
 import kr.inlab.www.common.exception.NicknameDuplicateException;
-import kr.inlab.www.common.exception.UnAuthorizedException;
 import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.common.type.UserStatus;
@@ -33,8 +32,8 @@ import kr.inlab.www.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -237,7 +236,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserStatusDelete(Long userId) {
+    public void updateUserStatusDeleteByAdmin(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         if (user.getRoles().stream().map(Role::getRoleType)
             .anyMatch(roleType -> roleType.equals(RoleType.ROLE_ADMIN))) {
@@ -248,12 +247,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserStatusDelete(String email, Long userId) {
-        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        if (!user.getUserId().equals(userId)) {
-            throw new UnAuthorizedException();
-        }
-        user.updateUserStatusDelete();
+    public void updateUserStatusDelete(Long userId) {
+        userRepository.findById(userId).orElseThrow(UserNotFoundException::new).updateUserStatusDelete();
     }
 
     @Override
@@ -262,5 +257,12 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         user.updateLoginBlockUntil();
         user.resetLoginAttempt();
+    }
+
+    @Override
+    public boolean isSelf(Long userId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findById(userId).orElse(null);
+        return user != null && user.getEmail().equals(email);
     }
 }

@@ -39,9 +39,11 @@ public interface UserService extends UserDetailsService {
 
     ResponseListDto getUsers(RequestUsersDto requestDto);
 
+    void updateUserStatusDeleteByAdmin(Long userId);
+
     void updateUserStatusDelete(Long userId);
 
-    void updateUserStatusDelete(String email, Long userId);
-
     void updateUserBlockUntil(String email);
+
+    boolean isSelf(Long userId);
 }
