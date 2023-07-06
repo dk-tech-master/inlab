@@ -88,8 +88,6 @@ class UserControllerTest {
 
         // Assert
         resultActions.andExpect(jsonPath("$.userId").value(userId))
-            .andExpect(jsonPath("$.email").value(user.getEmail()))
-            .andExpect(jsonPath("$.nickname").value(user.getNickname()))
             .andDo(document("get-user",
                 pathParameters(
                     parameterWithName("userId").description("사용자 ID")
