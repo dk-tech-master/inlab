@@ -29,7 +29,8 @@ public class PositionLevel {
     private User user;
 
     @Builder
-    public PositionLevel(Position position, QuestionLevel questionLevel, User user) {
+    public PositionLevel(Long positionLevelId, Position position, QuestionLevel questionLevel, User user) {
+        this.positionLevelId = positionLevelId;
         this.position = position;
         this.questionLevel = questionLevel;
         this.user = user;
