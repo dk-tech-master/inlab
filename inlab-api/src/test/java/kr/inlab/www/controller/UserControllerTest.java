@@ -230,11 +230,30 @@ class UserControllerTest {
 
     @Test
     @Transactional
-    void updateUserStatusDeleteByAdmin() {
+    void updateUserStatusDeleteByAdmin() throws Exception {
+        Long userId = 2L;
+        // Act
+        ResultActions resultActions = mockMvc.perform(
+                RestDocumentationRequestBuilders.delete("/api/admin/users/{userId}", userId)
+                    .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        resultActions.andDo(document("delete-user-by-admin")
+        );
     }
 
     @Test
     @Transactional
-    void updateUserStatusDelete() {
+    @WithMockUser(username = "jwoo1017@naver.com", authorities = {"ROLE_USER"})
+    void updateUserStatusDelete() throws Exception {
+        Long userId = 2L;
+        // Act
+        ResultActions resultActions = mockMvc.perform(
+                RestDocumentationRequestBuilders.delete("/api/users/{userId}", userId)
+                    .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        resultActions.andDo(document("delete-user")
+        );
     }
 }
