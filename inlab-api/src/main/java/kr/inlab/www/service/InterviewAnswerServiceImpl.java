@@ -1,5 +1,7 @@
 package kr.inlab.www.service;
 
+import kr.inlab.www.common.exception.InterviewAnswerNotFoundException;
+import kr.inlab.www.dto.response.ResponseInterviewAnswerDto;
 import kr.inlab.www.entity.InterviewAnswer;
 import kr.inlab.www.entity.InterviewQuestionResult;
 import kr.inlab.www.repository.InterviewAnswerRepository;
@@ -23,5 +25,13 @@ public class InterviewAnswerServiceImpl implements InterviewAnswerService {
                 .build();
 
         return interviewAnswerRepository.save(interviewAnswer);
+    }
+
+    @Override
+    public ResponseInterviewAnswerDto getInterviewAnswer(InterviewQuestionResult interviewQuestionResult) {
+        InterviewAnswer interviewAnswer = interviewAnswerRepository.findByInterviewQuestionResult(interviewQuestionResult)
+                .orElseThrow(InterviewAnswerNotFoundException::new);
+
+        return interviewAnswer.toResponseInterviewAnswerDto();
     }
 }

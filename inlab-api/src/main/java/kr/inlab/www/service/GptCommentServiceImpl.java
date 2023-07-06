@@ -1,5 +1,7 @@
 package kr.inlab.www.service;
 
+import kr.inlab.www.common.exception.GptCommentNotFoundException;
+import kr.inlab.www.dto.response.ResponseGptCommentIdDto;
 import kr.inlab.www.entity.Checklist;
 import kr.inlab.www.entity.GptComment;
 import kr.inlab.www.entity.InterviewQuestion;
@@ -29,6 +31,14 @@ public class GptCommentServiceImpl implements GptCommentService {
                 .build();
 
         gptCommentRepository.save(gptComment);
+    }
+
+    @Override
+    public ResponseGptCommentIdDto getGptCommentId(InterviewQuestionResult interviewQuestionResult) {
+        GptComment gptComment = gptCommentRepository.findByInterviewQuestionResult(interviewQuestionResult)
+                .orElseThrow(GptCommentNotFoundException::new);
+
+        return gptComment.toResponseGptCommentIdDto();
     }
 
     private String getRequestContent(String title, List<Checklist> checklists, String content) {

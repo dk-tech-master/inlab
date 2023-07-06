@@ -1,5 +1,6 @@
 package kr.inlab.www.entity;
 
+import kr.inlab.www.dto.response.ResponseCommentDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -37,5 +39,12 @@ public class Comment {
     public Comment(String content, InterviewQuestionResult interviewQuestionResult) {
         this.content = content;
         this.interviewQuestionResult = interviewQuestionResult;
+    }
+
+    public ResponseCommentDto toResponseCommentDto() {
+        return ResponseCommentDto.builder()
+                .content(this.content)
+                .createdAt(this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .build();
     }
 }

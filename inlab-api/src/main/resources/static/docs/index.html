@@ -456,11 +456,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_직무_생성_post">직무 생성 / POST</a></li>
 <li><a href="#_직무_조회_get">직무 조회 / GET</a></li>
+<li><a href="#_직무_삭제_delete">직무 삭제 / DELETE</a></li>
+<li><a href="#_직무_수정_put">직무 수정 / PUT</a></li>
+</ul>
+</li>
+<li><a href="#_verificationcode_controller">VerificationCode CONTROLLER</a>
+<ul class="sectlevel2">
+<li><a href="#_인증번호_생성회원가입_시_post">인증번호 생성(회원가입 시) / POST</a></li>
+<li><a href="#_인증번호_생성회원_정보_수정_시_put">인증번호 생성(회원 정보 수정 시) / PUT</a></li>
+<li><a href="#_인증번호_인증_post">인증번호 인증 / POST</a></li>
 </ul>
 </li>
 <li><a href="#_interview_result_controller">INTERVIEW RESULT CONTROLLER</a>
 <ul class="sectlevel2">
 <li><a href="#_면접결과_생성_post">면접결과 생성 / POST</a></li>
+<li><a href="#_면접결과_조회_get">면접결과 조회 / GET</a></li>
 </ul>
 </li>
 </ul>
@@ -770,9 +780,6 @@ Host: localhost:8080
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/create-position/response-fields.adoc[]</p>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -845,7 +852,7 @@ Host: localhost:8080</code></pre>
 Content-Type: application/json
 Content-Length: 357
 
-{"pagingUtil":{"totalElements":2,"totalPages":1,"pageNumber":1,"pageSize":10,"totalPageGroups":1,"pageGroupSize":5,"pageGroup":1,"startPage":1,"endPage":1,"existPrePageGroup":false,"existNextPageGroup":false},"positionList":[{"positionId":6,"positionName":"프론트 앤드","questionCount":0},{"positionId":1,"positionName":"백앤드","questionCount":0}]}</code></pre>
+{"responseList":[{"positionId":6,"positionName":"프론트 앤드","questionCount":0},{"positionId":1,"positionName":"백앤드","questionCount":9}],"pagingUtil":{"totalElements":2,"totalPages":1,"pageNumber":1,"pageSize":10,"totalPageGroups":1,"pageGroupSize":5,"pageGroup":1,"startPage":1,"endPage":1,"existPrePageGroup":false,"existNextPageGroup":false}}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -918,17 +925,17 @@ Content-Length: 357
 <td class="tableblock halign-left valign-top"><p class="tableblock">다음 페이지 그룹 존재 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positionList[].positionId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].positionId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">직책의 ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positionList[].positionName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].positionName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">직책의 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positionList[].questionCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].questionCount</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">직책에 대한 질문 수</p></td>
 </tr>
@@ -936,29 +943,44 @@ Content-Length: 357
 </table>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_interview_result_controller"><a class="link" href="#_interview_result_controller">INTERVIEW RESULT CONTROLLER</a></h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_면접결과_생성_post"><a class="link" href="#_면접결과_생성_post">면접결과 생성 / POST</a></h3>
+<h3 id="_직무_삭제_delete"><a class="link" href="#_직무_삭제_delete">직무 삭제 / DELETE</a></h3>
 <div class="paragraph">
-<p>면접결과 생성에 대한 API 입니다.</p>
+<p>직무 삭제에 대한 API 입니다.</p>
 </div>
 <div class="sect3">
 <h4 id="_요청_url_5"><a class="link" href="#_요청_url_5">요청 URL</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/interview-result HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/position/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: jwt token
-Content-Length: 965
-Host: localhost:8080
-
-{"intervieweeName":"김철진","interviewId":1,"interviewResultDtos":[{"interviewQuestionId":1,"commentDto":{"content":"좋은 답변입니다."},"interviewAnswerDto":{"content":"OOP에 대해 설명했습니다."},"checklistResultDtos":[{"checklistId":1,"isChecked":"Y"},{"checklistId":2,"isChecked":"Y"},{"checklistId":3,"isChecked":"Y"}]},{"interviewQuestionId":2,"commentDto":{"content":"답변을 제대로 못했습니다."},"interviewAnswerDto":{"content":"질문1에 대해 모르겠습니다."},"checklistResultDtos":[{"checklistId":4,"isChecked":"N"},{"checklistId":5,"isChecked":"N"},{"checklistId":6,"isChecked":"N"}]},{"interviewQuestionId":3,"commentDto":{"content":"체크리스트 한 개 빼고 답변했습니다."},"interviewAnswerDto":{"content":"질문2에 대해 둘은 알고있고 하나는 모르겠습니다."},"checklistResultDtos":[{"checklistId":7,"isChecked":"Y"},{"checklistId":8,"isChecked":"Y"},{"checklistId":9,"isChecked":"N"}]}]}</code></pre>
+Accept: application/json
+Host: localhost:8080</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_path_variables_2"><a class="link" href="#_path_variables_2">Path Variables</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. /api/position/{positionId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positionId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">직무의 ID path variable</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_headers_5"><a class="link" href="#_headers_5">Headers</a></h4>
@@ -982,7 +1004,229 @@ Host: localhost:8080
 </table>
 </div>
 <div class="sect3">
+<h4 id="_응답_body_5"><a class="link" href="#_응답_body_5">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_직무_수정_put"><a class="link" href="#_직무_수정_put">직무 수정 / PUT</a></h3>
+<div class="paragraph">
+<p>직무 수정에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_6"><a class="link" href="#_요청_url_6">요청 URL</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/http-request.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_path_variables_3"><a class="link" href="#_path_variables_3">Path Variables</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/path-parameters.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_headers_6"><a class="link" href="#_headers_6">Headers</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/request-headers.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
 <h4 id="_요청_body_3"><a class="link" href="#_요청_body_3">요청 Body</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/request-fields.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_body_6"><a class="link" href="#_응답_body_6">응답 Body</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/http-response.adoc[]</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_verificationcode_controller"><a class="link" href="#_verificationcode_controller">VerificationCode CONTROLLER</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_인증번호_생성회원가입_시_post"><a class="link" href="#_인증번호_생성회원가입_시_post">인증번호 생성(회원가입 시) / POST</a></h3>
+<div class="paragraph">
+<p>인증번호 생성에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_http"><a class="link" href="#_요청_http">요청 HTTP</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/verification_code HTTP/1.1
+Content-Type: application/json
+Host: localhost:8080
+
+email=test%40example.com</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_요청_parameter"><a class="link" href="#_요청_parameter">요청 Parameter</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_http"><a class="link" href="#_응답_http">응답 HTTP</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created</code></pre>
+</div>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_인증번호_생성회원_정보_수정_시_put"><a class="link" href="#_인증번호_생성회원_정보_수정_시_put">인증번호 생성(회원 정보 수정 시) / PUT</a></h3>
+<div class="paragraph">
+<p>개인정보 변경을 위한 인증번호 생성에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_http_2"><a class="link" href="#_요청_http_2">요청 HTTP</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/verification_code HTTP/1.1
+Content-Type: application/json
+Host: localhost:8080
+
+email=jwoo1016%40naver.com</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_요청_parameter_2"><a class="link" href="#_요청_parameter_2">요청 Parameter</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_http_2"><a class="link" href="#_응답_http_2">응답 HTTP</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created</code></pre>
+</div>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_인증번호_인증_post"><a class="link" href="#_인증번호_인증_post">인증번호 인증 / POST</a></h3>
+<div class="paragraph">
+<p>인증번호 확인에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_http_3"><a class="link" href="#_요청_http_3">요청 HTTP</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/check-verification-code/http-request.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_요청_http_body"><a class="link" href="#_요청_http_body">요청 HTTP Body</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/check-verification-code/request-fields.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_http_3"><a class="link" href="#_응답_http_3">응답 HTTP</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/check-verification-code/http-response.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_http_header"><a class="link" href="#_응답_http_header">응답 HTTP Header</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/check-verification-code/response-headers.adoc[]</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_interview_result_controller"><a class="link" href="#_interview_result_controller">INTERVIEW RESULT CONTROLLER</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_면접결과_생성_post"><a class="link" href="#_면접결과_생성_post">면접결과 생성 / POST</a></h3>
+<div class="paragraph">
+<p>면접결과 생성에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_7"><a class="link" href="#_요청_url_7">요청 URL</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/interview-result HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: jwt token
+Content-Length: 985
+Host: localhost:8080
+
+{"intervieweeName":"김철진","interviewId":1,"interviewQuestionResultDtoList":[{"interviewQuestionId":1,"commentDto":{"content":"좋은 답변입니다."},"interviewAnswerDto":{"content":"OOP에 대해 설명했습니다."},"checklistResultDtoList":[{"checklistId":1,"isChecked":"Y"},{"checklistId":2,"isChecked":"Y"},{"checklistId":3,"isChecked":"Y"}]},{"interviewQuestionId":2,"commentDto":{"content":"답변을 제대로 못했습니다."},"interviewAnswerDto":{"content":"질문1에 대해 모르겠습니다."},"checklistResultDtoList":[{"checklistId":4,"isChecked":"N"},{"checklistId":5,"isChecked":"N"},{"checklistId":6,"isChecked":"N"}]},{"interviewQuestionId":3,"commentDto":{"content":"체크리스트 한 개 빼고 답변했습니다."},"interviewAnswerDto":{"content":"질문2에 대해 둘은 알고있고 하나는 모르겠습니다."},"checklistResultDtoList":[{"checklistId":7,"isChecked":"Y"},{"checklistId":8,"isChecked":"Y"},{"checklistId":9,"isChecked":"N"}]}]}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_headers_7"><a class="link" href="#_headers_7">Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_요청_body_4"><a class="link" href="#_요청_body_4">요청 Body</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1008,47 +1252,47 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock">면접 결과를 저장하고 싶은 면접 ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultDtos[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewQuestionResultDtoList[]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">면접 결과가 담긴 DTO 리스트</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultDtos[].interviewQuestionId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewQuestionResultDtoList[].interviewQuestionId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">면접 질문 ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultDtos[].commentDto</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewQuestionResultDtoList[].commentDto</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">면접자의 답변에 대한 면접관의 코멘트가 담긴 DTO</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultDtos[].commentDto.content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewQuestionResultDtoList[].commentDto.content</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">코멘트 내용</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultDtos[].interviewAnswerDto</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewQuestionResultDtoList[].interviewAnswerDto</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">면접 질문에 대한 면접자의 답변이 담긴 DTO</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultDtos[].interviewAnswerDto.content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewQuestionResultDtoList[].interviewAnswerDto.content</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">답변 내용</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultDtos[].checklistResultDtos[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewQuestionResultDtoList[].checklistResultDtoList[]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">질문에 해당하는 평가 체크리스트가 담긴 DTO</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultDtos[].checklistResultDtos[].checklistId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewQuestionResultDtoList[].checklistResultDtoList[].checklistId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">체크리스트 ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultDtos[].checklistResultDtos[].isChecked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewQuestionResultDtoList[].checklistResultDtoList[].isChecked</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">체크 여부</p></td>
 </tr>
@@ -1056,7 +1300,7 @@ Host: localhost:8080
 </table>
 </div>
 <div class="sect3">
-<h4 id="_응답_body_5"><a class="link" href="#_응답_body_5">응답 Body</a></h4>
+<h4 id="_응답_body_7"><a class="link" href="#_응답_body_7">응답 Body</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created</code></pre>
@@ -1069,13 +1313,85 @@ Host: localhost:8080
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_면접결과_조회_get"><a class="link" href="#_면접결과_조회_get">면접결과 조회 / GET</a></h3>
+<div class="paragraph">
+<p>면접결과 조회에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_8"><a class="link" href="#_요청_url_8">요청 URL</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/interview-result/9 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: jwt token
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_path_variables_4"><a class="link" href="#_path_variables_4">Path Variables</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. /api/interview-result/{interviewResultId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewResultId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">인터뷰 결과 ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_headers_8"><a class="link" href="#_headers_8">Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_body_8"><a class="link" href="#_응답_body_8">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 1612
+
+{"interviewTitle":"백엔드 개발자 면접","intervieweeName":"김철진","responseInterviewQuestionResultDtoList":[{"interviewQuestionTitle":"OOP란 무엇인지 설명해주세요","responseInterviewAnswerDto":{"content":"OOP에 대해 설명했습니다.","createdAt":"2023-07-05 18:12"},"responseCommentDto":{"content":"좋은 답변입니다.","createdAt":"2023-07-05 18:12"},"responseGptCommentIdDto":{"gptCommentId":19},"responseChecklistDtoList":[{"content":"OOP 개념에 대해 잘 설명했다","isChecked":"Y"},{"content":"예시가 적절했다","isChecked":"Y"},{"content":"확실히 잘한다","isChecked":"Y"}]},{"interviewQuestionTitle":"질문1","responseInterviewAnswerDto":{"content":"질문1에 대해 모르겠습니다.","createdAt":"2023-07-05 18:12"},"responseCommentDto":{"content":"답변을 제대로 못했습니다.","createdAt":"2023-07-05 18:12"},"responseGptCommentIdDto":{"gptCommentId":20},"responseChecklistDtoList":[{"content":"체크리스트1","isChecked":"N"},{"content":"체크리스트2","isChecked":"N"},{"content":"체크리스트3","isChecked":"N"}]},{"interviewQuestionTitle":"질문2","responseInterviewAnswerDto":{"content":"질문2에 대해 둘은 알고있고 하나는 모르겠습니다.","createdAt":"2023-07-05 18:12"},"responseCommentDto":{"content":"체크리스트 한 개 빼고 답변했습니다.","createdAt":"2023-07-05 18:12"},"responseGptCommentIdDto":{"gptCommentId":21},"responseChecklistDtoList":[{"content":"체크리스트1","isChecked":"Y"},{"content":"체크리스트2","isChecked":"Y"},{"content":"체크리스트3","isChecked":"N"}]}]}</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-07-05 10:10:05 +0900
+Last updated 2023-07-06 11:28:24 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
