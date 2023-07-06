@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import kr.inlab.www.common.type.UserStatus;
-import kr.inlab.www.dto.response.ResponseUserDto;
+import kr.inlab.www.dto.response.ResponseGetUserDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -70,7 +70,8 @@ public class User {
     private List<Role> roles = new ArrayList<>();
 
     @Builder
-    public User(String email, String nickname, String password) {
+    public User(Long userId, String email, String nickname, String password) {
+        this.userId = userId;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
@@ -101,10 +102,10 @@ public class User {
         this.loginBlockUntil = LocalDateTime.now().plusMinutes(30);
     }
 
-    public ResponseUserDto toResponseUserDto() {
-        return ResponseUserDto.builder()
+    public ResponseGetUserDto toResponseGetUserDto() {
+        return ResponseGetUserDto.builder()
             .userId(this.userId)
-            .createAt(this.createdAt)
+            .createdAt(this.createdAt)
             .nickname(this.nickname)
             .email(this.email)
             .isVerified(this.userStatus.equals(UserStatus.ACTIVE))

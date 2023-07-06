@@ -93,7 +93,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     private void checkPasswordChangeRequiredAndThenSetHeader(String email, HttpServletResponse response) {
-        if (isPasswordChangeRequired(userService.findUserByEmail(email).getPasswordModifiedAt())) {
+        if (isPasswordChangeRequired(userService.getUserByEmail(email).getPasswordModifiedAt())) {
             response.addHeader(CreateHeaders.PASSWORD_CHANGE_REQUIRED, CreateHeaders.TRUE);
         }
     }
@@ -120,7 +120,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
         }else if (failed instanceof BadCredentialsException) {
             // 비밀번호가 틀렸을 경우
-            User user = userService.findUserByEmail((String) request.getAttribute("username"));
+            User user = userService.getUserByEmail((String) request.getAttribute("username"));
             int maxAttempts = Integer.parseInt(Objects.requireNonNull(environment.getProperty("myapp.max-attempt")));
             int currentAttempts = user.getLoginAttempt();
             int remainingAttempts = maxAttempts - currentAttempts;
