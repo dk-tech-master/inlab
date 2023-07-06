@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +36,13 @@ public class UserController {
         return "good_health";
     }
 
+    /**
+     * 회원이 자신의 정보를 조회하는 메서드
+     * @param userId
+     * @return
+     * @PreAuthorize 가 false 를 반환하면 AccessDeniedException 가 발생한다.
+     */
+    @PreAuthorize("@userServiceImpl.isSelf(#userId)")
     @GetMapping("/users/{userId}")
     public ResponseEntity getUser(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findUserById(userId));
@@ -109,20 +116,20 @@ public class UserController {
      */
     @DeleteMapping("/admin/users/{userId}")
     public ResponseEntity updateUserStatusDeleteByAdmin(@PathVariable Long userId) {
-        userService.updateUserStatusDelete(userId);
+        userService.updateUserStatusDeleteByAdmin(userId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
      * 회원이 자신의 상태를 delete 로 바꾸는 메서드입니다.
      *
-     * @param username 회원의 email
      * @param userId   회원의 userId
      * @return
      */
+    @PreAuthorize("@userService.isUserIdAndEmailMatch(authentication.principal, #userId)")
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity updateUserStatusDelete(@AuthenticationPrincipal String username, @PathVariable Long userId) {
-        userService.updateUserStatusDelete(username, userId);
+    public ResponseEntity updateUserStatusDelete(@PathVariable Long userId) {
+        userService.updateUserStatusDelete(userId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
