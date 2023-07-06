@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder encoder;
 
     @Override
-    public ResponseGetUserDto findUserById(Long userId) {
+    public ResponseGetUserDto getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new).toResponseGetUserDto();
     }
 
@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User findUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> {
             throw new UserNotFoundException();
         });

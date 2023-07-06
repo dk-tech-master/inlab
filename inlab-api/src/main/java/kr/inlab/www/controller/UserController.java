@@ -45,7 +45,7 @@ public class UserController {
     @PreAuthorize("@userServiceImpl.isSelf(#userId)")
     @GetMapping("/users/{userId}")
     public ResponseEntity getUser(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findUserById(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(userId));
     }
 
     /**
