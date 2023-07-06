@@ -473,6 +473,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_면접결과_조회_get">면접결과 조회 / GET</a></li>
 </ul>
 </li>
+<li><a href="#_gpt_comment_controller">GPT COMMENT CONTROLLER</a>
+<ul class="sectlevel2">
+<li><a href="#_gpt_코멘트_조회_get">GPT 코멘트 조회 / GET</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -1493,11 +1498,119 @@ Content-Length: 1933
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_gpt_comment_controller"><a class="link" href="#_gpt_comment_controller">GPT COMMENT CONTROLLER</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_gpt_코멘트_조회_get"><a class="link" href="#_gpt_코멘트_조회_get">GPT 코멘트 조회 / GET</a></h3>
+<div class="paragraph">
+<p>GPT 코멘트 조회에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_9"><a class="link" href="#_요청_url_9">요청 URL</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/gpt-comment/21 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: jwt token
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_path_variables_5"><a class="link" href="#_path_variables_5">Path Variables</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. /api/gpt-comment/{gptCommentId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gptCommentId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPT 코멘트 ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_headers_9"><a class="link" href="#_headers_9">Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_body_9"><a class="link" href="#_응답_body_9">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 1214
+
+{"gptCommentId":21,"requestContent":"면집 질문, 그에대한 답변, 답변을 평가할 수 있는 체크리스트를 줄게. 너가 체크리스트를 기준으로 질문에 대한 답변을 잘 했는지 평가해줘. 평가에 대한 응답은 json 형태로 부탁해.\n\n면접 질문: java언어의 접근제어자의 종류와 장점 가시성이 어떻게 되나요?\n\n답변: private, default, protected,public 총 네가지의 접근제어자가 있으며 접근제어자로 요소에 관한 접근 범위를 지정하여 안전한 프로그래밍을 가능하게 해줍니다.\n\n체크리스트:\n1. 접근 제어자의 종류에 대해 설명했는가? (예: public, private, protected,default)\n2. 접근 제어자의 사용 목적에 대해 설명했는가? (예: 캡슐화, 정보 은닉, 상속 제어)\n3. 각 접근 제어자의 접근 범위에 대해 설명했는가?\n4. 접근 제어자의 기본 가시성 (default visibility)에 대해 언급했는가?\n5. 접근 제어자의 활용 예시에 대해 언급했는가? (예: 접근 제어자를 통한 캡슐화와 정보 은닉의 장점 등)","responseContent":"\n\n평가 응답 (JSON):\n{\n  \"result\": true,\n  \"score\": 4\n}"}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gptCommentId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPT 코멘트 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>requestContent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPT에게 요청한 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseContent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPT에게 응답받은 내용</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-07-06 11:49:34 +0900
+Last updated 2023-07-06 16:17:22 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
