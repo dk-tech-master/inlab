@@ -2,6 +2,8 @@ package kr.inlab.www.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.inlab.www.dto.request.RequestPositionNameDto;
+import kr.inlab.www.entity.Position;
+import kr.inlab.www.repository.PositionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +39,13 @@ class PositionControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private PositionRepository positionRepository;
+
     @Test
     @Transactional
-    void POSITION_CREATE_TEST() throws Exception {
-        RequestPositionNameDto requestDto = RequestPositionNameDto.builder().positionName("프론트 앤드").build();
+    void 직무_생성_테스트() throws Exception {
+        RequestPositionNameDto requestDto = RequestPositionNameDto.builder().positionName("테스트 직무 생성").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(post("/api/position")
@@ -61,8 +66,11 @@ class PositionControllerTest {
                 );
     }
 
+    @Transactional
     @Test
-    void POSITION_GET_TEST() throws Exception {
+    void 직무_조회_테스트() throws Exception {
+        //given
+        Integer positionId = getTestPositionId();
         mockMvc.perform(get("/api/position")
                     .param("page","1")
                     .param("positionName","")
@@ -96,8 +104,10 @@ class PositionControllerTest {
 
     @Test
     @Transactional
-    void POSITION_DELETE_TEST() throws Exception {
-        mockMvc.perform(delete("/api/position/{positionId}", 1)
+    void 직무_삭제_테스트() throws Exception {
+        //given
+        Integer positionId = getTestPositionId();
+        mockMvc.perform(delete("/api/position/{positionId}", positionId)
                     .header(HttpHeaders.AUTHORIZATION, "jwt token")
                     .accept(MediaType.APPLICATION_JSON)
                     .characterEncoding(StandardCharsets.UTF_8)
@@ -111,12 +121,15 @@ class PositionControllerTest {
                 ));
     }
 
+    @Transactional
     @Test
-    void POSITION_PUT_TEST() throws Exception {
+    void 직무_수정_테스트() throws Exception {
+        //given
+        Integer positionId = getTestPositionId();
         RequestPositionNameDto requestDto = RequestPositionNameDto.builder().positionName("백앤드").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(put("/api/position/{positionId}", 1)
+        mockMvc.perform(put("/api/position/{positionId}", positionId)
                         .header(HttpHeaders.AUTHORIZATION, "jwt token")
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -134,5 +147,13 @@ class PositionControllerTest {
                         )
                 );
 
+    }
+
+    Integer getTestPositionId() {
+        Position position = Position.builder()
+                .positionName("테스트 직무").build();
+
+        positionRepository.save(position);
+        return position.getPositionId();
     }
 }

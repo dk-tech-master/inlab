@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,6 @@ public class PositionServiceImpl implements PositionService{
     public ResponseListDto<ResponsePositionDto> getPosition(RequestPositionDto requestDto) {
         Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), Sort.Direction.DESC, "positionId");
         Page<ResponsePositionDto> positionList = positionRepository.getPositionsList(requestDto.getPositionName(), pageable);
-
         PagingUtil pagingUtil = new PagingUtil(positionList.getTotalElements(), positionList.getTotalPages(), positionList.getNumber(), positionList.getSize());
 
         return new ResponseListDto<ResponsePositionDto>(positionList.getContent(),pagingUtil);

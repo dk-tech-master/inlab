@@ -1,5 +1,6 @@
 package kr.inlab.www.common.util;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
