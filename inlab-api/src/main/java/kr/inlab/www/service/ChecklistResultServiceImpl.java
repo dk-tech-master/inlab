@@ -2,6 +2,7 @@ package kr.inlab.www.service;
 
 import kr.inlab.www.common.exception.ChecklistNotFoundException;
 import kr.inlab.www.dto.request.RequestCreateInterviewResultDto.ChecklistResultDto;
+import kr.inlab.www.dto.response.ResponseChecklistDto;
 import kr.inlab.www.entity.Checklist;
 import kr.inlab.www.entity.ChecklistResult;
 import kr.inlab.www.entity.InterviewQuestionResult;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +37,17 @@ public class ChecklistResultServiceImpl implements ChecklistResultService {
 
             checklistResultRepository.save(checklistResult);
         });
+    }
+
+    @Override
+    public List<ResponseChecklistDto> getChecklistResultList(InterviewQuestionResult interviewQuestionResult) {
+        List<ChecklistResult> checklistResultList = checklistResultRepository.findAllByInterviewQuestionResult(interviewQuestionResult);
+        List<ResponseChecklistDto> responseChecklistDtoList = checklistResultList.stream().map(checklistResult -> ResponseChecklistDto.builder()
+                .checklistResultId(checklistResult.getChecklistResultId())
+                .content(checklistResult.getChecklist().getContent())
+                .isChecked(checklistResult.getIsChecked())
+                .build()).collect(Collectors.toList());
+
+        return responseChecklistDtoList;
     }
 }

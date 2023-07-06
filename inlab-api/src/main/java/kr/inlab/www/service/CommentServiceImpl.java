@@ -1,5 +1,7 @@
 package kr.inlab.www.service;
 
+import kr.inlab.www.common.exception.CommentNotFoundException;
+import kr.inlab.www.dto.response.ResponseCommentDto;
 import kr.inlab.www.entity.Comment;
 import kr.inlab.www.entity.InterviewQuestionResult;
 import kr.inlab.www.repository.CommentRepository;
@@ -23,5 +25,13 @@ public class CommentServiceImpl implements CommentService {
                 .build();
 
         commentRepository.save(comment);
+    }
+
+    @Override
+    public ResponseCommentDto getComment(InterviewQuestionResult interviewQuestionResult) {
+        Comment comment = commentRepository.findByInterviewQuestionResult(interviewQuestionResult)
+                .orElseThrow(CommentNotFoundException::new);
+
+        return comment.toResponseCommentDto();
     }
 }

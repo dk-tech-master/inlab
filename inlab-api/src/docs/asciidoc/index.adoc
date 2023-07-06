@@ -1,4 +1,4 @@
-= Test API
+= INLAB REST API 명세서
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -213,3 +213,23 @@ include::{snippets}/create-interview-result/request-fields.adoc[]
 
 include::{snippets}/create-interview-result/http-response.adoc[]
 include::{snippets}/create-interview-result/response-body.adoc[]
+
+=== 면접결과 조회 / GET
+면접결과 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-result/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-interview-result/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-result/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-result/http-response.adoc[]
+include::{snippets}/get-interview-result/response-fields.adoc[]

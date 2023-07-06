@@ -1,5 +1,6 @@
 package kr.inlab.www.entity;
 
+import kr.inlab.www.dto.response.ResponseGptCommentIdDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,5 +43,11 @@ public class GptComment {
         this.requestContent = requestContent;
         this.responseContent = responseContent;
         this.interviewQuestionResult = interviewQuestionResult;
+    }
+
+    public ResponseGptCommentIdDto toResponseGptCommentIdDto() {
+        return ResponseGptCommentIdDto.builder()
+                .gptCommentId(this.gptCommentId)
+                .build();
     }
 }
