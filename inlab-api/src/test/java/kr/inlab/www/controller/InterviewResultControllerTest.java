@@ -27,8 +27,10 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -155,6 +157,38 @@ class InterviewResultControllerTest {
                                 fieldWithPath("interviewQuestionResultDtoList[].checklistResultDtoList[]").description("질문에 해당하는 평가 체크리스트가 담긴 DTO"),
                                 fieldWithPath("interviewQuestionResultDtoList[].checklistResultDtoList[].checklistId").description("체크리스트 ID"),
                                 fieldWithPath("interviewQuestionResultDtoList[].checklistResultDtoList[].isChecked").description("체크 여부")
+                        )
+                ));
+    }
+
+    @Test
+    void 면접결과_조회() throws Exception {
+        mockMvc.perform(get("/api/interview-result/{interviewResultId}", 9L)
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "get-interview-result",
+                        pathParameters(parameterWithName("interviewResultId").description("인터뷰 결과 ID")),
+                        requestHeaders(headerWithName("Authorization").description("JWT Token")),
+                        responseFields(
+                                fieldWithPath("interviewTitle").description("면접 제목"),
+                                fieldWithPath("intervieweeName").description("면접자 이름"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[]").description("면접 질문 결과 데이터 리스트"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].interviewQuestionTitle").description("면접 질문 제목"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto").description("면접 질문에 대한 답변 데이터"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto.content").description("답변"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto.createdAt").description("생성일자"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseCommentDto").description("면접 답변에 대한 면접관의 코멘트 데이터"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseCommentDto.content").description("답변에 대한 코멘트"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseCommentDto.createdAt").description("생성일자"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseGptCommentIdDto").description("GPT 코멘트 ID가 담긴 DTO(GPT에 평가 요청할때 사용)"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseGptCommentIdDto.gptCommentId").description("GPT 코멘트 ID가 담긴 DTO(GPT에 평가 요청할때 사용)"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[]").description("답변에 대한 체크리스트 결과 리스트"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].content").description("체크 리스트 내용"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].isChecked").description("체크여부")
                         )
                 ));
     }
