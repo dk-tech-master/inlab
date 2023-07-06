@@ -43,6 +43,7 @@ public class Comment {
 
     public ResponseCommentDto toResponseCommentDto() {
         return ResponseCommentDto.builder()
+                .commentId(this.commentId)
                 .content(this.content)
                 .createdAt(this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build();

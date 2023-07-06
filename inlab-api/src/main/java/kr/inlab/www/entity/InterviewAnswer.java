@@ -43,6 +43,7 @@ public class InterviewAnswer {
 
     public ResponseInterviewAnswerDto toResponseInterviewAnswerDto() {
         return ResponseInterviewAnswerDto.builder()
+                .interviewAnswerId(this.interviewAnswerId)
                 .content(this.content)
                 .createdAt(this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build();

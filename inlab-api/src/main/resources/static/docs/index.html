@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Test API</title>
+<title>INLAB REST API 명세서</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,7 +439,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Test API</h1>
+<h1>INLAB REST API 명세서</h1>
 <div class="details">
 <span id="revnumber">version 0.0.1-SNAPSHOT</span>
 </div>
@@ -1378,11 +1378,117 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 1612
+Content-Length: 1933
 
-{"interviewTitle":"백엔드 개발자 면접","intervieweeName":"김철진","responseInterviewQuestionResultDtoList":[{"interviewQuestionTitle":"OOP란 무엇인지 설명해주세요","responseInterviewAnswerDto":{"content":"OOP에 대해 설명했습니다.","createdAt":"2023-07-05 18:12"},"responseCommentDto":{"content":"좋은 답변입니다.","createdAt":"2023-07-05 18:12"},"responseGptCommentIdDto":{"gptCommentId":19},"responseChecklistDtoList":[{"content":"OOP 개념에 대해 잘 설명했다","isChecked":"Y"},{"content":"예시가 적절했다","isChecked":"Y"},{"content":"확실히 잘한다","isChecked":"Y"}]},{"interviewQuestionTitle":"질문1","responseInterviewAnswerDto":{"content":"질문1에 대해 모르겠습니다.","createdAt":"2023-07-05 18:12"},"responseCommentDto":{"content":"답변을 제대로 못했습니다.","createdAt":"2023-07-05 18:12"},"responseGptCommentIdDto":{"gptCommentId":20},"responseChecklistDtoList":[{"content":"체크리스트1","isChecked":"N"},{"content":"체크리스트2","isChecked":"N"},{"content":"체크리스트3","isChecked":"N"}]},{"interviewQuestionTitle":"질문2","responseInterviewAnswerDto":{"content":"질문2에 대해 둘은 알고있고 하나는 모르겠습니다.","createdAt":"2023-07-05 18:12"},"responseCommentDto":{"content":"체크리스트 한 개 빼고 답변했습니다.","createdAt":"2023-07-05 18:12"},"responseGptCommentIdDto":{"gptCommentId":21},"responseChecklistDtoList":[{"content":"체크리스트1","isChecked":"Y"},{"content":"체크리스트2","isChecked":"Y"},{"content":"체크리스트3","isChecked":"N"}]}]}</code></pre>
+{"interviewTitle":"백엔드 개발자 면접","intervieweeName":"김철진","responseInterviewQuestionResultDtoList":[{"interviewQuestionTitle":"OOP란 무엇인지 설명해주세요","responseInterviewAnswerDto":{"interviewAnswerId":19,"content":"OOP에 대해 설명했습니다.","createdAt":"2023-07-05 18:12"},"responseCommentDto":{"commentId":17,"content":"좋은 답변입니다.","createdAt":"2023-07-05 18:12"},"responseGptCommentIdDto":{"gptCommentId":19},"responseChecklistDtoList":[{"checklistResultId":55,"content":"OOP 개념에 대해 잘 설명했다","isChecked":"Y"},{"checklistResultId":56,"content":"예시가 적절했다","isChecked":"Y"},{"checklistResultId":57,"content":"확실히 잘한다","isChecked":"Y"}]},{"interviewQuestionTitle":"질문1","responseInterviewAnswerDto":{"interviewAnswerId":20,"content":"질문1에 대해 모르겠습니다.","createdAt":"2023-07-05 18:12"},"responseCommentDto":{"commentId":18,"content":"답변을 제대로 못했습니다.","createdAt":"2023-07-05 18:12"},"responseGptCommentIdDto":{"gptCommentId":20},"responseChecklistDtoList":[{"checklistResultId":58,"content":"체크리스트1","isChecked":"N"},{"checklistResultId":59,"content":"체크리스트2","isChecked":"N"},{"checklistResultId":60,"content":"체크리스트3","isChecked":"N"}]},{"interviewQuestionTitle":"질문2","responseInterviewAnswerDto":{"interviewAnswerId":21,"content":"질문2에 대해 둘은 알고있고 하나는 모르겠습니다.","createdAt":"2023-07-05 18:12"},"responseCommentDto":{"commentId":19,"content":"체크리스트 한 개 빼고 답변했습니다.","createdAt":"2023-07-05 18:12"},"responseGptCommentIdDto":{"gptCommentId":21},"responseChecklistDtoList":[{"checklistResultId":61,"content":"체크리스트1","isChecked":"Y"},{"checklistResultId":62,"content":"체크리스트2","isChecked":"Y"},{"checklistResultId":63,"content":"체크리스트3","isChecked":"N"}]}]}</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewTitle</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>intervieweeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접자 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접 질문 결과 데이터 리스트</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].interviewQuestionTitle</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접 질문 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접 질문에 대한 답변 데이터</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto.interviewAnswerId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접 답변 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto.content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto.createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">생성일자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseCommentDto</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접 답변에 대한 면접관의 코멘트 데이터</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseCommentDto.commentId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코멘트 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseCommentDto.content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변에 대한 코멘트</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseCommentDto.createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">생성일자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseGptCommentIdDto</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPT 코멘트 ID가 담긴 DTO(GPT에 평가 요청할때 사용)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseGptCommentIdDto.gptCommentId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GPT 코멘트 ID가 담긴 DTO(GPT에 평가 요청할때 사용)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseChecklistDtoList[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변에 대한 체크리스트 결과 리스트</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].checklistResultId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">체크리스트 결과 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">체크 리스트 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].isChecked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">체크여부</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -1391,7 +1497,7 @@ Content-Length: 1612
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-07-06 11:28:24 +0900
+Last updated 2023-07-06 11:49:34 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

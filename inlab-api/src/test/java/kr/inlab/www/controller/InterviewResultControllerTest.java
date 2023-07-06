@@ -179,14 +179,17 @@ class InterviewResultControllerTest {
                                 fieldWithPath("responseInterviewQuestionResultDtoList[]").description("면접 질문 결과 데이터 리스트"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].interviewQuestionTitle").description("면접 질문 제목"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto").description("면접 질문에 대한 답변 데이터"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto.interviewAnswerId").description("면접 답변 ID"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto.content").description("답변"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto.createdAt").description("생성일자"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseCommentDto").description("면접 답변에 대한 면접관의 코멘트 데이터"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseCommentDto.commentId").description("코멘트 ID"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseCommentDto.content").description("답변에 대한 코멘트"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseCommentDto.createdAt").description("생성일자"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseGptCommentIdDto").description("GPT 코멘트 ID가 담긴 DTO(GPT에 평가 요청할때 사용)"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseGptCommentIdDto.gptCommentId").description("GPT 코멘트 ID가 담긴 DTO(GPT에 평가 요청할때 사용)"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[]").description("답변에 대한 체크리스트 결과 리스트"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].checklistResultId").description("체크리스트 결과 ID"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].content").description("체크 리스트 내용"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].isChecked").description("체크여부")
                         )

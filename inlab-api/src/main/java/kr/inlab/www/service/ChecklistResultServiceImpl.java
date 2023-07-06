@@ -43,6 +43,7 @@ public class ChecklistResultServiceImpl implements ChecklistResultService {
     public List<ResponseChecklistDto> getChecklistResultList(InterviewQuestionResult interviewQuestionResult) {
         List<ChecklistResult> checklistResultList = checklistResultRepository.findAllByInterviewQuestionResult(interviewQuestionResult);
         List<ResponseChecklistDto> responseChecklistDtoList = checklistResultList.stream().map(checklistResult -> ResponseChecklistDto.builder()
+                .checklistResultId(checklistResult.getChecklistResultId())
                 .content(checklistResult.getChecklist().getContent())
                 .isChecked(checklistResult.getIsChecked())
                 .build()).collect(Collectors.toList());

@@ -9,12 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResponseCommentDto {
 
+    private Long commentId;
+
     private String content;
 
     private String createdAt;
 
     @Builder
-    public ResponseCommentDto(String content, String createdAt) {
+    public ResponseCommentDto(Long commentId, String content, String createdAt) {
+        this.commentId = commentId;
         this.content = content;
         this.createdAt = createdAt;
     }

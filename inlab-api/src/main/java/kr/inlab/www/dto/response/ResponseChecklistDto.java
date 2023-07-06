@@ -10,12 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResponseChecklistDto {
 
+    private Long checklistResultId;
+
     private String content;
 
     private YesNo isChecked;
 
     @Builder
-    public ResponseChecklistDto(String content, YesNo isChecked) {
+    public ResponseChecklistDto(Long checklistResultId, String content, YesNo isChecked) {
+        this.checklistResultId = checklistResultId;
         this.content = content;
         this.isChecked = isChecked;
     }
