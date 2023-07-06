@@ -1,6 +1,5 @@
 package kr.inlab.www.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,11 +10,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.inlab.www.common.exception.*;
 import kr.inlab.www.common.type.YesNo;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
-import kr.inlab.www.dto.request.RequestGetQuestionsDto;
+import kr.inlab.www.dto.request.RequestQuestionsDto;
 import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
@@ -45,15 +45,12 @@ public class QuestionServiceImpl implements QuestionService {
 	private final ChecklistRepository checklistRepository;
 
 	private void saveChecklists(List<String> checklists, QuestionVersion questionVersion) {
-		List<Checklist> checklistEntities = new ArrayList<>();
-
-		for (String checklist : checklists) {
-			Checklist checklistEntity = Checklist.builder()
+		List<Checklist> checklistEntities = checklists.stream()
+			.map(checklist -> Checklist.builder()
 				.content(checklist)
 				.questionVersion(questionVersion)
-				.build();
-			checklistEntities.add(checklistEntity);
-		}
+				.build())
+			.collect(Collectors.toList());
 
 		checklistRepository.saveAll(checklistEntities);
 	}
@@ -61,13 +58,11 @@ public class QuestionServiceImpl implements QuestionService {
 	@Transactional
 	@Override
 	public void createQuestion(RequestCreateQuestionDto requestDto) {
-		// 유효성은 한번 pull 한 다음 작업 진행 예정
-
 		// positionId, questionTypeId 받아오기
 		Position position = positionRepository.findById(requestDto.getPositionId())
-			.orElseThrow(() -> new RuntimeException("Question type not found"));
+			.orElseThrow(PositionNotFoundException::new);
 		QuestionType questionType = questionTypeRepository.findById(requestDto.getQuestionTypeId())
-			.orElseThrow(() -> new RuntimeException("Question type not found"));
+			.orElseThrow(QuestionTypeNotFoundException::new);
 
 		// question 저장
 		Question question = questionRepository.save(Question.builder()
@@ -77,7 +72,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 		// questionLevelId 받아오기
 		QuestionLevel questionLevel = questionLevelRepository.findById(requestDto.getQuestionLevelId())
-			.orElseThrow(() -> new RuntimeException("QuestionLevel not found"));
+			.orElseThrow(QuestionLevelNotFoundException::new);
 
 		// question_version 저장
 		QuestionVersion questionVersion = questionVersionRepository.save(QuestionVersion.builder()
@@ -95,7 +90,7 @@ public class QuestionServiceImpl implements QuestionService {
 	public ResponseGetQuestionDto getQuestion(Long questionId) {
 		// Join되어 있는 데이터 조회
 		QuestionVersion questionVersion = questionVersionRepository.findTopByQuestionQuestionIdAndIsLatest(questionId, YesNo.Y)
-			.orElseThrow(() -> new RuntimeException("QuestionVersion type not found"));
+			.orElseThrow(QuestionVersionNotFoundException::new);
 		// 체크리스트 조회
 		List<Checklist> checklistEntities = checklistRepository.findAllByQuestionVersion(questionVersion);
 		// 형변환
@@ -117,19 +112,14 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public ResponseListDto<ResponseGetQuestionsDto> getQuestions(RequestGetQuestionsDto requestDto,
-		Integer positionId,
-		Integer questionTypeId,
-		Integer questionLevelId,
-		String titleKeyword) {
-
+	public ResponseListDto<ResponseGetQuestionsDto> getQuestions(RequestQuestionsDto requestDto) {
 		Sort sort  = Sort.by(Sort.Direction.DESC, "questionVersionId");
 		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), sort);
 		Page<ResponseGetQuestionsDto> questionList = questionVersionRepository.findQuestions(
-			positionId,
-			questionTypeId,
-			questionLevelId,
-			titleKeyword,
+			requestDto.getPositionId(),
+			requestDto.getQuestionTypeId(),
+			requestDto.getQuestionLevelId(),
+			requestDto.getTitleKeyword(),
 			pageable
 		);
 
@@ -144,28 +134,25 @@ public class QuestionServiceImpl implements QuestionService {
 
 		// questionId를 사용하여 기존의 질문을 가져옵니다.
 		Question question = questionRepository.findById(questionId)
-			.orElseThrow(() -> new RuntimeException("Question not found"));
+			.orElseThrow(QuestionNotFoundException::new);
 
 		// requestDto에서 position과 question type을 가져옵니다.
 		Position position = positionRepository.findById(requestDto.getPositionId())
-			.orElseThrow(() -> new RuntimeException("Position not found"));
+			.orElseThrow(PositionNotFoundException::new);
 		QuestionType questionType = questionTypeRepository.findById(requestDto.getQuestionTypeId())
-			.orElseThrow(() -> new RuntimeException("Question type not found"));
+			.orElseThrow(QuestionVersionNotFoundException::new);
 
 		// 질문을 업데이트합니다.
 		question.updatePosition(position);
 		question.updateQuestionType(questionType);
 
-		// 업데이트된 질문을 저장합니다.
-		questionRepository.save(question);
-
 		// requestDto에서 questionLevel을 가져옵니다.
 		QuestionLevel questionLevel = questionLevelRepository.findById(requestDto.getQuestionLevelId())
-			.orElseThrow(() -> new RuntimeException("QuestionLevel not found"));
+			.orElseThrow(QuestionLevelNotFoundException::new);
 
 		// 가장 최신의 questionVersion을 가져옵니다.
 		QuestionVersion latestQuestionVersion = questionVersionRepository.findTopByQuestionAndIsLatest(question, YesNo.Y)
-			.orElseThrow(() -> new RuntimeException("No latest version found for question"));
+			.orElseThrow(LatestQuestionVersionNotFoundException::new);
 
 		// 질문의 새 버전을 생성합니다.
 		QuestionVersion newQuestionVersion = QuestionVersion.builder()
@@ -183,7 +170,5 @@ public class QuestionServiceImpl implements QuestionService {
 
 		// 마지막으로, 이전 버전을 최신이 아님으로 표시합니다.
 		latestQuestionVersion.updateIsLatest(YesNo.N);
-		questionVersionRepository.save(latestQuestionVersion);
 	}
-
 }

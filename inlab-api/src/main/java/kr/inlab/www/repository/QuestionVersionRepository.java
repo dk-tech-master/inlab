@@ -25,7 +25,8 @@ public interface QuestionVersionRepository extends JpaRepository<QuestionVersion
 		"JOIN q.position p " +
 		"JOIN q.questionType qt " +
 		"JOIN qv.questionLevel ql " +
-		"WHERE (:positionId IS NULL OR p.positionId = :positionId) " +
+		"WHERE qv.isLatest = 'Y' " +
+		"AND (:positionId IS NULL OR p.positionId = :positionId) " +
 		"AND (:questionTypeId IS NULL OR qt.questionTypeId = :questionTypeId) " +
 		"AND (:questionLevelId IS NULL OR ql.questionLevelId = :questionLevelId) " +
 		"AND (:titleKeyword IS NULL OR qv.title LIKE CONCAT('%', :titleKeyword, '%'))")
@@ -35,6 +36,7 @@ public interface QuestionVersionRepository extends JpaRepository<QuestionVersion
 		@Param("questionLevelId") Integer questionLevelId,
 		@Param("titleKeyword") String titleKeyword,
 		Pageable pageable);
+
 
 	@Query("SELECT qv FROM QuestionVersion qv WHERE qv.question = :question AND qv.isLatest = :isLatest ORDER BY qv.version DESC")
 	Optional<QuestionVersion> findTopByQuestionAndIsLatest(@Param("question") Question question, @Param("isLatest") YesNo isLatest);
