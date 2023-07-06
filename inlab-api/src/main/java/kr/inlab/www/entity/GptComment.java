@@ -50,4 +50,8 @@ public class GptComment {
                 .gptCommentId(this.gptCommentId)
                 .build();
     }
+
+    public void saveGptResponse(String gptResponse) {
+        this.responseContent = gptResponse;
+    }
 }
