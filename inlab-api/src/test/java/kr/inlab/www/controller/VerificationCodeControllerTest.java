@@ -1,5 +1,7 @@
 package kr.inlab.www.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -11,12 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.inlab.www.dto.request.RequestCheckVerificationCode;
+import kr.inlab.www.service.VerificationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,14 +40,21 @@ class VerificationCodeControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private VerificationService verificationService;
+
+    private final static String EMAIL = "jwoo1016@gmail.com";
+    private final static String VERIFICATION_CODE = "verificationCode";
+
     @Test
     @Transactional
     void createVerificationCode_shouldSendEmailAndReturnCreatedStatus() throws Exception {
-        // Arrange
-        String email = "test@example.com";
+
+        when(verificationService.createVerificationCode(EMAIL))
+            .thenReturn("verificationCode");
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/verification_code")
-                .param("email", email)
+                .param("email", EMAIL)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated());
 
@@ -60,11 +71,12 @@ class VerificationCodeControllerTest {
     @Test
     @Transactional
     void createVerificationCodeForUpdate_shouldSendEmailAndReturnCreatedStatus() throws Exception {
-        // Arrange
-        String email = "jwoo1016@naver.com";
+
+        when(verificationService.createVerificationCodeForUpdate(EMAIL))
+            .thenReturn("verificationCode");
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/api/verification_code")
-                .param("email", email)
+                .param("email", EMAIL)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated());
 
@@ -81,13 +93,13 @@ class VerificationCodeControllerTest {
     @Test
     @Transactional
     void checkVerificationCode_shouldAddTokenToResponseHeader() throws Exception {
-        // Arrange
-        String email = "jwoo1016@naver.com";
-        String verificationCode = "C9E8807B-5192-4C5A-81B3-15D92D15B1C0";
 
-        RequestCheckVerificationCode requestDto = new RequestCheckVerificationCode(email,verificationCode);
+        RequestCheckVerificationCode requestDto = new RequestCheckVerificationCode(EMAIL, VERIFICATION_CODE);
 
         // Act
+        when(verificationService.checkVerificationCode(any(RequestCheckVerificationCode.class)))
+            .thenReturn(true);
+
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/verification_code/check")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDto)))
@@ -97,7 +109,7 @@ class VerificationCodeControllerTest {
         resultActions.andDo(document("check-verification-code",
             requestFields(
                 fieldWithPath("email").description("이메일"),
-                fieldWithPath("verificationCode").description("12314")
+                fieldWithPath("verificationCode").description("인증번호")
             ),
             responseHeaders(
                 headerWithName("email").description("이메일 인증을 하면 발행되는 이메일 정보가 들어있는 jwt 토큰")
