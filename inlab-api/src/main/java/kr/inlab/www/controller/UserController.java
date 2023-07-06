@@ -126,7 +126,7 @@ public class UserController {
      * @param userId   회원의 userId
      * @return
      */
-    @PreAuthorize("@userService.isUserIdAndEmailMatch(authentication.principal, #userId)")
+    @PreAuthorize("@userServiceImpl.isSelf(#userId)")
     @DeleteMapping("/users/{userId}")
     public ResponseEntity updateUserStatusDelete(@PathVariable Long userId) {
         userService.updateUserStatusDelete(userId);
