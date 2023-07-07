@@ -1,9 +1,10 @@
 package kr.inlab.www.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.inlab.www.dto.request.RequestPositionNameDto;
 import kr.inlab.www.dto.request.RequestQuestionTypeNameDto;
-import org.junit.jupiter.api.DisplayName;
+import kr.inlab.www.entity.Interview;
+import kr.inlab.www.entity.QuestionType;
+import kr.inlab.www.repository.QuestionTypeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,13 @@ public class QuestionTypeControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test
+    @Autowired
+    private QuestionTypeRepository questionTypeRepository;
+
     @Transactional
-    void QUESTION_TYPE_CREATE_TEST() throws Exception {
-        RequestQuestionTypeNameDto requestDto = RequestQuestionTypeNameDto.builder().questionTypeName("JAVA").build();
+    @Test
+    void 질문유형_생성_테스트() throws Exception {
+        RequestQuestionTypeNameDto requestDto = RequestQuestionTypeNameDto.builder().questionTypeName("테스트 유형 생성").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(post("/api/question-type")
@@ -62,8 +66,11 @@ public class QuestionTypeControllerTest {
                 );
     }
 
+    @Transactional
     @Test
-    void QUESTION_TYPE_GET_TEST() throws Exception {
+    void 질문유형_조회_테스트() throws Exception {
+        Integer questionTypeId = getTestQuestionTypeId();
+
         mockMvc.perform(get("/api/question-type")
                 .param("page","1")
                 .param("questionTypeName","")
@@ -95,13 +102,15 @@ public class QuestionTypeControllerTest {
                 );
     }
 
-    @Test
     @Transactional
-    public void QUESTION_TYPE_PUT_TEST() throws Exception {
-        RequestQuestionTypeNameDto requestDto = RequestQuestionTypeNameDto.builder().questionTypeName("운영체제").build();
+    @Test
+    public void 질문유형_수정_테스트() throws Exception {
+        Integer questionTypeId = getTestQuestionTypeId();
+
+        RequestQuestionTypeNameDto requestDto = RequestQuestionTypeNameDto.builder().questionTypeName("질문 유형 수정").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(put("/api/question-type/{questionTypeId}",1)
+        mockMvc.perform(put("/api/question-type/{questionTypeId}",questionTypeId)
                         .header(HttpHeaders.AUTHORIZATION, "jwt token")
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -117,11 +126,12 @@ public class QuestionTypeControllerTest {
                         )
                 );
     }
-
-    @Test
     @Transactional
-    void QUESTION_TYPE_DELETE_TEST() throws Exception {
-        mockMvc.perform(delete("/api/question-type/{questionTypeId}",1)
+    @Test
+    void 질문유형_삭제_테스트() throws Exception {
+        Integer questionTypeId = getTestQuestionTypeId();
+
+        mockMvc.perform(delete("/api/question-type/{questionTypeId}", questionTypeId)
                         .header(HttpHeaders.AUTHORIZATION, "jwt token")
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -133,5 +143,13 @@ public class QuestionTypeControllerTest {
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         pathParameters(parameterWithName("questionTypeId").description("유형의 ID path variable"))
                 ));
+    }
+
+    Integer getTestQuestionTypeId() {
+        QuestionType questionType = QuestionType.builder()
+                .questionTypeName("테스트 질문 유형")
+                .build();
+       questionTypeRepository.save(questionType);
+       return questionType.getQuestionTypeId();
     }
 }

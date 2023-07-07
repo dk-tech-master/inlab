@@ -26,7 +26,7 @@ public class PositionController {
     }
 
     @GetMapping
-    public ResponseEntity getPosition(RequestPositionDto requestDto) {
+    public ResponseEntity getPosition(@ModelAttribute RequestPositionDto requestDto) {
         ResponseListDto<ResponsePositionDto> responseDto = positionService.getPosition(requestDto);
         return ResponseEntity.ok(responseDto);
     }

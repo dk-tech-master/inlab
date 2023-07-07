@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>INLAB REST API 명세서</title>
+<title>Test API</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,7 +439,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>INLAB REST API 명세서</h1>
+<h1>Test API</h1>
 <div class="details">
 <span id="revnumber">version 0.0.1-SNAPSHOT</span>
 </div>
@@ -460,6 +460,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_직무_수정_put">직무 수정 / PUT</a></li>
 </ul>
 </li>
+<li><a href="#_questiontype_controller">QuestionType Controller</a>
+<ul class="sectlevel2">
+<li><a href="#_질문_유형_생성_post">질문 유형 생성 / POST</a></li>
+<li><a href="#_질문_유형_조회_get">질문 유형 조회 / GET</a></li>
+<li><a href="#_직무_삭제_delete_2">직무 삭제 / DELETE</a></li>
+<li><a href="#_직무_수정_put_2">직무 수정 / PUT</a></li>
+</ul>
+</li>
 <li><a href="#_verificationcode_controller">VerificationCode CONTROLLER</a>
 <ul class="sectlevel2">
 <li><a href="#_인증번호_생성회원가입_시_post">인증번호 생성(회원가입 시) / POST</a></li>
@@ -473,6 +481,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_면접결과_조회_get">면접결과 조회 / GET</a></li>
 </ul>
 </li>
+<li><a href="#_interview_controller">INTERVIEW CONTROLLER</a>
+<ul class="sectlevel2">
+<li><a href="#_면접_생성_post">면접 생성 / POST</a></li>
+<li><a href="#_면접_조회_get">면접 조회 / GET</a></li>
 <li><a href="#_gpt_comment_controller">GPT COMMENT CONTROLLER</a>
 <ul class="sectlevel2">
 <li><a href="#_gpt_코멘트_조회_get">GPT 코멘트 조회 / GET</a></li>
@@ -726,10 +738,10 @@ Content-Length: 86
 Content-Type: application/json;charset=UTF-8
 Authorization: jwt token
 Accept: application/json
-Content-Length: 35
+Content-Length: 42
 Host: localhost:8080
 
-{"positionName":"프론트 앤드"}</code></pre>
+{"positionName":"테스트 직무 생성"}</code></pre>
 </div>
 </div>
 </div>
@@ -855,9 +867,9 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 357
+Content-Length: 427
 
-{"responseList":[{"positionId":6,"positionName":"프론트 앤드","questionCount":0},{"positionId":1,"positionName":"백앤드","questionCount":9}],"pagingUtil":{"totalElements":2,"totalPages":1,"pageNumber":1,"pageSize":10,"totalPageGroups":1,"pageGroupSize":5,"pageGroup":1,"startPage":1,"endPage":1,"existPrePageGroup":false,"existNextPageGroup":false}}</code></pre>
+{"responseList":[{"positionId":49,"positionName":"테스트 직무","questionCount":0},{"positionId":6,"positionName":"프론트 앤드","questionCount":0},{"positionId":1,"positionName":"백앤드","questionCount":9}],"pagingUtil":{"totalElements":3,"totalPages":1,"pageNumber":1,"pageSize":10,"totalPageGroups":1,"pageGroupSize":5,"pageGroup":1,"startPage":1,"endPage":1,"existPrePageGroup":false,"existNextPageGroup":false}}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -957,7 +969,7 @@ Content-Length: 357
 <h4 id="_요청_url_5"><a class="link" href="#_요청_url_5">요청 URL</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/position/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/position/48 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: jwt token
 Accept: application/json
@@ -1024,32 +1036,497 @@ Host: localhost:8080</code></pre>
 </div>
 <div class="sect3">
 <h4 id="_요청_url_6"><a class="link" href="#_요청_url_6">요청 URL</a></h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/position/50 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: jwt token
+Accept: application/json
+Content-Length: 28
+Host: localhost:8080
+
+{"positionName":"백앤드"}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_path_variables_3"><a class="link" href="#_path_variables_3">Path Variables</a></h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/path-parameters.adoc[]</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. /api/position/{positionId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positionId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">직무의 ID path variable</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_headers_6"><a class="link" href="#_headers_6">Headers</a></h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/request-headers.adoc[]</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_요청_body_3"><a class="link" href="#_요청_body_3">요청 Body</a></h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/request-fields.adoc[]</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>positionName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">직무 명</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_응답_body_6"><a class="link" href="#_응답_body_6">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_questiontype_controller"><a class="link" href="#_questiontype_controller">QuestionType Controller</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_질문_유형_생성_post"><a class="link" href="#_질문_유형_생성_post">질문 유형 생성 / POST</a></h3>
 <div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/put-position/http-response.adoc[]</p>
+<p>질문 유형 생성에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_7"><a class="link" href="#_요청_url_7">요청 URL</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/question-type HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: jwt token
+Accept: application/json
+Content-Length: 46
+Host: localhost:8080
+
+{"questionTypeName":"테스트 유형 생성"}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_headers_7"><a class="link" href="#_headers_7">Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_요청_body_4"><a class="link" href="#_요청_body_4">요청 Body</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questionTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유형 명</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_body_7"><a class="link" href="#_응답_body_7">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_질문_유형_조회_get"><a class="link" href="#_질문_유형_조회_get">질문 유형 조회 / GET</a></h3>
+<div class="paragraph">
+<p>질문 유형 조회에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_8"><a class="link" href="#_요청_url_8">요청 URL</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/question-type?page=1&amp;questionTypeName= HTTP/1.1
+Authorization: jwt token
+Accept: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_headers_8"><a class="link" href="#_headers_8">Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_parameters_3"><a class="link" href="#_parameters_3">Parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">paging 위한 파리미터</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questionTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">position 검색 조건을 위한 파라미터</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_body_8"><a class="link" href="#_응답_body_8">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 976
+
+{"responseList":[{"questionTypeId":48,"questionTypeName":"테스트 질문 유형","questionCount":0},{"questionTypeId":9,"questionTypeName":"네트워크","questionCount":0},{"questionTypeId":8,"questionTypeName":"데이터베이스","questionCount":0},{"questionTypeId":7,"questionTypeName":"프로그래밍 언어","questionCount":0},{"questionTypeId":5,"questionTypeName":"도메인 지식 질문","questionCount":0},{"questionTypeId":4,"questionTypeName":"팀워크 및 소통 질문","questionCount":0},{"questionTypeId":3,"questionTypeName":"문제 해결 능력 질문","questionCount":0},{"questionTypeId":2,"questionTypeName":"실무경험 및 프로젝트 질문","questionCount":0},{"questionTypeId":1,"questionTypeName":"운영체제","questionCount":9}],"pagingUtil":{"totalElements":9,"totalPages":1,"pageNumber":1,"pageSize":10,"totalPageGroups":1,"pageGroupSize":5,"pageGroup":1,"startPage":1,"endPage":1,"existPrePageGroup":false,"existNextPageGroup":false}}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.totalElements</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total number of elements</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.totalPages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 페이지 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.pageNumber</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.pageSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지당 항목 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.totalPageGroups</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 페이지 그룹 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.pageGroupSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 그룹당 페이지 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.pageGroup</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지 그룹</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.startPage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">시작 페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.endPage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">끝 페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.existPrePageGroup</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이전 페이지 그룹 존재 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.existNextPageGroup</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">다음 페이지 그룹 존재 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].questionTypeId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유형 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].questionTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유형 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].questionCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유형에 대한 질문 수</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_직무_삭제_delete_2"><a class="link" href="#_직무_삭제_delete_2">직무 삭제 / DELETE</a></h3>
+<div class="paragraph">
+<p>질문 유형 삭제에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_9"><a class="link" href="#_요청_url_9">요청 URL</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/question-type/47 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: jwt token
+Accept: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_path_variables_4"><a class="link" href="#_path_variables_4">Path Variables</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. /api/question-type/{questionTypeId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questionTypeId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유형의 ID path variable</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_headers_9"><a class="link" href="#_headers_9">Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_body_9"><a class="link" href="#_응답_body_9">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_직무_수정_put_2"><a class="link" href="#_직무_수정_put_2">직무 수정 / PUT</a></h3>
+<div class="paragraph">
+<p>직무 수정에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_10"><a class="link" href="#_요청_url_10">요청 URL</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/question-type/49 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: jwt token
+Accept: application/json
+Content-Length: 43
+Host: localhost:8080
+
+{"questionTypeName":"질문 유형 수정"}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_path_variables_5"><a class="link" href="#_path_variables_5">Path Variables</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. /api/question-type/{questionTypeId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questionTypeId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유형의 ID path variable</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_headers_10"><a class="link" href="#_headers_10">Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_요청_body_5"><a class="link" href="#_요청_body_5">요청 Body</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>questionTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유형 명</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_body_10"><a class="link" href="#_응답_body_10">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -1071,7 +1548,7 @@ Host: localhost:8080</code></pre>
 Content-Type: application/json
 Host: localhost:8080
 
-email=test%40example.com</code></pre>
+email=jwoo1016%40gmail.com</code></pre>
 </div>
 </div>
 </div>
@@ -1119,7 +1596,7 @@ email=test%40example.com</code></pre>
 Content-Type: application/json
 Host: localhost:8080
 
-email=jwoo1016%40naver.com</code></pre>
+email=jwoo1016%40gmail.com</code></pre>
 </div>
 </div>
 </div>
@@ -1161,27 +1638,75 @@ email=jwoo1016%40naver.com</code></pre>
 </div>
 <div class="sect3">
 <h4 id="_요청_http_3"><a class="link" href="#_요청_http_3">요청 HTTP</a></h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/check-verification-code/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/verification_code/check HTTP/1.1
+Content-Type: application/json
+Content-Length: 68
+Host: localhost:8080
+
+{"email":"jwoo1016@gmail.com","verificationCode":"verificationCode"}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_요청_http_body"><a class="link" href="#_요청_http_body">요청 HTTP Body</a></h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/check-verification-code/request-fields.adoc[]</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>verificationCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">인증번호</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_응답_http_3"><a class="link" href="#_응답_http_3">응답 HTTP</a></h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/check-verification-code/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+email: eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imp3b28xMDE2QGdtYWlsLmNvbSIsImV4cCI6MTY5NzI3MDEwOSwiaWF0IjoxNjg4NjMwMTA5fQ.m04NO0uOwLU1C_qHCKnRkc_QILkakBnOqJLwXcbXyY4</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_응답_http_header"><a class="link" href="#_응답_http_header">응답 HTTP Header</a></h4>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::/Users/cheoljin/Documents/kosa-dktechin/final-project/inlab/inlab-api/build/generated-snippets/check-verification-code/response-headers.adoc[]</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이메일 인증을 하면 발행되는 이메일 정보가 들어있는 jwt 토큰</p></td>
+</tr>
+</tbody>
+</table>
 <hr>
 </div>
 </div>
@@ -1196,7 +1721,7 @@ email=jwoo1016%40naver.com</code></pre>
 <p>면접결과 생성에 대한 API 입니다.</p>
 </div>
 <div class="sect3">
-<h4 id="_요청_url_7"><a class="link" href="#_요청_url_7">요청 URL</a></h4>
+<h4 id="_요청_url_11"><a class="link" href="#_요청_url_11">요청 URL</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/interview-result HTTP/1.1
@@ -1210,7 +1735,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect3">
-<h4 id="_headers_7"><a class="link" href="#_headers_7">Headers</a></h4>
+<h4 id="_headers_11"><a class="link" href="#_headers_11">Headers</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1231,7 +1756,7 @@ Host: localhost:8080
 </table>
 </div>
 <div class="sect3">
-<h4 id="_요청_body_4"><a class="link" href="#_요청_body_4">요청 Body</a></h4>
+<h4 id="_요청_body_6"><a class="link" href="#_요청_body_6">요청 Body</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1305,7 +1830,7 @@ Host: localhost:8080
 </table>
 </div>
 <div class="sect3">
-<h4 id="_응답_body_7"><a class="link" href="#_응답_body_7">응답 Body</a></h4>
+<h4 id="_응답_body_11"><a class="link" href="#_응답_body_11">응답 Body</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created</code></pre>
@@ -1324,7 +1849,7 @@ Host: localhost:8080
 <p>면접결과 조회에 대한 API 입니다.</p>
 </div>
 <div class="sect3">
-<h4 id="_요청_url_8"><a class="link" href="#_요청_url_8">요청 URL</a></h4>
+<h4 id="_요청_url_12"><a class="link" href="#_요청_url_12">요청 URL</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/interview-result/9 HTTP/1.1
@@ -1335,9 +1860,9 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_path_variables_4"><a class="link" href="#_path_variables_4">Path Variables</a></h4>
+<h4 id="_path_variables_6"><a class="link" href="#_path_variables_6">Path Variables</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. /api/interview-result/{interviewResultId}</caption>
+<caption class="title">Table 6. /api/interview-result/{interviewResultId}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -1357,7 +1882,7 @@ Host: localhost:8080</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_headers_8"><a class="link" href="#_headers_8">Headers</a></h4>
+<h4 id="_headers_12"><a class="link" href="#_headers_12">Headers</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1378,7 +1903,7 @@ Host: localhost:8080</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_응답_body_8"><a class="link" href="#_응답_body_8">응답 Body</a></h4>
+<h4 id="_응답_body_12"><a class="link" href="#_응답_body_12">응답 Body</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -1491,6 +2016,243 @@ Content-Length: 1933
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].isChecked</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">체크여부</p></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_interview_controller"><a class="link" href="#_interview_controller">INTERVIEW CONTROLLER</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_면접_생성_post"><a class="link" href="#_면접_생성_post">면접 생성 / POST</a></h3>
+<div class="paragraph">
+<p>면접 생성에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_13"><a class="link" href="#_요청_url_13">요청 URL</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/interview HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: jwt token
+Accept: application/json
+Content-Length: 54
+Host: localhost:8080
+
+{"userId":1,"interviewTitle":"면접생성 테스트"}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_headers_13"><a class="link" href="#_headers_13">Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_요청_body_7"><a class="link" href="#_요청_body_7">요청 Body</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인한 사용자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interviewTitle</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접 제목</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_body_13"><a class="link" href="#_응답_body_13">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_면접_조회_get"><a class="link" href="#_면접_조회_get">면접 조회 / GET</a></h3>
+<div class="paragraph">
+<p>면접 조회에 대한 API 입니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_요청_url_14"><a class="link" href="#_요청_url_14">요청 URL</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/interview/1?page=1&amp;interviewTitle= HTTP/1.1
+Authorization: jwt token
+Accept: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_path_variables_7"><a class="link" href="#_path_variables_7">Path Variables</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::C:\inlab\inlab\inlab-api\build\generated-snippets/get-interview/path-parameters.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_headers_14"><a class="link" href="#_headers_14">Headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답_body_14"><a class="link" href="#_응답_body_14">응답 Body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 431
+
+{"responseList":[{"interviewId":16,"nickname":"최정우99","interviewTitle":"면접 테스트","questionCount":0},{"interviewId":1,"nickname":"최정우99","interviewTitle":"백엔드 개발자 면접","questionCount":3}],"pagingUtil":{"totalElements":2,"totalPages":1,"pageNumber":1,"pageSize":10,"totalPageGroups":1,"pageGroupSize":5,"pageGroup":1,"startPage":1,"endPage":1,"existPrePageGroup":false,"existNextPageGroup":false}}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.totalElements</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total number of elements</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.totalPages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 페이지 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.pageNumber</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.pageSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지당 항목 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.totalPageGroups</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 페이지 그룹 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.pageGroupSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 그룹당 페이지 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.pageGroup</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지 그룹</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.startPage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">시작 페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.endPage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">끝 페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.existPrePageGroup</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이전 페이지 그룹 존재 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pagingUtil.existNextPageGroup</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">다음 페이지 그룹 존재 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].interviewId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접의 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].interviewTitle</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접의 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접관의 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>responseList[].questionCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">면접의 질문 리스트의 질문 수</p></td>
 </tr>
 </tbody>
 </table>
@@ -1610,7 +2372,7 @@ Content-Length: 1214
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-07-06 16:17:22 +0900
+Last updated 2023-07-06 16:54:42 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
