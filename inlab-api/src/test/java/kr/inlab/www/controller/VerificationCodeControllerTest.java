@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.inlab.www.dto.request.RequestCheckVerificationCode;
-import kr.inlab.www.service.VerificationService;
+import kr.inlab.www.service.VerificationCodeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ class VerificationCodeControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private VerificationService verificationService;
+    private VerificationCodeService verificationCodeService;
 
     private final static String EMAIL = "jwoo1016@gmail.com";
     private final static String VERIFICATION_CODE = "verificationCode";
@@ -50,7 +50,7 @@ class VerificationCodeControllerTest {
     @Transactional
     void createVerificationCode_shouldSendEmailAndReturnCreatedStatus() throws Exception {
 
-        when(verificationService.createVerificationCode(EMAIL))
+        when(verificationCodeService.createVerificationCode(EMAIL))
             .thenReturn("verificationCode");
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/verification_code")
@@ -72,7 +72,7 @@ class VerificationCodeControllerTest {
     @Transactional
     void createVerificationCodeForUpdate_shouldSendEmailAndReturnCreatedStatus() throws Exception {
 
-        when(verificationService.createVerificationCodeForUpdate(EMAIL))
+        when(verificationCodeService.createVerificationCodeForUpdate(EMAIL))
             .thenReturn("verificationCode");
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/api/verification_code")
@@ -97,7 +97,7 @@ class VerificationCodeControllerTest {
         RequestCheckVerificationCode requestDto = new RequestCheckVerificationCode(EMAIL, VERIFICATION_CODE);
 
         // Act
-        when(verificationService.checkVerificationCode(any(RequestCheckVerificationCode.class)))
+        when(verificationCodeService.checkVerificationCode(any(RequestCheckVerificationCode.class)))
             .thenReturn(true);
 
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/verification_code/check")
