@@ -385,3 +385,24 @@ include::{snippets}/get-gpt-comment/request-headers.adoc[]
 include::{snippets}/get-gpt-comment/http-response.adoc[]
 include::{snippets}/get-gpt-comment/response-fields.adoc[]
 
+== Question CONTROLLER
+
+=== 질문 생성 / POST
+질문 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-question/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/create-question/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-question/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-question/http-response.adoc[]
+include::{snippets}/create-question/response-body.adoc[]

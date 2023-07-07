@@ -42,7 +42,6 @@ public class QuestionController {
 	@GetMapping
 	public ResponseEntity<ResponseListDto<ResponseGetQuestionsDto>> getQuestions(@ModelAttribute RequestQuestionsDto requestDto) {
 		ResponseListDto<ResponseGetQuestionsDto> responseDto = questionService.getQuestions(requestDto);
-
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
@@ -50,16 +49,13 @@ public class QuestionController {
 	@GetMapping("/{questionId}")
 	public ResponseEntity<ResponseGetQuestionDto> getQuestion(@PathVariable Long questionId) {
 		ResponseGetQuestionDto responseDto = questionService.getQuestion(questionId);
-
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
 	// 해당 질문에 대한 질문 버전 전체 조회 (#13)
-	// 데이터 : title, position, question_type, question_level, version(전부),
 	@GetMapping("/{questionId}/question_versions")
 	public ResponseEntity<ResponseListDto<ResponseQuestionVersionsDto>> getQuestionVersions(@ModelAttribute RequestQuestionVersionsDto requestDto, @PathVariable Long questionId) {
 		ResponseListDto<ResponseQuestionVersionsDto> responseDto = questionService.getQuestionVersions(requestDto, questionId);
-
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
@@ -67,8 +63,6 @@ public class QuestionController {
 	@PatchMapping("/{questionId}")
 	public ResponseEntity<Void> updateQuestion(@RequestBody RequestUpdateQuestionDto requestDto, @PathVariable Long questionId) {
 		questionService.updateQuestion(requestDto, questionId);
-
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
-
 }
