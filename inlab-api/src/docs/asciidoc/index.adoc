@@ -385,3 +385,50 @@ include::{snippets}/get-gpt-comment/request-headers.adoc[]
 include::{snippets}/get-gpt-comment/http-response.adoc[]
 include::{snippets}/get-gpt-comment/response-fields.adoc[]
 
+== POSITIONLEVEL CONTROLLER
+
+=== 질문 접근 권한 조회 / GET
+질문 접근 권한 조회에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/get-position-level/http-request.adoc[]
+
+==== 요청 Header
+
+include::{snippets}/get-position-level/request-headers.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/get-position-level/http-response.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/get-position-level/response-body.adoc[]
+
+==== 응답 Field
+
+include::{snippets}/get-position-level/response-fields.adoc[]
+
+=== 질문 접근 권한 수정 / PUT
+질문 접근 권한 수정에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/update-position-level/http-request.adoc[]
+
+==== 요청 HTTP Header
+
+include::{snippets}/update-position-level/request-headers.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/update-position-level/request-body.adoc[]
+
+==== 요청 Field
+
+include::{snippets}/update-position-level/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/update-position-level/http-response.adoc[]
