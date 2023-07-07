@@ -15,8 +15,10 @@ import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
 import kr.inlab.www.dto.request.RequestQuestionsDto;
 import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
+import kr.inlab.www.dto.response.RequestQuestionVersionsDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
+import kr.inlab.www.dto.response.ResponseQuestionVersionsDto;
 import kr.inlab.www.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +56,12 @@ public class QuestionController {
 
 	// 해당 질문에 대한 질문 버전 전체 조회 (#13)
 	// 데이터 : title, position, question_type, question_level, version(전부),
+	@GetMapping("/{questionId}/question_versions")
+	public ResponseEntity<ResponseListDto<ResponseQuestionVersionsDto>> getQuestionVersions(@ModelAttribute RequestQuestionVersionsDto requestDto, @PathVariable Long questionId) {
+		ResponseListDto<ResponseQuestionVersionsDto> responseDto = questionService.getQuestionVersions(requestDto, questionId);
 
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
 
 	// 질문 수정 (#16)
 	@PatchMapping("/{questionId}")
