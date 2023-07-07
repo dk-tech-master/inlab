@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -111,6 +112,31 @@ class InterviewControllerTest {
                                 fieldWithPath("responseList[].interviewTitle").description("면접의 제목"),
                                 fieldWithPath("responseList[].nickname").description("면접관의 이름"),
                                 fieldWithPath("responseList[].questionCount").description("면접의 질문 리스트의 질문 수")))
+                );
+    }
+
+    @Test
+    @Transactional
+    void 면접제목_수정_테스트() throws Exception {
+        Interview interview = createInterview();
+        RequestCreateInterviewDto requestDto = RequestCreateInterviewDto.builder()
+                .interviewTitle("면접 수정 테스트")
+                .build();
+        String json = objectMapper.writeValueAsString(requestDto);
+
+        mockMvc.perform(put("/api/interview/{interviewId}",interview.getInterviewId())
+                    .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .characterEncoding(StandardCharsets.UTF_8)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "put-interview",
+                        requestHeaders(headerWithName("Authorization").description("JWT Token")),
+                        requestFields(fieldWithPath("userId").description("로그인한 사용자"),
+                                fieldWithPath("interviewTitle").description("면접 제목")))
                 );
     }
 

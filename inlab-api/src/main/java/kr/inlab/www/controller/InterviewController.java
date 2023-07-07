@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ResourceBundle;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/interview")
@@ -28,5 +30,11 @@ public class InterviewController {
     public ResponseEntity getInterview(@ModelAttribute RequestGetInterviewDto requestDto, @PathVariable Long userId){
         ResponseListDto<ResponseInterviewDto> responseDto = interviewService.getInterview(userId, requestDto);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @PutMapping("/{InterviewId}")
+    public ResponseEntity putInterview(@RequestBody RequestCreateInterviewDto requestDto,@PathVariable Long InterviewId) {
+        interviewService.putInterview(InterviewId,requestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

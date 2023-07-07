@@ -12,6 +12,8 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
 
     boolean existsByTitle(String title);
 
+    boolean existsByTitleAndInterviewIdNot(String title, Long interviewId);
+
     @Query("SELECT new kr.inlab.www.dto.response.ResponseInterviewDto(i.interviewId, u.nickname, i.title, COUNT(iq)) " +
             "FROM Interview i JOIN i.user u LEFT JOIN i.questions iq " +
             "WHERE u.userId = :userId AND i.title LIKE concat('%', :title, '%') " +
