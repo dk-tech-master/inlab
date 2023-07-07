@@ -13,12 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.inlab.www.common.exception.*;
 import kr.inlab.www.common.type.YesNo;
 import kr.inlab.www.common.util.PagingUtil;
+import kr.inlab.www.dto.common.RequestListDto;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
 import kr.inlab.www.dto.request.RequestQuestionsDto;
 import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
+import kr.inlab.www.dto.response.ResponseQuestionVersionsDto;
 import kr.inlab.www.entity.Checklist;
 import kr.inlab.www.entity.Position;
 import kr.inlab.www.entity.Question;
@@ -63,17 +65,14 @@ public class QuestionServiceImpl implements QuestionService {
 			.orElseThrow(PositionNotFoundException::new);
 		QuestionType questionType = questionTypeRepository.findById(requestDto.getQuestionTypeId())
 			.orElseThrow(QuestionTypeNotFoundException::new);
-
 		// question 저장
 		Question question = questionRepository.save(Question.builder()
 			.position(position)
 			.questionType(questionType)
 			.build());
-
 		// questionLevelId 받아오기
 		QuestionLevel questionLevel = questionLevelRepository.findById(requestDto.getQuestionLevelId())
 			.orElseThrow(QuestionLevelNotFoundException::new);
-
 		// question_version 저장
 		QuestionVersion questionVersion = questionVersionRepository.save(QuestionVersion.builder()
 			.title(requestDto.getTitle())
@@ -122,38 +121,41 @@ public class QuestionServiceImpl implements QuestionService {
 			requestDto.getTitleKeyword(),
 			pageable
 		);
-
 		PagingUtil pagingUtil = new PagingUtil(questionList.getTotalElements(), questionList.getTotalPages(), questionList.getNumber(), questionList.getSize());
 
 		return new ResponseListDto<ResponseGetQuestionsDto>(questionList.getContent(), pagingUtil);
 	}
 
+	@Override
+	public ResponseListDto<ResponseQuestionVersionsDto> getQuestionVersions(RequestListDto requestDto, Long questionId) {
+		Sort sort  = Sort.by(Sort.Direction.DESC, "version");
+		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), sort);
+		Page<ResponseQuestionVersionsDto> questionVersionList = questionVersionRepository.findQuestionVersions(questionId, pageable);
+		PagingUtil pagingUtil = new PagingUtil(questionVersionList.getTotalElements(), questionVersionList.getTotalPages(), questionVersionList.getNumber(), questionVersionList.getSize());
+
+		return new ResponseListDto<ResponseQuestionVersionsDto>(questionVersionList.getContent(), pagingUtil);
+	}
+
 	@Transactional
 	@Override
 	public void updateQuestion(RequestUpdateQuestionDto requestDto, Long questionId) {
-
 		// questionId를 사용하여 기존의 질문을 가져옵니다.
 		Question question = questionRepository.findById(questionId)
 			.orElseThrow(QuestionNotFoundException::new);
-
 		// requestDto에서 position과 question type을 가져옵니다.
 		Position position = positionRepository.findById(requestDto.getPositionId())
 			.orElseThrow(PositionNotFoundException::new);
 		QuestionType questionType = questionTypeRepository.findById(requestDto.getQuestionTypeId())
 			.orElseThrow(QuestionVersionNotFoundException::new);
-
 		// 질문을 업데이트합니다.
 		question.updatePosition(position);
 		question.updateQuestionType(questionType);
-
 		// requestDto에서 questionLevel을 가져옵니다.
 		QuestionLevel questionLevel = questionLevelRepository.findById(requestDto.getQuestionLevelId())
 			.orElseThrow(QuestionLevelNotFoundException::new);
-
 		// 가장 최신의 questionVersion을 가져옵니다.
 		QuestionVersion latestQuestionVersion = questionVersionRepository.findTopByQuestionAndIsLatest(question, YesNo.Y)
 			.orElseThrow(LatestQuestionVersionNotFoundException::new);
-
 		// 질문의 새 버전을 생성합니다.
 		QuestionVersion newQuestionVersion = QuestionVersion.builder()
 			.title(requestDto.getTitle())
@@ -161,13 +163,10 @@ public class QuestionServiceImpl implements QuestionService {
 			.question(question)
 			.questionLevel(questionLevel)
 			.build();
-
 		// 새 버전을 저장합니다.
 		QuestionVersion savedQuestionVersion = questionVersionRepository.save(newQuestionVersion);
-
 		// 새 버전에 대한 새로운 체크리스트를 생성합니다.
 		saveChecklists(requestDto.getChecklists(), savedQuestionVersion);
-
 		// 마지막으로, 이전 버전을 최신이 아님으로 표시합니다.
 		latestQuestionVersion.updateIsLatest(YesNo.N);
 	}
