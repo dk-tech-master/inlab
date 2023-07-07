@@ -1,5 +1,6 @@
 package kr.inlab.www.entity;
 
+import kr.inlab.www.dto.common.PositionLevelInfoGetter;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PositionLevel {
+public class PositionLevel implements PositionLevelInfoGetter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +35,15 @@ public class PositionLevel {
         this.position = position;
         this.questionLevel = questionLevel;
         this.user = user;
+    }
+
+    @Override
+    public Integer getPositionId() {
+        return position.getPositionId();
+    }
+
+    @Override
+    public Integer getLevelId() {
+        return questionLevel.getQuestionLevelId();
     }
 }
