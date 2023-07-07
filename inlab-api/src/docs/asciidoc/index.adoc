@@ -385,6 +385,8 @@ include::{snippets}/get-gpt-comment/request-headers.adoc[]
 include::{snippets}/get-gpt-comment/http-response.adoc[]
 include::{snippets}/get-gpt-comment/response-fields.adoc[]
 
+---
+
 == Question CONTROLLER
 
 === 질문 생성 / POST
