@@ -44,4 +44,14 @@ public class Question {
         this.position = position;
         this.questionType = questionType;
     }
+
+    // update 메서드
+    public void updatePosition(Position newPosition) {
+        this.position = newPosition;
+    }
+
+    public void updateQuestionType(QuestionType newQuestionType) {
+        this.questionType = newQuestionType;
+    }
+
 }

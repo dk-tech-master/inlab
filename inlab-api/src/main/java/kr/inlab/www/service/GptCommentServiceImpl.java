@@ -1,6 +1,8 @@
 package kr.inlab.www.service;
 
+import io.github.flashvayne.chatgpt.service.ChatgptService;
 import kr.inlab.www.common.exception.GptCommentNotFoundException;
+import kr.inlab.www.dto.response.ResponseGptCommentDto;
 import kr.inlab.www.dto.response.ResponseGptCommentIdDto;
 import kr.inlab.www.entity.Checklist;
 import kr.inlab.www.entity.GptComment;
@@ -19,6 +21,7 @@ public class GptCommentServiceImpl implements GptCommentService {
 
     private final GptCommentRepository gptCommentRepository;
     private final ChecklistService checklistService;
+    private final ChatgptService chatgptService;
 
     @Transactional
     @Override
@@ -39,6 +42,22 @@ public class GptCommentServiceImpl implements GptCommentService {
                 .orElseThrow(GptCommentNotFoundException::new);
 
         return gptComment.toResponseGptCommentIdDto();
+    }
+
+    @Transactional
+    @Override
+    public ResponseGptCommentDto getGptComment(Long gptCommentId) {
+        GptComment gptComment = gptCommentRepository.findById(gptCommentId)
+                .orElseThrow(GptCommentNotFoundException::new);
+
+        String gptResponse = chatgptService.sendMessage(gptComment.getRequestContent());
+        gptComment.saveGptResponse(gptResponse);
+
+        return ResponseGptCommentDto.builder()
+                .gptCommentId(gptCommentId)
+                .requestContent(gptComment.getRequestContent())
+                .responseContent(gptResponse)
+                .build();
     }
 
     private String getRequestContent(String title, List<Checklist> checklists, String content) {
