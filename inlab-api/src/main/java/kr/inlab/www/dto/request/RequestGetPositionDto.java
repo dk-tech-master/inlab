@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @SuperBuilder
-public class RequestPositionDto extends RequestListDto {
+public class RequestGetPositionDto extends RequestListDto {
 
     private String positionName;
 }

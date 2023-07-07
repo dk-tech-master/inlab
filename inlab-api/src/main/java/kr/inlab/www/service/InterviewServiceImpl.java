@@ -1,6 +1,8 @@
 package kr.inlab.www.service;
 
 import kr.inlab.www.common.exception.InterviewAlreadyExistsException;
+import kr.inlab.www.common.exception.InterviewNotFoundException;
+import kr.inlab.www.common.exception.InterviewTitleDuplicateException;
 import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.ResponseListDto;
@@ -51,5 +53,17 @@ public class InterviewServiceImpl implements InterviewService{
         PagingUtil pagingUtil = new PagingUtil(interviewList.getTotalElements(), interviewList.getTotalPages(), interviewList.getNumber(), interviewList.getSize());
 
         return new ResponseListDto<>(interviewList.getContent(), pagingUtil);
+    }
+
+    @Override
+    @Transactional
+    public void putInterview(Long interviewId ,RequestCreateInterviewDto requestDto) {
+        Interview interview = interviewRepository.findById(interviewId)
+                .orElseThrow(InterviewNotFoundException::new);
+
+        if(interviewRepository.existsByTitleAndInterviewIdNot(requestDto.getInterviewTitle(),interviewId)){
+            throw new InterviewTitleDuplicateException();}
+
+        interview.updateTitle(requestDto.getInterviewTitle());
     }
 }

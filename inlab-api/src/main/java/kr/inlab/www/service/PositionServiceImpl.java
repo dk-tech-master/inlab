@@ -5,7 +5,7 @@ import kr.inlab.www.common.exception.PositionAlreadyExistsException;
 import kr.inlab.www.common.exception.PositionNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.ResponseListDto;
-import kr.inlab.www.dto.request.RequestPositionDto;
+import kr.inlab.www.dto.request.RequestGetPositionDto;
 import kr.inlab.www.dto.request.RequestPositionNameDto;
 import kr.inlab.www.dto.response.ResponsePositionDto;
 import kr.inlab.www.entity.Position;
@@ -19,7 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,13 +40,12 @@ public class PositionServiceImpl implements PositionService{
     }
 
     @Override
-    public ResponseListDto<ResponsePositionDto> getPosition(RequestPositionDto requestDto) {
+    public ResponseListDto<ResponsePositionDto> getPosition(RequestGetPositionDto requestDto) {
         Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), Sort.Direction.DESC, "positionId");
         Page<ResponsePositionDto> positionList = positionRepository.getPositionsList(requestDto.getPositionName(), pageable);
         PagingUtil pagingUtil = new PagingUtil(positionList.getTotalElements(), positionList.getTotalPages(), positionList.getNumber(), positionList.getSize());
 
         return new ResponseListDto<ResponsePositionDto>(positionList.getContent(),pagingUtil);
-
     }
 
     @Override

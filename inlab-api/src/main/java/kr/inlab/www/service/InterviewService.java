@@ -11,4 +11,5 @@ public interface InterviewService {
 
     ResponseListDto<ResponseInterviewDto> getInterview(Long userId ,RequestGetInterviewDto requestDto);
 
+    void putInterview(Long interviewId, RequestCreateInterviewDto requestDto);
 }
