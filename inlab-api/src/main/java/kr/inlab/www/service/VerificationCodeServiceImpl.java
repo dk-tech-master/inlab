@@ -1,7 +1,6 @@
 package kr.inlab.www.service;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import javax.transaction.Transactional;
@@ -11,15 +10,15 @@ import kr.inlab.www.common.exception.ExpiredVerificationCodeException;
 import kr.inlab.www.dto.request.RequestCheckVerificationCode;
 import kr.inlab.www.entity.VerificationCode;
 import kr.inlab.www.repository.UserRepository;
-import kr.inlab.www.repository.VerificationRepository;
+import kr.inlab.www.repository.VerificationCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class VerificationServiceImpl implements VerificationService {
+public class VerificationCodeServiceImpl implements VerificationCodeService {
 
-    private final VerificationRepository verificationRepository;
+    private final VerificationCodeRepository verificationCodeRepository;
     private final UserRepository userRepository;
     public static final long VERIFICATION_CODE_VALIDITY_MINUTE = 3;
 
@@ -55,19 +54,19 @@ public class VerificationServiceImpl implements VerificationService {
     }
 
     private void checkVerificationAlreadyIssuedAndThenUpdate(String email, VerificationCode verificationCode) {
-        Optional<VerificationCode> verificationCodeByEmail = verificationRepository.findByEmail(email);
+        Optional<VerificationCode> verificationCodeByEmail = verificationCodeRepository.findByEmail(email);
 
         if(verificationCodeByEmail.isEmpty()){
-            verificationRepository.save(verificationCode);
+            verificationCodeRepository.save(verificationCode);
         } else {
-            verificationRepository.delete(verificationCodeByEmail.get());
-            verificationRepository.save(verificationCode);
+            verificationCodeRepository.delete(verificationCodeByEmail.get());
+            verificationCodeRepository.save(verificationCode);
         }
     }
 
     @Override
     public boolean checkVerificationCode(RequestCheckVerificationCode request) throws ExpiredVerificationCodeException {
-        VerificationCode verificationCode = verificationRepository.findByEmail(request.getEmail())
+        VerificationCode verificationCode = verificationCodeRepository.findByEmail(request.getEmail())
             .orElseThrow(EmailNotFoundException::new);
         checkExpiredVerificationCode(verificationCode);
         return verificationCode.getCode().equalsIgnoreCase(request.getVerificationCode());
