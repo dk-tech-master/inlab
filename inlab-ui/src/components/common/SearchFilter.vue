@@ -7,7 +7,7 @@
           >직무</label
         >
         <select
-          class="font-medium select select-primary select-sm border-gray-300 max-w-xs"
+          class="bg-gray-50 font-medium select select-primary select-sm border-gray-300 max-w-xs"
         >
           <option value="프론트앤드">프론트엔드</option>
           <option value="백엔드">백엔드</option>

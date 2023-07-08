@@ -1,8 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/TestView.vue";
-import UserLogin from "../views/users/UserLogin.vue";
-import SignUp from "../views/users/SignUp.vue";
-import UpdatePassword from "../views/users/UpdatePassword.vue";
+import StartInterview from "@/views/interview/StartInterview.vue";
+import SignInView from "@/views/users/SignInView.vue";
+import SignUpView from "@/views/users/SignUpView.vue";
+import UpdatePasswordView from "@/views/users/UpdatePasswordView.vue";
+import InterviewProcess from "@/views/interview/InterviewProcess.vue";
+import InterviewManagement from "@/views/interview/InterviewManagement.vue";
+import InterviewDetail from "@/views/interview/InterviewDetail.vue";
+import InterviewQuestionManagement from "@/views/interview/InterviewQuestionManagement.vue";
+import InterviewResultManagement from "@/views/interview/InterviewResultManagement.vue";
+import InterviewResultDetail from "@/views/interview/InterviewResultDetail.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,19 +20,54 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/login",
-      name: "login",
-      component: UserLogin,
+      path: "/signIn",
+      name: "signIn",
+      component: SignInView,
     },
     {
       path: "/signUp",
       name: "signUp",
-      component: SignUp,
+      component: SignUpView,
+    },
+    {
+      path: "/startInterview",
+      name: "startInterview",
+      component: StartInterview,
     },
     {
       path: "/updatePassword",
       name: "updatePassword",
-      component: UpdatePassword,
+      component: UpdatePasswordView,
+    },
+    {
+      path: "/interviewProcess",
+      name: "interviewProcess",
+      component: InterviewProcess,
+    },
+    {
+      path: "/interviewManagement",
+      name: "interviewManagement",
+      component: InterviewManagement,
+    },
+    {
+      path: "/interviewResultManagement",
+      name: "interviewResultManagement",
+      component: InterviewResultManagement,
+    },
+    {
+      path: "/interviewDetail",
+      name: "interviewDetail",
+      component: InterviewDetail,
+    },
+    {
+      path: "/interviewQuestionManagement",
+      name: "interviewQuestionManagement",
+      component: InterviewQuestionManagement,
+    },
+    {
+      path: "/interviewResultDetail",
+      name: "interviewResultDetail",
+      component: InterviewResultDetail,
     },
   ],
 });

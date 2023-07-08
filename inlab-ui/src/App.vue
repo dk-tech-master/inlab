@@ -1,6 +1,6 @@
 <template>
-  <!--  <Header v-if="show" />-->
-  <!--  <SideBar v-if="show" />-->
+  <Header v-if="show" />
+  <SideBar v-if="show" />
   <RouterView />
 </template>
 

@@ -17,9 +17,11 @@
   <!--  </teleport>-->
   <!--  <Pagination />-->
   <!--</template>-->
+  <!--  <Pagination />-->
 </template>
 <script setup>
-// import VSearchFilter from "@/components/teleport/VSearchFilter.vue";
+// import VSearchFilter from "@/components/teleport/SearchFilter.vue";
 // import VquestionManagement from "@/components/teleport/VQuestionManagement.vue";
 // import Pagination from "@/components/common/Pagination.vue";
+import Pagination from "@/components/common/Pagination.vue";
 </script>
