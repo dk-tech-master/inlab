@@ -91,7 +91,6 @@
     <Pagination />
   </section>
 </template>
-
 <script setup>
 import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";

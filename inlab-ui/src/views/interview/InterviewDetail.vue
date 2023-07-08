@@ -152,7 +152,6 @@
     <Pagination />
   </section>
 </template>
-
 <script setup>
 import Pagination from "@/components/common/Pagination.vue";
 

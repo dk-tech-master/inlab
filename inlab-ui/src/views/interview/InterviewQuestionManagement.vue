@@ -19,7 +19,6 @@
         <VSearchFilter />
       </div>
     </div>
-
     <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
       <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
         <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
