@@ -16,6 +16,7 @@ import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.RequestListDto;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
+import kr.inlab.www.dto.request.RequestCreateRelatedQuestionDto;
 import kr.inlab.www.dto.request.RequestQuestionsDto;
 import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
@@ -27,12 +28,14 @@ import kr.inlab.www.entity.Question;
 import kr.inlab.www.entity.QuestionLevel;
 import kr.inlab.www.entity.QuestionType;
 import kr.inlab.www.entity.QuestionVersion;
+import kr.inlab.www.entity.RelatedQuestion;
 import kr.inlab.www.repository.ChecklistRepository;
 import kr.inlab.www.repository.PositionRepository;
 import kr.inlab.www.repository.QuestionLevelRepository;
 import kr.inlab.www.repository.QuestionRepository;
 import kr.inlab.www.repository.QuestionTypeRepository;
 import kr.inlab.www.repository.QuestionVersionRepository;
+import kr.inlab.www.repository.RelatedQuestionRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -45,6 +48,7 @@ public class QuestionServiceImpl implements QuestionService {
 	private final QuestionTypeRepository questionTypeRepository;
 	private final QuestionLevelRepository questionLevelRepository;
 	private final ChecklistRepository checklistRepository;
+	private final RelatedQuestionRepository relatedQuestionRepository;
 
 	private void saveChecklists(List<String> checklists, QuestionVersion questionVersion) {
 		List<Checklist> checklistEntities = checklists.stream()
@@ -160,4 +164,23 @@ public class QuestionServiceImpl implements QuestionService {
 		saveChecklists(requestDto.getChecklists(), savedQuestionVersion);
 		latestQuestionVersion.updateIsLatest(YesNo.N);
 	}
+
+	@Transactional
+	@Override
+	public void createRelatedQuestion(RequestCreateRelatedQuestionDto requestDto, Long questionId) {
+		Question headQuestion = questionRepository.findById(questionId)
+			.orElseThrow(QuestionNotFoundException::new);
+		List<RelatedQuestion> relatedQuestions = requestDto.getTailQuestionIds().stream()
+				.map(tailQuestionId -> {
+					Question tailQuestion = questionRepository.findById(tailQuestionId)
+						.orElseThrow(QuestionNotFoundException::new);
+					return RelatedQuestion.builder()
+						.headQuestion(headQuestion)
+						.tailQuestion(tailQuestion)
+						.build();
+				}).collect(Collectors.toList());
+
+		relatedQuestionRepository.saveAll(relatedQuestions);
+	}
+
 }

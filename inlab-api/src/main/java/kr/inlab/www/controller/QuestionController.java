@@ -2,6 +2,7 @@ package kr.inlab.www.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
+import kr.inlab.www.dto.request.RequestCreateRelatedQuestionDto;
 import kr.inlab.www.dto.request.RequestQuestionsDto;
 import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
 import kr.inlab.www.dto.response.RequestQuestionVersionsDto;
@@ -21,9 +23,7 @@ import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
 import kr.inlab.www.dto.response.ResponseQuestionVersionsDto;
 import kr.inlab.www.service.QuestionService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/questions")
@@ -59,10 +59,30 @@ public class QuestionController {
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
-	// 질문 수정 (#16)
+	// 질문 수정(버전 업) (#16)
 	@PatchMapping("/{questionId}")
 	public ResponseEntity<Void> updateQuestion(@RequestBody RequestUpdateQuestionDto requestDto, @PathVariable Long questionId) {
 		questionService.updateQuestion(requestDto, questionId);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+
+	// 해당 질문에 대한 꼬리 질문 등록 (#17)
+	@PostMapping("/{questionId}/related_questions")
+	public ResponseEntity<Void> createRelatedQuestion(@RequestBody RequestCreateRelatedQuestionDto requestDto, @PathVariable Long questionId) {
+		questionService.createRelatedQuestion(requestDto, questionId);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
+	// 해당 질문에 대한 꼬리 질문 전체 조회 (#17)
+	// @GetMapping("/{questionId}/related_questions")
+	// public ResponseEntity<ResponseRelatedQuestions> getRelatedQuestions() {
+	// 	return ResponseEntity.status(HttpStatus.OK).body();
+	// }
+
+	// 해당 질문에 대한 꼬리 질문 삭제 (#17)
+	// @DeleteMapping("/{questionId}/related_questions")
+	// public ResponseEntity<Void> deleteRelatedQuestions() {
+	// 	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	// }
+
 }
