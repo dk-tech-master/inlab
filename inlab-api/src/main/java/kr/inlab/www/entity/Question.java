@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicInsert;
 
@@ -45,13 +44,8 @@ public class Question {
         this.questionType = questionType;
     }
 
-    // update 메서드
-    public void updatePosition(Position newPosition) {
+    public void update(Position newPosition, QuestionType newQuestionType) {
         this.position = newPosition;
-    }
-
-    public void updateQuestionType(QuestionType newQuestionType) {
         this.questionType = newQuestionType;
     }
-
 }
