@@ -17,7 +17,7 @@ import kr.inlab.www.dto.request.RequestCreateQuestionDto;
 import kr.inlab.www.dto.request.RequestCreateRelatedQuestionDto;
 import kr.inlab.www.dto.request.RequestQuestionsDto;
 import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
-import kr.inlab.www.dto.response.RequestQuestionVersionsDto;
+import kr.inlab.www.dto.request.RequestQuestionVersionsDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
 import kr.inlab.www.dto.response.ResponseQuestionVersionsDto;
@@ -73,16 +73,18 @@ public class QuestionController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	// 해당 질문에 대한 꼬리 질문 전체 조회 (#17)
+	// // 해당 질문에 대한 꼬리 질문 전체 조회 (#17)
 	// @GetMapping("/{questionId}/related_questions")
 	// public ResponseEntity<ResponseRelatedQuestions> getRelatedQuestions() {
 	// 	return ResponseEntity.status(HttpStatus.OK).body();
 	// }
 
 	// 해당 질문에 대한 꼬리 질문 삭제 (#17)
-	// @DeleteMapping("/{questionId}/related_questions")
-	// public ResponseEntity<Void> deleteRelatedQuestions() {
-	// 	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	// }
+	@DeleteMapping("/related_questions/{relatedQuestionId}")
+	public ResponseEntity<Void> deleteRelatedQuestion(
+		@PathVariable Long relatedQuestionId) {
+		questionService.deleteRelatedQuestion(relatedQuestionId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
 
 }

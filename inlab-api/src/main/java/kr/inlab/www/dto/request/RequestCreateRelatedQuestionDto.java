@@ -1,8 +1,5 @@
 package kr.inlab.www.dto.request;
 
-import java.util.List;
-
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,10 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestCreateRelatedQuestionDto {
 
-	private List<Long> tailQuestionIds;
-
-	@Builder
-	public RequestCreateRelatedQuestionDto(List<Long> tailQuestionId) {
-		this.tailQuestionIds = tailQuestionIds;
-	}
+	private Long tailQuestionId;
 }

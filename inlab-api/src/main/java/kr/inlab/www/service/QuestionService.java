@@ -22,4 +22,6 @@ public interface QuestionService {
 	void updateQuestion(RequestUpdateQuestionDto requestDto, Long questionId);
 
 	void createRelatedQuestion(RequestCreateRelatedQuestionDto requestDto, Long questionId);
+
+	void deleteRelatedQuestion(Long relatedQuestionId);
 }

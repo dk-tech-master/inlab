@@ -145,8 +145,7 @@ public class QuestionServiceImpl implements QuestionService {
 		QuestionType questionType = questionTypeRepository.findById(requestDto.getQuestionTypeId())
 			.orElseThrow(QuestionVersionNotFoundException::new);
 
-		question.updatePosition(position);
-		question.updateQuestionType(questionType);
+		question.update(position, questionType);
 
 		QuestionLevel questionLevel = questionLevelRepository.findById(requestDto.getQuestionLevelId())
 			.orElseThrow(QuestionLevelNotFoundException::new);
@@ -170,17 +169,21 @@ public class QuestionServiceImpl implements QuestionService {
 	public void createRelatedQuestion(RequestCreateRelatedQuestionDto requestDto, Long questionId) {
 		Question headQuestion = questionRepository.findById(questionId)
 			.orElseThrow(QuestionNotFoundException::new);
-		List<RelatedQuestion> relatedQuestions = requestDto.getTailQuestionIds().stream()
-				.map(tailQuestionId -> {
-					Question tailQuestion = questionRepository.findById(tailQuestionId)
-						.orElseThrow(QuestionNotFoundException::new);
-					return RelatedQuestion.builder()
-						.headQuestion(headQuestion)
-						.tailQuestion(tailQuestion)
-						.build();
-				}).collect(Collectors.toList());
+		Question tailQuestion = questionRepository.findById(requestDto.getTailQuestionId())
+			.orElseThrow(QuestionNotFoundException::new);
 
-		relatedQuestionRepository.saveAll(relatedQuestions);
+		relatedQuestionRepository.save(RelatedQuestion.builder()
+			.headQuestion(headQuestion)
+			.tailQuestion(tailQuestion)
+			.build());
 	}
 
+	@Transactional
+	@Override
+	public void deleteRelatedQuestion(Long relatedQuestionId) {
+		RelatedQuestion relatedQuestion = relatedQuestionRepository.findById(relatedQuestionId)
+			.orElseThrow(QuestionNotFoundException::new);
+
+		relatedQuestionRepository.delete(relatedQuestion);
+	}
 }
