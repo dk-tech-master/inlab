@@ -1,5 +1,5 @@
 <template>
-  <header class="ml-80 mt-8">
+  <header class="mt-8">
     <div class="mb-10">
       <p class="mb-1 text-sm font-light text-gray-500">
         면접 관리 >
@@ -33,7 +33,7 @@
       </div>
     </div>
   </header>
-  <section class="ml-80 mr-16 mt-8">
+  <section class="mr-16 mt-8">
     <button
       class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-7 py-5"
     >

@@ -1,5 +1,5 @@
 <template>
-  <header class="ml-80 mt-8">
+  <header class="mt-8">
     <div>
       <div class="mb-10">
         <p class="mb-1 text-sm font-light text-gray-500">
@@ -19,7 +19,7 @@
     </div>
   </header>
 
-  <section class="w-3/4 mx-auto ml-80">
+  <section class="w-3/4 mx-auto">
     <div class="flex justify-between items-end border-b-2">
       <span class="mb-2 text-base font-semibold text-gray-800">질문01</span>
       <div class="flex mb-2">
