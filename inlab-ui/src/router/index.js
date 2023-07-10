@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/TestView.vue";
+import HomeView from "../views/AudioTestView.vue";
 import StartInterview from "@/views/interview/StartInterview.vue";
 import SignInView from "@/views/users/SignInView.vue";
 import SignUpView from "@/views/users/SignUpView.vue";
@@ -10,10 +10,16 @@ import InterviewDetail from "@/views/interview/InterviewDetail.vue";
 import InterviewQuestionManagement from "@/views/interview/InterviewQuestionManagement.vue";
 import InterviewResultManagement from "@/views/interview/InterviewResultManagement.vue";
 import InterviewResultDetail from "@/views/interview/InterviewResultDetail.vue";
+import AudioTestView from "@/views/AudioTestView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/audioTest",
+      name: "audioTest",
+      component: AudioTestView,
+    },
     {
       path: "/",
       name: "home",
