@@ -46,7 +46,6 @@ public class QuestionServiceImpl implements QuestionService {
 	private final QuestionTypeRepository questionTypeRepository;
 	private final QuestionLevelRepository questionLevelRepository;
 	private final ChecklistRepository checklistRepository;
-	private final RelatedQuestionRepository relatedQuestionRepository;
 
 	private void saveChecklists(List<String> checklists, QuestionVersion questionVersion) {
 		List<Checklist> checklistEntities = checklists.stream()
