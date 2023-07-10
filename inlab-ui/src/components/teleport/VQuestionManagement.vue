@@ -1,5 +1,4 @@
 <template>
-  <label for="my_modal_7" class="btn">open modal</label>
   <input type="checkbox" id="my_modal_7" class="modal-toggle" />
   <div class="modal">
     <div class="modal-box pt-10 px-10">

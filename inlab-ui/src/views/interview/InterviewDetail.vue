@@ -1,5 +1,5 @@
 <template>
-  <header class="ml-80 mt-8">
+  <header class="mt-8">
     <div class="mb-10">
       <p class="mb-1 text-sm font-light text-gray-500">
         면접 관리 > <span class="font-medium text-indigo-500">면접 상세</span>
@@ -7,7 +7,7 @@
       <h2 class="text-3xl tracking-tight font-bold text-gray-800">면접 상세</h2>
     </div>
   </header>
-  <section class="ml-80 mr-16 mt-8 px-10 py-12 shadow-md">
+  <section class="mr-16 mt-8 px-10 py-12 shadow-md">
     <div class="flex justify-between">
       <h2 class="mb-10 text-2xl font-bold">면접 정보</h2>
       <div class="flex">
@@ -74,7 +74,7 @@
       </div>
     </div>
   </section>
-  <section class="ml-80 mr-16 mt-20">
+  <section class="mr-16 mt-20">
     <div class="flex justify-between">
       <h2 class="mb-10 text-2xl font-bold">면접 질문 리스트</h2>
       <button
