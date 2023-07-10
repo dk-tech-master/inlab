@@ -3,7 +3,7 @@ package kr.inlab.www.service;
 import kr.inlab.www.common.exception.ExpiredVerificationCodeException;
 import kr.inlab.www.dto.request.RequestCheckVerificationCode;
 
-public interface VerificationService {
+public interface VerificationCodeService {
 
     String createVerificationCode(String email);
 

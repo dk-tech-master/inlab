@@ -4,7 +4,6 @@ require('@rushstack/eslint-patch/modern-module-resolution')
 module.exports = {
     root: true,
     'extends': [
-        'airbnb',
         'prettier',
         'plugin:vue/vue3-essential',
         'eslint:recommended',

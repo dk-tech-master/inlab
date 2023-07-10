@@ -261,8 +261,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isSelf(Long userId) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findById(userId).orElse(null);
+        User user = getUserByPathVariableUserId(userId);
+        return isMe(user);
+    }
+
+    @Override
+    public boolean isAdminOrSelf(Long userId) {
+        User user = getUserByPathVariableUserId(userId);
+        return isMe(user) || isAdmin(user);
+    }
+
+    private User getUserByPathVariableUserId(Long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+    private boolean isMe(User user) {
+        String email = getPrincipalFromSecurityContext();
         return user != null && user.getEmail().equals(email);
+    }
+
+    private boolean isAdmin(User user) {
+        return user != null && user.getRoles().stream()
+            .anyMatch(role -> role.getRoleType().equals(RoleType.ROLE_ADMIN));
+    }
+
+    private String getPrincipalFromSecurityContext() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

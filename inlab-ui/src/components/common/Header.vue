@@ -1,5 +1,5 @@
 <template>
-  <nav class="px-10 navbar bg-base-100 shadow flex justify-end">
+  <nav class="px-10 navbar border flex justify-end">
     <div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,12 @@
       </svg>
       <p class="ml-2 mr-10">신다인님</p>
     </div>
-    <button type="submit" class="btn btn-outline btn-primary">로그아웃</button>
+    <button
+      type="submit"
+      class="flex flex-col items-center px-7 py-5 btn btn-primary btn-sm btn btn-outline text-sm"
+    >
+      로그아웃
+    </button>
   </nav>
 </template>
 

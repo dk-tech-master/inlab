@@ -1,7 +1,13 @@
 <template>
-  <!--  <Header v-if="show" />-->
-  <!--  <SideBar v-if="show" />-->
-  <RouterView />
+  <main class="flex">
+    <SideBar v-if="show" />
+    <div class="w-full">
+      <Header v-if="show" />
+      <div class="ml-12">
+        <RouterView />
+      </div>
+    </div>
+  </main>
 </template>
 
 <script setup>

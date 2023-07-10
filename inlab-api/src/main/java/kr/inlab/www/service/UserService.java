@@ -46,4 +46,6 @@ public interface UserService extends UserDetailsService {
     void updateUserBlockUntil(String email);
 
     boolean isSelf(Long userId);
+
+    boolean isAdminOrSelf(Long userId);
 }

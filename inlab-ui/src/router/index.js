@@ -1,31 +1,29 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/TestView.vue";
-import UserLogin from "../views/users/UserLogin.vue";
-import SignUp from "../views/users/SignUp.vue";
-import UpdatePassword from "../views/users/UpdatePassword.vue";
+import questionRoutes from "@/router/questionRoutes";
+import categoryRoutes from "@/router/categoryRoutes";
+import TestView from "@/views/TestView.vue";
+import userRoutes from "@/router/userRoutes";
+import interviewRoutes from "@/router/interviewRoutes";
+import interviewerRoutes from "@/router/interviewerRoutes";
+import AudioTestView from "@/views/AudioTestView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    ...userRoutes,
+    ...interviewRoutes,
+    ...interviewerRoutes,
+    ...questionRoutes,
+    ...categoryRoutes,
+    {
+      path: "/audioTest",
+      name: "audioTest",
+      component: AudioTestView,
+    },
     {
       path: "/",
-      name: "home",
-      component: HomeView,
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: UserLogin,
-    },
-    {
-      path: "/signUp",
-      name: "signUp",
-      component: SignUp,
-    },
-    {
-      path: "/updatePassword",
-      name: "updatePassword",
-      component: UpdatePassword,
+      name: "test",
+      component: TestView,
     },
   ],
 });
