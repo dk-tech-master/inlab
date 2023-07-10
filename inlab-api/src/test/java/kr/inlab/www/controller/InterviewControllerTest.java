@@ -29,8 +29,7 @@ import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -135,6 +134,7 @@ class InterviewControllerTest {
                 .andDo(document(
                         "put-interview",
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
+                        pathParameters(parameterWithName("interviewId").description("면접 Id path variable")),
                         requestFields(fieldWithPath("userId").description("로그인한 사용자"),
                                 fieldWithPath("interviewTitle").description("면접 제목")))
                 );
