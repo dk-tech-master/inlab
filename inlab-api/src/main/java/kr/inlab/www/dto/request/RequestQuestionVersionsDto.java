@@ -1,4 +1,4 @@
-package kr.inlab.www.dto.response;
+package kr.inlab.www.dto.request;
 
 import kr.inlab.www.dto.common.RequestListDto;
 

@@ -26,7 +26,8 @@ public class Position {
     private List<Question> questionList;
 
     @Builder
-    public Position(String positionName) {
+    public Position(Integer positionId, String positionName) {
+        this.positionId = positionId;
         this.positionName = positionName;
     }
 

@@ -458,3 +458,86 @@ include::{snippets}/update-position-level/request-fields.adoc[]
 ==== 응답 HTTP
 
 include::{snippets}/update-position-level/http-response.adoc[]
+
+
+== Question CONTROLLER
+
+=== 질문 생성 / POST
+질문 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-question/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/create-question/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-question/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-question/http-response.adoc[]
+
+=== 질문 전체 및 검색 조회 / GET
+질문 전체 및 검색 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-questions/http-request.adoc[]
+include::{snippets}/get-questions/request-fields.adoc[]
+
+==== Headers
+
+include::{snippets}/get-questions/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-questions/http-response.adoc[]
+include::{snippets}/get-questions/response-fields.adoc[]
+
+=== 질문 상세 조회 / GET
+질문 상세 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-question/http-request.adoc[]
+
+==== 요청 Parameter
+
+include::{snippets}/get-question/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-question/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-question/http-response.adoc[]
+include::{snippets}/get-question/response-fields.adoc[]
+
+
+=== 질문 수정 / GET
+질문 수정에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/update-question/http-request.adoc[]
+
+==== 요청 Parameter
+
+include::{snippets}/update-question/path-parameters.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/update-question/request-fields.adoc[]
+
+==== Headers
+
+include::{snippets}/update-question/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/update-question/http-response.adoc[]
