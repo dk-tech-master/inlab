@@ -459,6 +459,177 @@ include::{snippets}/update-position-level/request-fields.adoc[]
 
 include::{snippets}/update-position-level/http-response.adoc[]
 
+== USER CONTROLLER
+
+=== 회원 등록 / POST
+회원 등록에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/create-user/http-request.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/create-user/request-body.adoc[]
+
+==== 요청 Field
+
+include::{snippets}/create-user/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/create-user/http-response.adoc[]
+
+==== 응답 HTTP Header
+
+include::{snippets}/create-user/response-headers.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/create-user/response-body.adoc[]
+
+=== 회원 단건 조회 / GET
+회원 단건 조회에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/get-user/http-request.adoc[]
+
+==== 요청 HTTP Header
+
+include::{snippets}/get-user/request-headers.adoc[]
+
+==== 요청 Path-Parameter
+
+include::{snippets}/get-user/request-headers.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/get-user/request-body.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/get-user/http-response.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/get-user/response-body.adoc[]
+
+==== 응답 Fields
+
+include::{snippets}/get-user/response-body.adoc[]
+
+=== 회원 다건 조회 / GET
+회원 다건 조회에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/get-users/http-request.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/get-users/request-body.adoc[]
+
+==== 요청 Field
+
+include::{snippets}/get-users/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/get-users/http-response.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/get-users/response-body.adoc[]
+
+=== 회원 정보 수정 / PUT
+회원 정보 수정에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/update-user/http-request.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/update-user/request-body.adoc[]
+
+==== 요청 Field
+
+include::{snippets}/update-user/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/update-user/http-response.adoc[]
+
+==== 응답 HTTP Header
+
+include::{snippets}/update-user/response-headers.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/update-user/response-body.adoc[]
+
+=== 회원 권한 변경(ROLE_GUEST -> ROLE_USER) / PUT
+회원 권한 변경에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/update-user-role/http-request.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/update-user-role/request-body.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/update-user-role/http-response.adoc[]
+
+==== 응답 HTTP Header
+
+include::{snippets}/update-user-role/response-headers.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/update-user-role/response-body.adoc[]
+
+=== 관리자의 회원 상태 변경(ACTIVE -> DELETE) / PUT
+관리자의 회원 상태 변경에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/delete-user-by-admin/http-request.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/delete-user-by-admin/request-body.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/delete-user-by-admin/http-response.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/delete-user-by-admin/response-body.adoc[]
+
+=== 회원 탈퇴 / DELETE
+회원 탈퇴에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/delete-user/http-request.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/delete-user/request-body.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/delete-user/http-response.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/delete-user/response-body.adoc[]
+=======
 
 == Question CONTROLLER
 
