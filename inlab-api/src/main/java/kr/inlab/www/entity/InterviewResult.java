@@ -1,5 +1,6 @@
 package kr.inlab.www.entity;
 
+import kr.inlab.www.dto.response.ResponseInterviewResultListDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -33,5 +35,15 @@ public class InterviewResult {
     public InterviewResult(String intervieweeName, Interview interview) {
         this.intervieweeName = intervieweeName;
         this.interview = interview;
+    }
+
+    public ResponseInterviewResultListDto toResponseInterviewResultListDto() {
+        return ResponseInterviewResultListDto.builder()
+                .interviewResultId(this.interviewResultId)
+                .interviewTitle(this.interview.getTitle())
+                .intervieweeName(this.intervieweeName)
+                .interviewerName(this.interview.getUser().getNickname())
+                .createdAt(createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .build();
     }
 }

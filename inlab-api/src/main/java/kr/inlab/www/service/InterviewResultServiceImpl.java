@@ -3,7 +3,10 @@ package kr.inlab.www.service;
 import kr.inlab.www.common.exception.InterviewNotFoundException;
 import kr.inlab.www.common.exception.InterviewQuestionNotFoundException;
 import kr.inlab.www.common.exception.InterviewResultNotFoundException;
+import kr.inlab.www.common.util.PagingUtil;
+import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewResultDto;
+import kr.inlab.www.dto.request.RequestInterviewResultListDto;
 import kr.inlab.www.dto.response.*;
 import kr.inlab.www.entity.Interview;
 import kr.inlab.www.entity.InterviewQuestion;
@@ -14,9 +17,17 @@ import kr.inlab.www.repository.InterviewQuestionResultRepository;
 import kr.inlab.www.repository.InterviewRepository;
 import kr.inlab.www.repository.InterviewResultRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,5 +106,45 @@ public class InterviewResultServiceImpl implements InterviewResultService {
                 .intervieweeName(interviewResult.getIntervieweeName())
                 .responseInterviewQuestionResultDtoList(responseInterviewQuestionResultDtoList)
                 .build();
+    }
+
+    @Override
+    public ResponseListDto getInterviewResultList(RequestInterviewResultListDto requestDto) {
+        PageRequest pageRequest = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), requestDto.getSortDirection(), "interviewResultId");
+        Specification<InterviewResult> specification = getInterviewResultListSpecification(requestDto);
+        Page<InterviewResult> interviewResultList = interviewResultRepository.findAll(specification, pageRequest);
+        PagingUtil pagingUtil = new PagingUtil(interviewResultList.getTotalElements(), interviewResultList.getTotalPages(), interviewResultList.getNumber(), interviewResultList.getSize());
+
+        List<Object> responseDto = interviewResultList.stream()
+                .map(InterviewResult::toResponseInterviewResultListDto)
+                .collect(Collectors.toList());
+
+        return ResponseListDto.builder()
+                .responseList(responseDto)
+                .pagingUtil(pagingUtil)
+                .build();
+    }
+
+    private Specification<InterviewResult> getInterviewResultListSpecification(RequestInterviewResultListDto requestDto) {
+        Specification<InterviewResult> specification = Specification.where(null);
+
+        if (Strings.isNotEmpty(requestDto.getIntervieweeName())) {
+            specification = specification.and(
+                    (root, query, criteriaBuilder) ->
+                            criteriaBuilder.like(root.get("intervieweeName"), "%" + requestDto.getIntervieweeName() + "%")
+            );
+        }
+        if (Strings.isNotEmpty(requestDto.getStartDate()) && Strings.isNotEmpty(requestDto.getEndDate())) {
+            specification = specification.and(
+                    (root, query, criteriaBuilder) ->
+                            criteriaBuilder.between(
+                                    root.get("createdAt"),
+                                    LocalDate.parse(requestDto.getStartDate()).atStartOfDay(),
+                                    LocalDate.parse(requestDto.getEndDate()).atTime(LocalTime.MAX)
+                            )
+            );
+        }
+
+        return specification;
     }
 }
