@@ -53,7 +53,7 @@ public class QuestionController {
 	}
 
 	// 해당 질문에 대한 질문 버전 전체 조회 (#13)
-	@GetMapping("/{questionId}/question_versions")
+	@GetMapping("/{questionId}/question-versions")
 	public ResponseEntity<ResponseListDto<ResponseQuestionVersionsDto>> getQuestionVersions(@ModelAttribute RequestQuestionVersionsDto requestDto, @PathVariable Long questionId) {
 		ResponseListDto<ResponseQuestionVersionsDto> responseDto = questionService.getQuestionVersions(requestDto, questionId);
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
@@ -65,26 +65,4 @@ public class QuestionController {
 		questionService.updateQuestion(requestDto, questionId);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
-
-	// 해당 질문에 대한 꼬리 질문 등록 (#17)
-	@PostMapping("/{questionId}/related_questions")
-	public ResponseEntity<Void> createRelatedQuestion(@RequestBody RequestCreateRelatedQuestionDto requestDto, @PathVariable Long questionId) {
-		questionService.createRelatedQuestion(requestDto, questionId);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
-	}
-
-	// // 해당 질문에 대한 꼬리 질문 전체 조회 (#17)
-	// @GetMapping("/{questionId}/related_questions")
-	// public ResponseEntity<ResponseRelatedQuestions> getRelatedQuestions() {
-	// 	return ResponseEntity.status(HttpStatus.OK).body();
-	// }
-
-	// 해당 질문에 대한 꼬리 질문 삭제 (#17)
-	@DeleteMapping("/related_questions/{relatedQuestionId}")
-	public ResponseEntity<Void> deleteRelatedQuestion(
-		@PathVariable Long relatedQuestionId) {
-		questionService.deleteRelatedQuestion(relatedQuestionId);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	}
-
 }
