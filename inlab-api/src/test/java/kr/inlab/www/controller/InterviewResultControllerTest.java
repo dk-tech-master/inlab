@@ -29,8 +29,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -192,6 +191,49 @@ class InterviewResultControllerTest {
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].checklistResultId").description("체크리스트 결과 ID"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].content").description("체크 리스트 내용"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseChecklistDtoList[].isChecked").description("체크여부")
+                        )
+                ));
+    }
+
+    @Test
+    @Transactional
+    void 면접결과_리스트_조회() throws Exception {
+        mockMvc.perform(get("/api/interview-result?startDate=2023-07-05&endDate=2023-07-11")
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "get-interview-result-list",
+                        requestHeaders(headerWithName("Authorization").description("JWT Token")),
+                        requestParameters(
+                                parameterWithName("page").optional().description("요청 페이지(default=0)"),
+                                parameterWithName("pageSize").optional().description("페이지 크기(default=10)"),
+                                parameterWithName("sortDirection").optional().description("정렬 방식(default=DESC)"),
+                                parameterWithName("column").optional().description("정렬 기준 컬럼"),
+                                parameterWithName("intervieweeName").optional().description("면접자 이름"),
+                                parameterWithName("startDate").optional().description("조회 시작일"),
+                                parameterWithName("endDate").optional().description("조회 종료일")
+                        ),
+                        responseFields(
+                                fieldWithPath("responseList[]").description("면접 결과 리스트"),
+                                fieldWithPath("responseList[].interviewResultId").description("면접 결과 ID"),
+                                fieldWithPath("responseList[].interviewTitle").description("면접 이름"),
+                                fieldWithPath("responseList[].intervieweeName").description("면접자 이름"),
+                                fieldWithPath("responseList[].interviewerName").description("면접관 이름"),
+                                fieldWithPath("responseList[].createdAt").description("면접 생성일자"),
+                                fieldWithPath("pagingUtil.totalElements").description("Total number of elements"),
+                                fieldWithPath("pagingUtil.totalPages").description("총 페이지 수"),
+                                fieldWithPath("pagingUtil.pageNumber").description("현재 페이지 번호"),
+                                fieldWithPath("pagingUtil.pageSize").description("페이지당 항목 개수"),
+                                fieldWithPath("pagingUtil.totalPageGroups").description("총 페이지 그룹 수"),
+                                fieldWithPath("pagingUtil.pageGroupSize").description("페이지 그룹당 페이지 개수"),
+                                fieldWithPath("pagingUtil.pageGroup").description("현재 페이지 그룹"),
+                                fieldWithPath("pagingUtil.startPage").description("시작 페이지"),
+                                fieldWithPath("pagingUtil.endPage").description("끝 페이지"),
+                                fieldWithPath("pagingUtil.existPrePageGroup").description("이전 페이지 그룹 존재 여부"),
+                                fieldWithPath("pagingUtil.existNextPageGroup").description("다음 페이지 그룹 존재 여부")
                         )
                 ));
     }
