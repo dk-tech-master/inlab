@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import kr.inlab.www.entity.RelatedQuestion;
 
 public interface RelatedQuestionRepository extends JpaRepository<RelatedQuestion, Long> {
-	Page<RelatedQuestion> findByHeadQuestionQuestionId(Long headQuestionId, Pageable pageable);
+	Page<RelatedQuestion> findAllByHeadQuestionQuestionId(Long headQuestionId, Pageable pageable);
 }

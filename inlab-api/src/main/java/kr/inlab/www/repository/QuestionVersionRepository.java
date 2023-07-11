@@ -51,7 +51,4 @@ public interface QuestionVersionRepository extends JpaRepository<QuestionVersion
 		"WHERE q.questionId = :questionId " +
 		"ORDER BY qv.version DESC")
 	Page<ResponseQuestionVersionsDto> findQuestionVersions(@Param("questionId") Long questionId, Pageable pageable);
-
-
-	Optional<QuestionVersion> findByQuestionAndIsLatest(Question question, YesNo isLatest);
 }

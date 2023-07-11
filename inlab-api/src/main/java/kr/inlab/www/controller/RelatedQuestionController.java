@@ -26,18 +26,17 @@ public class RelatedQuestionController {
 	private final RelatedQuestionService relatedQuestionService;
 
 	// 해당 질문에 대한 꼬리 질문 등록 (#17)
-	@PostMapping("/{questionId}")
+	@PostMapping
 	public ResponseEntity<Void> createRelatedQuestion(
-		@RequestBody RequestCreateRelatedQuestionDto requestDto,
-		@PathVariable Long questionId) {
-		relatedQuestionService.createRelatedQuestion(requestDto, questionId);
+		@RequestBody RequestCreateRelatedQuestionDto requestDto) {
+		relatedQuestionService.createRelatedQuestion(requestDto);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	// 해당 질문에 대한 꼬리 질문 전체 조회 (#17)
-	@GetMapping("/{questionId}")
-	public ResponseEntity<ResponseListDto<ResponseGetQuestionsDto>> getRelatedQuestions(@ModelAttribute RequestRelatedQuestionsDto requestDto, @PathVariable Long questionId) {
-		ResponseListDto<ResponseGetQuestionsDto> responseDto = relatedQuestionService.getRelatedQuestions(requestDto, questionId);
+	@GetMapping
+	public ResponseEntity<ResponseListDto<ResponseGetQuestionsDto>> getRelatedQuestions(@ModelAttribute RequestRelatedQuestionsDto requestDto) {
+		ResponseListDto<ResponseGetQuestionsDto> responseDto = relatedQuestionService.getRelatedQuestions(requestDto);
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 

@@ -1,5 +1,8 @@
 package kr.inlab.www.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -8,18 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.inlab.www.common.exception.QuestionNotFoundException;
-import kr.inlab.www.common.exception.QuestionVersionNotFoundException;
-import kr.inlab.www.common.type.YesNo;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateRelatedQuestionDto;
 import kr.inlab.www.dto.request.RequestRelatedQuestionsDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
 import kr.inlab.www.entity.Question;
-import kr.inlab.www.entity.QuestionVersion;
 import kr.inlab.www.entity.RelatedQuestion;
 import kr.inlab.www.repository.QuestionRepository;
-import kr.inlab.www.repository.QuestionVersionRepository;
 import kr.inlab.www.repository.RelatedQuestionRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -28,13 +27,12 @@ import lombok.RequiredArgsConstructor;
 public class RelatedQuestionServiceImpl implements RelatedQuestionService {
 
 	private final QuestionRepository questionRepository;
-	private final QuestionVersionRepository questionVersionRepository;
 	private final RelatedQuestionRepository relatedQuestionRepository;
 
 	@Transactional
 	@Override
-	public void createRelatedQuestion(RequestCreateRelatedQuestionDto requestDto, Long questionId) {
-		Question headQuestion = questionRepository.findById(questionId)
+	public void createRelatedQuestion(RequestCreateRelatedQuestionDto requestDto) {
+		Question headQuestion = questionRepository.findById(requestDto.getHeadQuestionId())
 			.orElseThrow(QuestionNotFoundException::new);
 		Question tailQuestion = questionRepository.findById(requestDto.getTailQuestionId())
 			.orElseThrow(QuestionNotFoundException::new);
@@ -45,34 +43,20 @@ public class RelatedQuestionServiceImpl implements RelatedQuestionService {
 			.build());
 	}
 
-	//
-
 	@Transactional
-	public ResponseListDto<ResponseGetQuestionsDto> getRelatedQuestions(RequestRelatedQuestionsDto requestDto, Long questionId) {
+	@Override
+	public ResponseListDto<ResponseGetQuestionsDto> getRelatedQuestions(RequestRelatedQuestionsDto requestDto) {
 		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), Sort.by(Sort.Direction.DESC, "relatedQuestionId"));
-		Page<RelatedQuestion> questionList = relatedQuestionRepository.findByHeadQuestionQuestionId(
-			questionId,
+		Page<RelatedQuestion> questionList = relatedQuestionRepository.findAllByHeadQuestionQuestionId(
+			requestDto.getQuestionId(),
 			pageable
 		);
-		Page<ResponseGetQuestionsDto> dtoList = questionList.map(relatedQuestion -> {
-			Question question = relatedQuestion.getTailQuestion();
-			QuestionVersion latestQuestionVersion = questionVersionRepository.findByQuestionAndIsLatest(question, YesNo.Y)
-				.orElseThrow(QuestionVersionNotFoundException::new);
 
-			return ResponseGetQuestionsDto.builder()
-				.title(latestQuestionVersion.getTitle())
-				.questionTypeId(question.getQuestionType().getQuestionTypeId())
-				.questionTypeName(question.getQuestionType().getQuestionTypeName())
-				.positionId(question.getPosition().getPositionId())
-				.positionName(question.getPosition().getPositionName())
-				.questionLevelId(latestQuestionVersion.getQuestionLevel().getQuestionLevelId())
-				.questionLevelName(latestQuestionVersion.getQuestionLevel().getQuestionLevelName())
-				.version(latestQuestionVersion.getVersion())
-				.build();
-		});
-		PagingUtil pagingUtil = new PagingUtil(dtoList.getTotalElements(), dtoList.getTotalPages(), dtoList.getNumber(), dtoList.getSize());
+		List<ResponseGetQuestionsDto> dtoList = questionList.stream()
+			.map(RelatedQuestion::toResponseQuestionsDto).collect(Collectors.toList());
+		PagingUtil pagingUtil = new PagingUtil(questionList.getTotalElements(), questionList.getTotalPages(), questionList.getNumber(), questionList.getSize());
 
-		return new ResponseListDto<>(dtoList.getContent(), pagingUtil);
+		return new ResponseListDto<>(dtoList, pagingUtil);
 	}
 
 	@Transactional

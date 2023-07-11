@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestCreateRelatedQuestionDto {
 
+	private Long headQuestionId;
 	private Long tailQuestionId;
 }
