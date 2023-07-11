@@ -3,6 +3,7 @@ package kr.inlab.www.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.AccountDeletedException;
@@ -32,6 +33,8 @@ import kr.inlab.www.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -268,7 +271,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isAdminOrSelf(Long userId) {
         User user = getUserByPathVariableUserId(userId);
-        return isMe(user) || isAdmin(user);
+        return isMe(user) || isAdmin();
     }
 
     private User getUserByPathVariableUserId(Long userId) {
@@ -280,9 +283,10 @@ public class UserServiceImpl implements UserService {
         return user != null && user.getEmail().equals(email);
     }
 
-    private boolean isAdmin(User user) {
-        return user != null && user.getRoles().stream()
-            .anyMatch(role -> role.getRoleType().equals(RoleType.ROLE_ADMIN));
+    private boolean isAdmin() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+            .stream()
+            .anyMatch(authority -> authority.getAuthority().equals(RoleType.ROLE_ADMIN.toString()));
     }
 
     private String getPrincipalFromSecurityContext() {
