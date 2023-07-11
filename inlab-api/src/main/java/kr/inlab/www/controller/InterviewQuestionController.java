@@ -27,4 +27,10 @@ public class InterviewQuestionController {
         List<ResponseInterviewQuestionDto> interviewQuestionList = interviewQuestionService.getInterviewQuestionList(interviewId);
         return ResponseEntity.status(HttpStatus.OK).body(interviewQuestionList);
     }
+
+    @DeleteMapping("/{interviewQuestionId}")
+    public ResponseEntity deleteInterviewQuestion(@PathVariable Long interviewQuestionId) {
+        interviewQuestionService.deleteInterviewQuestion(interviewQuestionId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

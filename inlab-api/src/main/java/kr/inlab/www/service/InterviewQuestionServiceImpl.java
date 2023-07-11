@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,5 +59,11 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
     @Override
     public List<ResponseInterviewQuestionDto> getInterviewQuestionList(Long interviewId) {
         return interviewQuestionQueryRepository.getInterviewQuestionList(interviewId);
+    }
+
+    @Transactional
+    public void deleteInterviewQuestion(Long interviewQuestionId) {
+        InterviewQuestion interviewQuestion = getInterviewQuestion(interviewQuestionId);
+        interviewQuestionRepository.delete(interviewQuestion);
     }
 }

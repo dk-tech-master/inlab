@@ -387,8 +387,8 @@ include::{snippets}/get-interview/request-headers.adoc[]
 include::{snippets}/get-interview/http-response.adoc[]
 include::{snippets}/get-interview/response-fields.adoc[]
 
-=== 직무 수정 / PUT
-직무 수정에 대한 API 입니다.
+=== 면접 수정 / PUT
+면접 수정에 대한 API 입니다.
 
 ==== 요청 URL
 
@@ -409,6 +409,69 @@ include::{snippets}/put-interview/request-fields.adoc[]
 ==== 응답 Body
 
 include::{snippets}/put-interview/http-response.adoc[]
+
+--
+
+== INTERVIEW QUESTION CONTROLLER
+
+=== 면접 질문 리스트 생성 / POST
+면접 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-interview-question/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/create-interview-question/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-interview-question/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-interview-question/http-response.adoc[]
+include::{snippets}/create-interview-question/response-body.adoc[]
+
+=== 면접 질문 리스트 조회 / GET
+면접 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-question/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-interview-question/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-question/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-question/http-response.adoc[]
+include::{snippets}/get-interview-question/response-fields.adoc[]
+
+=== 면접 질문 리스트 삭제 / DELETE
+면접 질문 리스트  삭제에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/delete-interview-question/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/delete-interview-question/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/delete-interview-question/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/delete-interview-question/http-response.adoc[]
 
 
 == POSITIONLEVEL CONTROLLER
@@ -690,7 +753,7 @@ include::{snippets}/get-question/http-response.adoc[]
 include::{snippets}/get-question/response-fields.adoc[]
 
 
-=== 질문 수정 / GET
+=== 질문 수정 / PUT
 질문 수정에 대한 API 입니다.
 
 ==== 요청 URL

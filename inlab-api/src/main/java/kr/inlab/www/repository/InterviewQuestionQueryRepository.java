@@ -55,5 +55,11 @@ public class InterviewQuestionQueryRepository {
                 .fetch();
     }
 
-
+    public void updateQuestionVersion(QuestionVersion oldVersion, QuestionVersion newVersion) {
+        queryFactory
+                .update(interviewQuestion.questionVersion)
+                .where(interviewQuestion.questionVersion.questionVersionId.eq(oldVersion.getQuestionVersionId()))
+                .set(interviewQuestion.questionVersion, newVersion)
+                .execute();
+    }
 }
