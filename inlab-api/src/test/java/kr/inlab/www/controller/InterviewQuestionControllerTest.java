@@ -50,7 +50,7 @@ class InterviewQuestionControllerTest {
                 .build();
         String json = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(post("/api/interview/interview-question")
+        mockMvc.perform(post("/api/interview/questions")
                         .header(HttpHeaders.AUTHORIZATION, "jwt token")
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -72,7 +72,7 @@ class InterviewQuestionControllerTest {
 
     @Test
     void 면접질문_리스트_조회_테스트() throws Exception {
-        mockMvc.perform(get("/api/interview/interview-question/{interviewId}", 1L)
+        mockMvc.perform(get("/api/interview/questions/{interviewId}", 1L)
                 .header(HttpHeaders.AUTHORIZATION, "jwt token")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -94,7 +94,7 @@ class InterviewQuestionControllerTest {
     @Test
     @Transactional
     void 면접질문_리스트_삭제_테스트() throws Exception {
-        mockMvc.perform(delete("/api/interview/interview-question/{interviewQuestionId}",1L)
+        mockMvc.perform(delete("/api/interview/questions/{interviewQuestionId}",1L)
                         .header(HttpHeaders.AUTHORIZATION, "jwt token")
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)

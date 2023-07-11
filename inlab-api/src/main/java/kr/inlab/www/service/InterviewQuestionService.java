@@ -2,6 +2,7 @@ package kr.inlab.www.service;
 
 import kr.inlab.www.dto.request.RequestCreateInterviewQuestionDto;
 import kr.inlab.www.dto.response.ResponseInterviewQuestionDto;
+import kr.inlab.www.dto.response.ResponseInterviewQuestionnaireDto;
 import kr.inlab.www.entity.InterviewQuestion;
 
 import java.util.List;

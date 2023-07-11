@@ -4,6 +4,7 @@ import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewDto;
 import kr.inlab.www.dto.request.RequestGetInterviewDto;
 import kr.inlab.www.dto.response.ResponseInterviewDto;
+import kr.inlab.www.dto.response.ResponseInterviewQuestionnaireDto;
 import kr.inlab.www.service.InterviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 @RestController
@@ -37,5 +39,11 @@ public class InterviewController {
     public ResponseEntity putInterview(@RequestBody RequestCreateInterviewDto requestDto,@PathVariable Long InterviewId) {
         interviewService.putInterview(InterviewId,requestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/start/{interviewId}")
+    public ResponseEntity getInterviewQuestionsAndCheckList(@PathVariable Long interviewId) {
+        List<ResponseInterviewQuestionnaireDto> interviewStartList = interviewService.getInterviewQuestionnaire(interviewId);
+        return ResponseEntity.ok().body(interviewStartList);
     }
 }

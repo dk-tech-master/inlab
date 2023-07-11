@@ -29,6 +29,7 @@ import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,6 +51,17 @@ class InterviewControllerTest {
 
     @Autowired
     private InterviewRepository interviewRepository;
+
+    Interview createInterview() {
+        User user = userRepository.findById(1L).get();
+
+        Interview interview = Interview.builder()
+                .title("면접 테스트")
+                .user(user)
+                .build();
+        interviewRepository.save(interview);
+        return interview;
+    }
 
     @Test
     @Transactional
@@ -140,14 +152,24 @@ class InterviewControllerTest {
                 );
     }
 
-    Interview createInterview() {
-        User user = userRepository.findById(1L).get();
-
-        Interview interview = Interview.builder()
-                .title("면접 테스트")
-                .user(user)
-                .build();
-        interviewRepository.save(interview);
-        return interview;
+    @Test
+    void 면접질문_체크_리스트_테스트() throws Exception {
+        mockMvc.perform(get("/api/interview/start/{interviewId}",1L)
+                .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "get-interview-start-questionList",
+                        requestHeaders(headerWithName("Authorization").description("JWT Token")),
+                        pathParameters(parameterWithName("interviewId").description("면접 Id path variable")),
+                        responseFields(
+                                fieldWithPath("[].questionTitle").description("질문 이름"),
+                                fieldWithPath("[].interviewQuestionId").description("면접 질문 리스트 Id"),
+                                fieldWithPath("[].checklistDtoList[].checklistId").description("질문의 체크리스트 id"),
+                                fieldWithPath("[].checklistDtoList[].content").description("질문의 체크리스트 내용")
+                        )
+                ));
     }
 }

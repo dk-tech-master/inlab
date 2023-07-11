@@ -9,8 +9,10 @@ import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewDto;
 import kr.inlab.www.dto.request.RequestGetInterviewDto;
 import kr.inlab.www.dto.response.ResponseInterviewDto;
+import kr.inlab.www.dto.response.ResponseInterviewQuestionnaireDto;
 import kr.inlab.www.entity.Interview;
 import kr.inlab.www.entity.User;
+import kr.inlab.www.repository.InterviewQuestionQueryRepository;
 import kr.inlab.www.repository.InterviewRepository;
 import kr.inlab.www.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +23,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class InterviewServiceImpl implements InterviewService{
 
+    private final InterviewQuestionQueryRepository interviewQuestionQueryRepository;
     private final InterviewRepository interviewRepository;
     private final UserRepository userRepository;
 
@@ -65,5 +69,12 @@ public class InterviewServiceImpl implements InterviewService{
             throw new InterviewTitleDuplicateException();}
 
         interview.updateTitle(requestDto.getInterviewTitle());
+    }
+
+    @Override
+    public List<ResponseInterviewQuestionnaireDto> getInterviewQuestionnaire(Long interviewId) {
+        Interview interview = interviewRepository.findById(interviewId)
+                .orElseThrow(InterviewNotFoundException::new);
+        return interviewQuestionQueryRepository.getInterviewQuestionnaire(interview);
     }
 }

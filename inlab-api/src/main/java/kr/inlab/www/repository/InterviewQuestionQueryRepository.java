@@ -2,13 +2,16 @@ package kr.inlab.www.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.inlab.www.dto.common.ChecklistDto;
 import kr.inlab.www.dto.response.ResponseInterviewQuestionDto;
+import kr.inlab.www.dto.response.ResponseInterviewQuestionnaireDto;
 import kr.inlab.www.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static kr.inlab.www.entity.QChecklist.checklist;
 import static kr.inlab.www.entity.QInterview.*;
 import static kr.inlab.www.entity.QInterviewQuestion.*;
 import static kr.inlab.www.entity.QPosition.position;
@@ -62,4 +65,22 @@ public class InterviewQuestionQueryRepository {
                 .set(interviewQuestion.questionVersion, newVersion)
                 .execute();
     }
+
+    public List<ResponseInterviewQuestionnaireDto> getInterviewQuestionnaire(Interview interview) {
+       return queryFactory
+                .select(Projections.constructor(ResponseInterviewQuestionnaireDto.class,
+                        interviewQuestion.interviewQuestionId,
+                        questionVersion.title,
+                        Projections.list(
+                                Projections.constructor(ChecklistDto.class,
+                                        checklist.checklistId,
+                                        checklist.content
+                                ))
+                ))
+               .from(interviewQuestion)
+               .innerJoin(interviewQuestion.questionVersion, questionVersion)
+               .leftJoin(questionVersion.checklistList, checklist)
+               .where(interviewQuestion.interview.eq(interview))
+               .fetch();
+    };
 }

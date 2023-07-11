@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/interview/interview-question")
+@RequestMapping("/api/interview/questions")
 public class InterviewQuestionController {
 
     private final InterviewQuestionService interviewQuestionService;
