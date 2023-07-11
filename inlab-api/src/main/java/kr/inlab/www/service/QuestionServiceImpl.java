@@ -3,6 +3,7 @@ package kr.inlab.www.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import kr.inlab.www.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,7 @@ import kr.inlab.www.repository.QuestionRepository;
 import kr.inlab.www.repository.QuestionTypeRepository;
 import kr.inlab.www.repository.QuestionVersionRepository;
 import kr.inlab.www.repository.RelatedQuestionRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -159,5 +161,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 		saveChecklists(requestDto.getChecklists(), savedQuestionVersion);
 		latestQuestionVersion.updateIsLatest(YesNo.N);
+
+		interviewQuestionQueryRepository.updateQuestionVersion(latestQuestionVersion, savedQuestionVersion);
 	}
 }

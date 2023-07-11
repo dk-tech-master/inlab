@@ -13,7 +13,7 @@ public class RequestListDto {
     @Builder.Default
     private Integer page = 0;
     @Builder.Default
-    private final Integer pageSize = 10;
+    private Integer pageSize = 10;
     @Builder.Default
     private Sort.Direction sortDirection = Sort.Direction.DESC;
 
