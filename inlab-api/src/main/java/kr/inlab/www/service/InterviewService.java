@@ -4,6 +4,9 @@ import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewDto;
 import kr.inlab.www.dto.request.RequestGetInterviewDto;
 import kr.inlab.www.dto.response.ResponseInterviewDto;
+import kr.inlab.www.dto.response.ResponseInterviewQuestionnaireDto;
+
+import java.util.List;
 
 public interface InterviewService {
 
@@ -12,4 +15,6 @@ public interface InterviewService {
     ResponseListDto<ResponseInterviewDto> getInterview(Long userId ,RequestGetInterviewDto requestDto);
 
     void putInterview(Long interviewId, RequestCreateInterviewDto requestDto);
+
+    List<ResponseInterviewQuestionnaireDto> getInterviewQuestionnaire(Long interviewId);
 }
