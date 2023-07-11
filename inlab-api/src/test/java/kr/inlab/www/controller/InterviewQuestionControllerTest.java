@@ -71,7 +71,7 @@ class InterviewQuestionControllerTest {
     }
 
     @Test
-    void 면접질문_리스트_조회() throws Exception {
+    void 면접질문_리스트_조회_테스트() throws Exception {
         mockMvc.perform(get("/api/interview/interview-question/{interviewId}", 1L)
                 .header(HttpHeaders.AUTHORIZATION, "jwt token")
                 .accept(MediaType.APPLICATION_JSON))
@@ -91,4 +91,20 @@ class InterviewQuestionControllerTest {
                 );
     }
 
+    @Test
+    @Transactional
+    void 면접질문_리스트_삭제_테스트() throws Exception {
+        mockMvc.perform(delete("/api/interview/interview-question/{interviewQuestionId}",1L)
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andDo(document(
+                        "delete-interview-question",
+                        requestHeaders(headerWithName("Authorization").description("JWT Token")),
+                        pathParameters(parameterWithName("interviewQuestionId").description("면접 질문 ID path variable"))
+                ));
+    }
 }

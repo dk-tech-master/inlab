@@ -13,4 +13,6 @@ public interface InterviewQuestionService {
     void createInterviewQuestion(RequestCreateInterviewQuestionDto requestDto);
 
     List<ResponseInterviewQuestionDto> getInterviewQuestionList(Long interviewId);
+
+    void deleteInterviewQuestion(Long interviewQuestionId);
 }
