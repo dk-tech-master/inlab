@@ -60,7 +60,7 @@ public class QuestionController {
 	}
 
 	// 질문 수정(버전 업) (#16)
-	@PatchMapping("/{questionId}")
+	@PostMapping("/{questionId}")
 	public ResponseEntity<Void> updateQuestion(@RequestBody RequestUpdateQuestionDto requestDto, @PathVariable Long questionId) {
 		questionService.updateQuestion(requestDto, questionId);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
