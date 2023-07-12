@@ -15,10 +15,13 @@ public class ResponseCommentDto {
 
     private String createdAt;
 
+    private String modifiedAt;
+
     @Builder
-    public ResponseCommentDto(Long commentId, String content, String createdAt) {
+    public ResponseCommentDto(Long commentId, String content, String createdAt, String modifiedAt) {
         this.commentId = commentId;
         this.content = content;
         this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 }
