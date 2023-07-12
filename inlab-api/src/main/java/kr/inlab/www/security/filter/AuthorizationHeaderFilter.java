@@ -1,6 +1,7 @@
 package kr.inlab.www.security.filter;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +34,7 @@ public class AuthorizationHeaderFilter extends OncePerRequestFilter {
         if (refreshToken != null) {
             // refreshToken 이 만료되거나 유효하지 않은 경우(재 로그인)
             if (jwtTokenProvider.isTokenExpired(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.setStatus(HttpStatus.OK.value());
                 // todo front 에게 알려주기
                 response.setHeader("Refresh-Token-Expired", "true");
                 // todo 여기서 return 하면 사용자에게 바로 응답이 가나?
@@ -43,7 +44,7 @@ public class AuthorizationHeaderFilter extends OncePerRequestFilter {
             jwt = jwtTokenProvider.getJwtFromRequest(request);
             if (Objects.isNull(jwt)) {
                 // accessToken 이 유효x(재 로그인)
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.setStatus(HttpStatus.OK.value());
                 // todo front 에게 알려주기
                 response.setHeader("Access-Token-InValid", "true");
                 return;
@@ -56,15 +57,17 @@ public class AuthorizationHeaderFilter extends OncePerRequestFilter {
             // access 토큰이 유효o
             if (jwtTokenProvider.validateToken(jwt)) {
                 // access 토큰이 유효o 만료o(refresh, access 포함한 재요청을 요청)
-                if (jwtTokenProvider.isTokenExpired(jwt)) {
-                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                try {
+                    jwtTokenProvider.isTokenExpired(jwt);
+                } catch (ExpiredJwtException exception) {
+                    response.setStatus(HttpStatus.OK.value());
                     // todo front 에게 알려주기
                     response.setHeader("Access-Token-Expired", "true");
                     return;
                 }
             } else {
                 // accessToken 이 유효x(재 로그인)
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.setStatus(HttpStatus.OK.value());
                 // todo front 에게 알려주기
                 response.setHeader("Access-Token-InValid", "true");
                 return;
@@ -105,14 +108,14 @@ public class AuthorizationHeaderFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return
             request.getServletPath().equals("/api/users/health_check") ||
-            request.getServletPath().equals("/login") ||
-            request.getServletPath().equals("/api/verification_code") ||
-            request.getServletPath().equals("/api/verification_code/check") ||
-            request.getServletPath().equals("/api/users") ||
-            request.getServletPath().startsWith("/api/users") ||
-            request.getServletPath().startsWith("/api/admin/users") ||
-            request.getServletPath().equals("/docs/index.html") ||
-            request.getServletPath().contains("/swagger") ||
-            request.getServletPath().equals("/v2/api-docs");
+                request.getServletPath().equals("/login") ||
+                request.getServletPath().equals("/api/verification_code") ||
+                request.getServletPath().equals("/api/verification_code/check") ||
+                request.getServletPath().equals("/api/users") ||
+                request.getServletPath().startsWith("/api/users") ||
+                request.getServletPath().startsWith("/api/admin/users") ||
+                request.getServletPath().equals("/docs/index.html") ||
+                request.getServletPath().contains("/swagger") ||
+                request.getServletPath().equals("/v2/api-docs");
     }
 }
