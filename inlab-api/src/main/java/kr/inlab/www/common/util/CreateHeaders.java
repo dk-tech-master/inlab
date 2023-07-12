@@ -15,6 +15,8 @@ public class CreateHeaders {
     public static final String LOGIN_FAIL_BLOCK = "login-fail-block";
     public static final String LOGIN_FAIL_DELETE = "login-fail-delete";
     public static final String LOGIN_FAIL = "login-fail";
+    public static final String USER_ID = "user-id";
+    public static final String USER_NICKNAME = "nickname";
 
     public static HttpHeaders createClearTokenHeaders(String... tokenKeys) {
         HttpHeaders headers = new HttpHeaders();

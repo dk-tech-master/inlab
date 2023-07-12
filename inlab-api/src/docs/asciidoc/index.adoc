@@ -410,7 +410,6 @@ include::{snippets}/put-interview/request-fields.adoc[]
 
 include::{snippets}/put-interview/http-response.adoc[]
 
---
 
 == INTERVIEW QUESTION CONTROLLER
 
