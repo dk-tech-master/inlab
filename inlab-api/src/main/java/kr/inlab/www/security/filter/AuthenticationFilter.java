@@ -80,6 +80,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         FilterChain chain,
         Authentication authResult) throws IOException, ServletException {
         String email = authResult.getName();
+        User user = userService.getUserByEmail(email);
         userService.resetLoginAttempt(email);
 
         Claims claims = Jwts.claims();
@@ -89,6 +90,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         Map<String, String> stringStringMap = jwtTokenProvider.generateTokenSet(claims);
         stringStringMap.forEach(response::addHeader);
+
+        response.addHeader(CreateHeaders.USER_ID, user.getUserId().toString());
+        response.addHeader(CreateHeaders.USER_NICKNAME, user.getNickname());
+
         checkPasswordChangeRequiredAndThenSetHeader(email, response); // 최근 비밀번호 변경이 필요한지 여부 확인
     }
 
