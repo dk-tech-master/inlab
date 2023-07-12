@@ -56,7 +56,10 @@ public class RelatedQuestionServiceImpl implements RelatedQuestionService {
 			.map(RelatedQuestion::toResponseQuestionsDto).collect(Collectors.toList());
 		PagingUtil pagingUtil = new PagingUtil(questionList.getTotalElements(), questionList.getTotalPages(), questionList.getNumber(), questionList.getSize());
 
-		return new ResponseListDto<>(dtoList, pagingUtil);
+		return ResponseListDto.<ResponseGetQuestionsDto>builder()
+			.responseList(dtoList)
+			.pagingUtil(pagingUtil)
+			.build();
 	}
 
 	@Transactional
