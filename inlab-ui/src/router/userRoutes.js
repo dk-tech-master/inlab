@@ -1,22 +1,21 @@
-import JobManagement from "@/views/category/JobManagement.vue";
 import SignInView from "@/views/users/SignInView.vue";
 import SignUpView from "@/views/users/SignUpView.vue";
 import UpdatePasswordView from "@/views/users/UpdatePasswordView.vue";
 
 const userRoutes = [
   {
-    path: "/sign-in",
+    path: "/",
     name: "sign-in",
     component: SignInView,
   },
   {
-    path: "/signUp",
-    name: "signUp",
+    path: "/sign-up",
+    name: "sign-up",
     component: SignUpView,
   },
   {
-    path: "/updatePassword",
-    name: "updatePassword",
+    path: "/update-password",
+    name: "update-password",
     component: UpdatePasswordView,
   },
 ];

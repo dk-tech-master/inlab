@@ -28,6 +28,12 @@
   </header>
   <section class="mr-16 mt-8">
     <button
+      @click="testRequest"
+      class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-7 py-5"
+    >
+      test-button
+    </button>
+    <button
       class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-7 py-5"
     >
       면접 추가
@@ -137,5 +143,10 @@
 <script setup>
 import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
+import { createVerificationCode } from "@/api/auth";
+const testRequest = async () => {
+  const test = "wkdudsnrn@naver.com";
+  await createVerificationCode(test);
+};
 </script>
 <style scoped></style>

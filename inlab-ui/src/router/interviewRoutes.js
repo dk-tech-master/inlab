@@ -8,18 +8,18 @@ import InterviewResultDetail from "@/views/interview/InterviewResultDetail.vue";
 
 const interviewRoutes = [
   {
-    path: "/startInterview",
+    path: "/start-interview",
     name: "startInterview",
     component: StartInterview,
   },
 
   {
-    path: "/interviewProcess",
+    path: "/interview-process",
     name: "interviewProcess",
     component: InterviewProcess,
   },
   {
-    path: "/interviewManagement",
+    path: "/interview-management",
     name: "interviewManagement",
     component: InterviewManagement,
   },

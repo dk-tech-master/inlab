@@ -20,6 +20,10 @@ export default defineConfig({
           "https://clovaspeech-gw.ncloud.com/external/v1/5406/2d009610689a0476b0a5736b5d7f35a70a544d7feef6e8f81de2271b2794300a",
         rewrite: (path) => path.replace(/^\/ncp/, ""),
       },
+      "/inlab": {
+        target: "http://localhost:8080",
+        rewrite: (path) => path.replace(/^\/inlab/, ""),
+      },
     },
   },
 });

@@ -1,11 +1,3 @@
-<script setup>
-// import VModal from "@/components/teleport/VModal.vue";
-// import {ref} from "vue";
-
-// const showModal = ref(true);
-import VModal from "@/components/teleport/VModal.vue";
-</script>
-
 <template>
   <section>
     <div
@@ -28,7 +20,7 @@ import VModal from "@/components/teleport/VModal.vue";
               <input
                 type="email"
                 name="email"
-                id="email"
+                v-model="signInData.email"
                 class="input input-bordered border-gray-300 w-full text-sm"
                 placeholder="user@dktechin.com"
                 required
@@ -43,7 +35,7 @@ import VModal from "@/components/teleport/VModal.vue";
               <input
                 type="password"
                 name="password"
-                id="password"
+                v-model="signInData.password"
                 placeholder="비밀번호 입력"
                 class="input input-bordered border-gray-300 w-full text-sm"
                 required
@@ -58,9 +50,9 @@ import VModal from "@/components/teleport/VModal.vue";
             </div>
             <!--비밀번호 입력 허용 횟수 5회 초과시 onclick="my_modal_5.showModal()"-->
             <button
-              type="submit"
-              onclick="my_modal_5.showModal()"
+              type="button"
               class="btn btn-primary w-full mt-10"
+              @click="signInBtn"
             >
               로그인
             </button>
@@ -76,6 +68,7 @@ import VModal from "@/components/teleport/VModal.vue";
     </div>
   </section>
 
+  <!--  onclick="my_modal_5.showModal()"-->
   <!--로그인 실패-->
   <!--  <teleport to="#teleport-area">-->
   <VModal class="text-center m">
@@ -138,4 +131,26 @@ import VModal from "@/components/teleport/VModal.vue";
   <!--  </teleport>-->
 </template>
 
-<style scoped></style>
+<script setup>
+import VModal from "@/components/teleport/VModal.vue";
+import { ref } from "vue";
+import { authStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
+
+const store = authStore();
+const router = useRouter();
+
+const signInData = ref({
+  email: "",
+  password: "",
+});
+const signInBtn = async () => {
+  const data = {
+    username: signInData.value.email,
+    password: signInData.value.password,
+  };
+  await store.login(data);
+  console.log("refresh token: ", sessionStorage.getItem("refreshToken"));
+  await router.push("/interview-management");
+};
+</script>
