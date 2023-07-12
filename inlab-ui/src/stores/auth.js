@@ -6,8 +6,14 @@ export const authStore = defineStore("auth", () => {
     const response = await signIn(data);
     const accessToken = response.headers.get("Authorization");
     const refreshToken = response.headers.get("Refresh");
+    const userId = response.headers.get("user-id");
+    const nickname = response.headers.get("nickname");
+    console.log(response);
+
     sessionStorage.setItem("refreshToken", refreshToken);
     sessionStorage.setItem("accessToken", accessToken);
+    sessionStorage.setItem("userId", userId);
+    sessionStorage.setItem("nickname", nickname);
   };
 
   const logout = () => {

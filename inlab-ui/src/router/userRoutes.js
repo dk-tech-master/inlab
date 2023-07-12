@@ -1,6 +1,6 @@
 import SignInView from "@/views/users/SignInView.vue";
 import SignUpView from "@/views/users/SignUpView.vue";
-import UpdatePasswordView from "@/views/users/UpdatePasswordView.vue";
+import UpdateUserInfoView from "@/views/users/UpdateUserInfoView.vue";
 
 const userRoutes = [
   {
@@ -14,9 +14,9 @@ const userRoutes = [
     component: SignUpView,
   },
   {
-    path: "/update-password",
-    name: "update-password",
-    component: UpdatePasswordView,
+    path: "/update-userinfo",
+    name: "update-userinfo",
+    component: UpdateUserInfoView,
   },
 ];
 

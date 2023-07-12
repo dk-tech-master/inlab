@@ -17,7 +17,11 @@ export const createVerificationCode = (data) => {
       "Content-Type": "application/json",
     },
   };
-  return request.post(uri, config);
+  if (sessionStorage.getItem("accessToken")) {
+    return request.put(uri, config);
+  } else {
+    return request.post(uri, config);
+  }
 };
 
 export const checkVerificationCode = (data) => {
@@ -39,4 +43,27 @@ export const register = (token, data) => {
     },
   };
   return request.post(uri, data, config);
+};
+
+export const getUserInfo = () => {
+  const userId = sessionStorage.getItem("userId");
+  const uri = `/api/users/${userId}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return request.get(uri, config);
+};
+
+export const updateUserInfo = (token, data) => {
+  const userId = sessionStorage.getItem("userId");
+  const uri = `/api/users/${userId}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      email: token,
+    },
+  };
+  return request.put(uri, data, config);
 };
