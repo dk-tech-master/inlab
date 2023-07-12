@@ -87,7 +87,7 @@ public class JwtTokenProvider {
     }
 
     // 토큰 만료 여부 체크
-    public Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) throws ExpiredJwtException{
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
@@ -101,7 +101,7 @@ public class JwtTokenProvider {
     public String generateAccessToken(Map<String, Object> claims) {
         return Jwts.builder()
             .setClaims(claims)
-            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 2400))// 1시간
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))// 1시간
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .signWith(key, SignatureAlgorithm.HS256)  // 사  용할 암호화 알고리즘과 secret 값 세팅
             .compact();
@@ -111,7 +111,7 @@ public class JwtTokenProvider {
     public String generateRefreshToken(Map<String, Object> claims) {
         return Jwts.builder()
             .setClaims(claims)
-            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 2400)) // 5시간
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 24)) // 5시간
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .signWith(key, SignatureAlgorithm.HS256)  // 사용할 암호화 알고리즘과 secret 값 세팅
             .compact();
@@ -122,7 +122,7 @@ public class JwtTokenProvider {
         Map<String, String> tokens = new HashMap<String, String>();
         String emailToken = Jwts.builder()
             .setClaims(claims)
-            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 2400)) // 24시간
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 24)) // 24시간
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .signWith(key, SignatureAlgorithm.HS256)  // 사용할 암호화 알고리즘과 secret 값 세팅
             .compact();
