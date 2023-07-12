@@ -4,7 +4,7 @@ import UpdatePasswordView from "@/views/users/UpdatePasswordView.vue";
 
 const userRoutes = [
   {
-    path: "/sign-in",
+    path: "/",
     name: "sign-in",
     component: SignInView,
   },
@@ -14,8 +14,8 @@ const userRoutes = [
     component: SignUpView,
   },
   {
-    path: "/updatePassword",
-    name: "updatePassword",
+    path: "/update-password",
+    name: "update-password",
     component: UpdatePasswordView,
   },
 ];

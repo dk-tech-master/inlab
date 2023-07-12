@@ -133,28 +133,24 @@
 
 <script setup>
 import VModal from "@/components/teleport/VModal.vue";
-import { signIn } from "@/api/auth";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { authStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 
-// const router = useRouter();
+const store = authStore();
+const router = useRouter();
+
 const signInData = ref({
   email: "",
   password: "",
 });
-
-const auth = authStore();
-
 const signInBtn = async () => {
   const data = {
     username: signInData.value.email,
     password: signInData.value.password,
   };
-  await auth.login(data);
-  console.log("refresh token: ", sessionStorage.getItem("refresh"));
-  console.log("access token:  ", auth.accessToken);
-  // await router.push("/interview-management");
+  await store.login(data);
+  console.log("refresh token: ", sessionStorage.getItem("refreshToken"));
+  await router.push("/interview-management");
 };
 </script>
-<style scoped></style>
