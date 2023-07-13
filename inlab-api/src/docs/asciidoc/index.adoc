@@ -319,6 +319,26 @@ include::{snippets}/get-interview-result/request-headers.adoc[]
 include::{snippets}/get-interview-result/http-response.adoc[]
 include::{snippets}/get-interview-result/response-fields.adoc[]
 
+=== 면접결과 리스트 조회 / GET
+면접결과 리스트 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-result-list/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-result-list/request-headers.adoc[]
+
+==== Parameters
+
+include::{snippets}/get-interview-result-list/request-parameters.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-result-list/http-response.adoc[]
+include::{snippets}/get-interview-result-list/response-fields.adoc[]
+
 ---
 
 == GPT COMMENT CONTROLLER
