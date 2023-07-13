@@ -12,25 +12,25 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RequestUpdateChecklistResultDto {
 
-    private List<checklistResultDto> checklistResultDtoList;
+    private List<ChecklistResultDto> checklistResultDtoList;
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class checklistResultDto {
+    public static class ChecklistResultDto {
 
-        private Long checklistId;
+        private Long checklistResultId;
 
         private YesNo isChecked;
 
         @Builder
-        public checklistResultDto(Long checklistId, YesNo isChecked) {
-            this.checklistId = checklistId;
+        public ChecklistResultDto(Long checklistResultId, YesNo isChecked) {
+            this.checklistResultId = checklistResultId;
             this.isChecked = isChecked;
         }
     }
 
     @Builder
-    public RequestUpdateChecklistResultDto(List<checklistResultDto> checklistResultDtoList) {
+    public RequestUpdateChecklistResultDto(List<ChecklistResultDto> checklistResultDtoList) {
         this.checklistResultDtoList = checklistResultDtoList;
     }
 }

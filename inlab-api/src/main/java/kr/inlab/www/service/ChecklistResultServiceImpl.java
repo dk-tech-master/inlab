@@ -1,8 +1,11 @@
 package kr.inlab.www.service;
 
 import kr.inlab.www.common.exception.ChecklistNotFoundException;
+import kr.inlab.www.common.exception.ChecklistResultNotFoundException;
 import kr.inlab.www.dto.request.RequestCreateInterviewResultDto.ChecklistResultDto;
+import kr.inlab.www.dto.request.RequestUpdateChecklistResultDto;
 import kr.inlab.www.dto.response.ResponseChecklistDto;
+import kr.inlab.www.dto.response.ResponseChecklistResultDto;
 import kr.inlab.www.entity.Checklist;
 import kr.inlab.www.entity.ChecklistResult;
 import kr.inlab.www.entity.InterviewQuestionResult;
@@ -49,5 +52,17 @@ public class ChecklistResultServiceImpl implements ChecklistResultService {
                 .build()).collect(Collectors.toList());
 
         return responseChecklistDtoList;
+    }
+
+    @Override
+    public List<ResponseChecklistResultDto> updateChecklistResult(RequestUpdateChecklistResultDto requestDto) {
+        List<ResponseChecklistResultDto> responseChecklistResultDtoList = requestDto.getChecklistResultDtoList().stream().map(checklistResultDto -> {
+            ChecklistResult checklistResult = checklistResultRepository.findById(checklistResultDto.getChecklistResultId())
+                    .orElseThrow(ChecklistResultNotFoundException::new);
+            checklistResult.editChecklistResult(checklistResultDto.getIsChecked());
+            return checklistResult.toResponseChecklistResultDto();
+        }).collect(Collectors.toList());
+
+        return responseChecklistResultDtoList;
     }
 }

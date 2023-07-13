@@ -1,6 +1,7 @@
 package kr.inlab.www.entity;
 
 import kr.inlab.www.common.type.YesNo;
+import kr.inlab.www.dto.response.ResponseChecklistResultDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,5 +48,16 @@ public class ChecklistResult {
         this.isChecked = isChecked;
         this.checklist = checklist;
         this.interviewQuestionResult = interviewQuestionResult;
+    }
+
+    public void editChecklistResult(YesNo yesNo) {
+        this.isChecked = yesNo;
+    }
+
+    public ResponseChecklistResultDto toResponseChecklistResultDto() {
+        return ResponseChecklistResultDto.builder()
+                .checklistResultId(this.checklistResultId)
+                .isChecked(this.getIsChecked())
+                .build();
     }
 }
