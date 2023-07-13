@@ -58,19 +58,13 @@ public class InterviewQuestionQueryRepository {
                 .fetch();
     }
 
-    public void updateQuestionVersion(QuestionVersion oldVersion, QuestionVersion newVersion) {
-        queryFactory
-                .update(interviewQuestion.questionVersion)
-                .where(interviewQuestion.questionVersion.questionVersionId.eq(oldVersion.getQuestionVersionId()))
-                .set(interviewQuestion.questionVersion, newVersion)
-                .execute();
-    }
-
     public List<ResponseInterviewQuestionnaireDto> getInterviewQuestionnaire(Interview interview) {
        return queryFactory
                 .select(Projections.constructor(ResponseInterviewQuestionnaireDto.class,
+                        interviewQuestion.interview.title,
                         interviewQuestion.interviewQuestionId,
                         questionVersion.title,
+                        questionVersion.version,
                         Projections.list(
                                 Projections.constructor(ChecklistDto.class,
                                         checklist.checklistId,

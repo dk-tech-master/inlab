@@ -16,6 +16,7 @@ import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.RequestListDto;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
+import kr.inlab.www.dto.request.RequestCreateRelatedQuestionDto;
 import kr.inlab.www.dto.request.RequestQuestionsDto;
 import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;

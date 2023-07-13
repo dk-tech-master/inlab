@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -92,11 +93,12 @@ class InterviewControllerTest {
 
     @Test
     @Transactional
+    @WithMockUser(username = "jwoo1016@naver.com", authorities = {"ROLE_ADMIN"})
     void 면접_조회_테스트() throws Exception {
         createInterview();
         mockMvc.perform(get("/api/interview/{userId}",1L)
-                    .param("page","1")
-                    .param("interviewTitle", "")
+                        .param("page","1")
+                        .param("interviewTitle", "")
                     .header(HttpHeaders.AUTHORIZATION, "jwt token")
                     .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())

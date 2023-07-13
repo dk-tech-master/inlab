@@ -12,6 +12,7 @@ import kr.inlab.www.dto.response.ResponseInterviewDto;
 import kr.inlab.www.dto.response.ResponseInterviewQuestionnaireDto;
 import kr.inlab.www.entity.Interview;
 import kr.inlab.www.entity.User;
+import kr.inlab.www.repository.InterviewQueryRepository;
 import kr.inlab.www.repository.InterviewQuestionQueryRepository;
 import kr.inlab.www.repository.InterviewRepository;
 import kr.inlab.www.repository.UserRepository;
@@ -32,6 +33,7 @@ public class InterviewServiceImpl implements InterviewService{
     private final InterviewQuestionQueryRepository interviewQuestionQueryRepository;
     private final InterviewRepository interviewRepository;
     private final UserRepository userRepository;
+    private final InterviewQueryRepository interviewQueryRepository;
 
     @Transactional
     @Override
@@ -53,7 +55,7 @@ public class InterviewServiceImpl implements InterviewService{
     @Override
     public ResponseListDto<ResponseInterviewDto> getInterview(Long userId, RequestGetInterviewDto requestDto) {
         Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), Sort.Direction.DESC, "interviewId");
-        Page<ResponseInterviewDto> interviewList = interviewRepository.getInterviewList(userId, requestDto.getInterviewTitle(), pageable);
+        Page<ResponseInterviewDto> interviewList = interviewQueryRepository.getInterview(userId, requestDto, pageable);
         PagingUtil pagingUtil = new PagingUtil(interviewList.getTotalElements(), interviewList.getTotalPages(), interviewList.getNumber(), interviewList.getSize());
 
         return new ResponseListDto<>(interviewList.getContent(), pagingUtil);
