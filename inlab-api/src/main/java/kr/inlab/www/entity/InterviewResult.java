@@ -42,7 +42,7 @@ public class InterviewResult {
                 .interviewResultId(this.interviewResultId)
                 .interviewTitle(this.interview.getTitle())
                 .intervieweeName(this.intervieweeName)
-                .interviewerName(this.interview.getUser().getNickname())
+                .nickname(this.interview.getUser().getNickname())
                 .createdAt(createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build();
     }

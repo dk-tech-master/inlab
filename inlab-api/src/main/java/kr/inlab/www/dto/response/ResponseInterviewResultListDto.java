@@ -15,16 +15,16 @@ public class ResponseInterviewResultListDto {
 
     private String intervieweeName;
 
-    private String interviewerName;
+    private String nickname;
 
     private String createdAt;
 
     @Builder
-    public ResponseInterviewResultListDto(Long interviewResultId, String interviewTitle, String intervieweeName, String interviewerName, String createdAt) {
+    public ResponseInterviewResultListDto(Long interviewResultId, String interviewTitle, String intervieweeName, String nickname, String createdAt) {
         this.interviewResultId = interviewResultId;
         this.interviewTitle = interviewTitle;
         this.intervieweeName = intervieweeName;
-        this.interviewerName = interviewerName;
+        this.nickname = nickname;
         this.createdAt = createdAt;
     }
 }
