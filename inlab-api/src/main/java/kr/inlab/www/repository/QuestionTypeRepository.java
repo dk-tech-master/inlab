@@ -13,7 +13,7 @@ public interface QuestionTypeRepository extends JpaRepository<QuestionType, Inte
 
     @Query("SELECT new kr.inlab.www.dto.response.ResponseQuestionTypeDto(qt.questionTypeId,qt.questionTypeName,COUNT(q) ) " +
             "FROM QuestionType qt LEFT JOIN qt.questionList q " +
-            "WHERE qt.questionTypeName LIKE CONCAT('%', :name, '%') " +
+            "WHERE (:name is null or qt.questionTypeName LIKE CONCAT('%', :name, '%'))  " +
             "GROUP BY qt.questionTypeId, qt.questionTypeName")
     Page<ResponseQuestionTypeDto> getQuestionTypeList(@Param("name") String name, Pageable pageable);
 

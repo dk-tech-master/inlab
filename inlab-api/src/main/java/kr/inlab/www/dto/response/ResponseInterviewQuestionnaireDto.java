@@ -10,15 +10,21 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResponseInterviewQuestionnaireDto {
 
-    private Long InterviewQuestionId;
+    private String interviewTitle;
+
+    private Long interviewQuestionId;
 
     private String questionTitle;
 
-    List<ChecklistDto> checklistDtoList;
+    private int version;
 
-    public ResponseInterviewQuestionnaireDto(Long interviewQuestionId, String questionTitle, List<ChecklistDto> checklistDtoList) {
-        InterviewQuestionId = interviewQuestionId;
+    private List<ChecklistDto> checklistDtoList;
+
+    public ResponseInterviewQuestionnaireDto(String interviewTitle, Long interviewQuestionId, String questionTitle, int version, List<ChecklistDto> checklistDtoList) {
+        this.interviewTitle = interviewTitle;
+        this.interviewQuestionId = interviewQuestionId;
         this.questionTitle = questionTitle;
+        this.version = version;
         this.checklistDtoList = checklistDtoList;
     }
 }

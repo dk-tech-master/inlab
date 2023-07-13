@@ -14,4 +14,6 @@ import lombok.experimental.SuperBuilder;
 public class RequestGetInterviewDto extends RequestListDto {
 
     private String interviewTitle;
+
+    private String nickname;
 }
