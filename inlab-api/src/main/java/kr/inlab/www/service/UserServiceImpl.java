@@ -3,8 +3,8 @@ package kr.inlab.www.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.AccountDeletedException;
 import kr.inlab.www.common.exception.AdminCouldNotDeleteException;
@@ -33,8 +33,6 @@ import kr.inlab.www.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -49,6 +47,23 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
     private final BCryptPasswordEncoder encoder;
+
+//    // todo 정보 빼기
+//    @PostConstruct
+//    public void createAdmin() {
+//        User user = User.builder()
+//            .email("jwoo1016@naver.com")
+//            .nickname("최정우")
+//            .password(encoder.encode("1234"))
+//            .build();
+//        userRepository.save(user);
+//
+//        Role role = Role.builder()
+//            .user(user)
+//            .roleType(RoleType.ROLE_ADMIN)
+//            .build();
+//        roleRepository.save(role);
+//    }
 
     @Override
     public ResponseGetUserDto getUserById(Long userId) {

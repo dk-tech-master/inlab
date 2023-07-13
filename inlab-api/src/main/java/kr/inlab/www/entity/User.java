@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.common.type.UserStatus;
 import kr.inlab.www.dto.response.ResponseGetUserDto;
 import lombok.AccessLevel;
@@ -108,7 +109,8 @@ public class User {
             .createdAt(this.createdAt)
             .nickname(this.nickname)
             .email(this.email)
-            .isVerified(this.userStatus.equals(UserStatus.ACTIVE))
+            .isVerified(this.roles.stream().map(Role::getRoleType)
+                .noneMatch(roleType -> roleType.equals(RoleType.ROLE_GUEST)))
             .build();
     }
 }
