@@ -38,6 +38,7 @@ public class UserController {
 
     /**
      * 회원이 자신의 정보를 조회하는 메서드
+     *
      * @param userId
      * @return
      * @PreAuthorize 가 false 를 반환하면 AccessDeniedException 가 발생한다.
@@ -77,7 +78,7 @@ public class UserController {
      * @param requestDto 검색조건(닉네임, 인증여부) 가 들어있습니다.
      * @return 검색 결과
      */
-    @GetMapping("/admin/users")
+    @PostMapping("/admin/users")
     public ResponseEntity<ResponseListDto> getUsers(@RequestBody RequestUsersDto requestDto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUsers(requestDto));
     }
@@ -99,6 +100,7 @@ public class UserController {
 
     /**
      * 관리자가 회원의 권한을 ROLE_GUEST -> ROLE_USER 로 바꾸는 메서드입니다.
+     *
      * @param userId
      * @return
      */
@@ -123,7 +125,7 @@ public class UserController {
     /**
      * 회원이 자신의 상태를 delete 로 바꾸는 메서드입니다.
      *
-     * @param userId   회원의 userId
+     * @param userId 회원의 userId
      * @return
      */
     @PreAuthorize("@userServiceImpl.isSelf(#userId)")

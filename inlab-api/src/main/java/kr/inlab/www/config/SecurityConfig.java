@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -33,12 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.cors();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/", "/login", "/docs/index.html", "/swagger-ui/index.html", "/swagger/**", "/swagger-resources/**", "/v2/api-docs").permitAll(); // 로그인과 메인화면과 회원가입 페이지는 누구나 접근 가능하게 설정
-        http.authorizeRequests().antMatchers("/api/users/health_check").hasRole("USER");
+        http.authorizeRequests().antMatchers("/api/verification_code","/api/verification_code/check","/", "/login", "/docs/index.html", "/swagger-ui/index.html", "/swagger/**", "/swagger-resources/**", "/v2/api-docs").permitAll(); // 로그인과 메인화면과 회원가입 페이지는 누구나 접근 가능하게 설정
         http.authorizeRequests().antMatchers("/api/users/*/role").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers("/api/users").permitAll();
-        http.authorizeRequests().antMatchers("/api/verification_code").permitAll();
-        http.authorizeRequests().antMatchers("/api/verification_code/*").permitAll();
+        http.authorizeRequests().antMatchers("/api/admin/**").hasRole("ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/users").permitAll();
+        http.authorizeRequests().antMatchers("/api/users/*").permitAll();
         http.addFilterBefore(getAuthorizationHeaderFilter(), AuthenticationFilter.class);
         http.addFilter(getAuthenticationFilter());
         http.exceptionHandling()

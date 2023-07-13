@@ -2,26 +2,17 @@ package kr.inlab.www.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.inlab.www.common.type.YesNo;
+
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
 import kr.inlab.www.dto.request.RequestQuestionsDto;
 import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
-import kr.inlab.www.entity.Position;
-import kr.inlab.www.entity.Question;
-import kr.inlab.www.entity.QuestionLevel;
-import kr.inlab.www.entity.QuestionType;
-import kr.inlab.www.entity.QuestionVersion;
-import kr.inlab.www.repository.QuestionRepository;
-import kr.inlab.www.service.QuestionService;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -29,14 +20,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 
 import javax.transaction.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -79,18 +69,17 @@ class QuestionControllerTest {
 			.andDo(print())
 			.andExpect(status().isCreated())
 			.andDo(document(
-					"create-question",
-					requestHeaders(headerWithName("Authorization").description("JWT Token")),
-					requestFields(
-						fieldWithPath("positionId").description("질문의 position id"),
-						fieldWithPath("questionTypeId").description("질문의 question type id"),
-						fieldWithPath("questionLevelId").description("질문의 question level id"),
-						fieldWithPath("title").description("질문의 제목"),
-						fieldWithPath("version").description("질문의 버전"),
-						fieldWithPath("checklists").description("질문의 체크리스트")
-					)
+				"create-question",
+				requestHeaders(headerWithName("Authorization").description("JWT Token")),
+				requestFields(
+					fieldWithPath("positionId").description("질문 ID"),
+					fieldWithPath("questionTypeId").description("질문 유형 ID"),
+					fieldWithPath("questionLevelId").description("질문 난이도 ID"),
+					fieldWithPath("title").description("질문 제목"),
+					fieldWithPath("version").description("질문 버전"),
+					fieldWithPath("checklists").description("질문 체크리스트")
 				)
-			);
+			));
 	}
 
 	@Transactional
@@ -103,7 +92,7 @@ class QuestionControllerTest {
 			.questionLevelId(1)
 			.titleKeyword("질문")
 			.build();
-		String json = objectMapper.writeValueAsString(requestDto);
+		String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestDto);
 
 		// when-then
 		mockMvc.perform(get("/api/questions")
@@ -117,25 +106,26 @@ class QuestionControllerTest {
 			.andDo(document(
 				"get-questions",
 				requestHeaders(headerWithName("Authorization").description("JWT Token")),
-				requestFields(
-					fieldWithPath("page").description("현재 페이지 (Default: 0)"),
-					fieldWithPath("pageSize").description("페이지당 개수 (Default: 10)"),
-					fieldWithPath("sortDirection").description("정렬 방식 (Default: DESC)"),
-					fieldWithPath("column").description("정렬 기준 컬럼 Default: null"),
-					fieldWithPath("positionId").description("직무 ID"),
-					fieldWithPath("questionTypeId").description("질문 유형 ID"),
-					fieldWithPath("questionLevelId").description("질문 난이도 ID"),
-					fieldWithPath("titleKeyword").description("질문 제목 키워드")
+				requestParameters(
+					parameterWithName("page").optional().description("현재 페이지 (Default: 0)"),
+					parameterWithName("pageSize").optional().description("페이지당 개수 (Default: 10)"),
+					parameterWithName("sortDirection").optional().description("정렬 방식 (Default: DESC)"),
+					parameterWithName("column").optional().description("정렬 기준 컬럼 (Default: null)"),
+					parameterWithName("positionId").optional().description("직무 ID"),
+					parameterWithName("questionTypeId").optional().description("질문 유형 ID"),
+					parameterWithName("questionLevelId").optional().description("질문 난이도 ID"),
+					parameterWithName("titleKeyword").optional().description("질문 제목 키워드")
 				),
 				responseFields(
-					fieldWithPath("responseList[].title").description("질문의 제목"),
-					fieldWithPath("responseList[].questionTypeId").description("질문 유형의 ID"),
-					fieldWithPath("responseList[].questionTypeName").description("질문 유형의 이름"),
-					fieldWithPath("responseList[].positionId").description("직무의 ID"),
-					fieldWithPath("responseList[].positionName").description("직무의 이름"),
-					fieldWithPath("responseList[].questionLevelId").description("질문 난이도의 ID"),
-					fieldWithPath("responseList[].questionLevelName").description("질문 난이도의 이름"),
-					fieldWithPath("responseList[].version").description("질문의 버전"),
+					fieldWithPath("responseList[]").description("질문 리스트"),
+					fieldWithPath("responseList[].title").description("질문 제목"),
+					fieldWithPath("responseList[].questionTypeId").description("질문 유형 ID"),
+					fieldWithPath("responseList[].questionTypeName").description("질문 유형 이름"),
+					fieldWithPath("responseList[].positionId").description("직무 ID"),
+					fieldWithPath("responseList[].positionName").description("직무 이름"),
+					fieldWithPath("responseList[].questionLevelId").description("질문 난이도 ID"),
+					fieldWithPath("responseList[].questionLevelName").description("질문 난이도 이름"),
+					fieldWithPath("responseList[].version").description("질문 버전"),
 					fieldWithPath("pagingUtil.totalElements").description("총 항목 수"),
 					fieldWithPath("pagingUtil.totalPages").description("총 페이지 수"),
 					fieldWithPath("pagingUtil.pageNumber").description("현재 페이지 번호"),
@@ -169,16 +159,16 @@ class QuestionControllerTest {
 			.andDo(document(
 				"get-question",
 				requestHeaders(headerWithName("Authorization").description("JWT Token")),
-				pathParameters(parameterWithName("questionId").description("조회할 질문의 ID")),
+				pathParameters(parameterWithName("questionId").description("조회할 질문 ID")),
 				responseFields(
-					fieldWithPath("title").description("질문의 제목"),
-					fieldWithPath("questionTypeId").description("질문 유형의 ID"),
-					fieldWithPath("questionTypeName").description("질문 유형의 이름"),
-					fieldWithPath("positionId").description("직무의 ID"),
-					fieldWithPath("positionName").description("직무의 이름"),
-					fieldWithPath("questionLevelId").description("질문 난이도의 ID"),
-					fieldWithPath("questionLevelName").description("질문 난이도의 이름"),
-					fieldWithPath("version").description("질문의 버전"),
+					fieldWithPath("title").description("질문 제목"),
+					fieldWithPath("questionTypeId").description("질문 유형 ID"),
+					fieldWithPath("questionTypeName").description("질문 유형 이름"),
+					fieldWithPath("positionId").description("직무 ID"),
+					fieldWithPath("positionName").description("직무 이름"),
+					fieldWithPath("questionLevelId").description("질문 난이도 ID"),
+					fieldWithPath("questionLevelName").description("질문 난이도 이름"),
+					fieldWithPath("version").description("질문 버전"),
 					fieldWithPath("checklists[]").description("체크리스트")
 				)
 			));
@@ -199,7 +189,7 @@ class QuestionControllerTest {
 		String json = objectMapper.writeValueAsString(requestDto);
 
 		// when-then
-		mockMvc.perform(patch("/api/questions/{questionId}", questionId)
+		mockMvc.perform(post("/api/questions/{questionId}", questionId)
 				.header(HttpHeaders.AUTHORIZATION, "jwt token")
 				.accept(MediaType.APPLICATION_JSON)
 				.characterEncoding(StandardCharsets.UTF_8)
@@ -210,13 +200,13 @@ class QuestionControllerTest {
 			.andDo(document(
 					"update-question",
 					requestHeaders(headerWithName("Authorization").description("JWT Token")),
-					pathParameters(parameterWithName("questionId").description("수정할 질문의 ID")),
+					pathParameters(parameterWithName("questionId").description("수정할 질문 ID")),
 					requestFields(
-						fieldWithPath("positionId").description("질문의 position id"),
-						fieldWithPath("questionTypeId").description("질문의 question type id"),
-						fieldWithPath("questionLevelId").description("질문의 question level id"),
-						fieldWithPath("title").description("수정된 질문의 제목"),
-						fieldWithPath("checklists").description("수정된 질문의 체크리스트")
+						fieldWithPath("positionId").description("질문 ID"),
+						fieldWithPath("questionTypeId").description("질문 유형 ID"),
+						fieldWithPath("questionLevelId").description("질문 난이도 ID"),
+						fieldWithPath("title").description("수정된 질문 제목"),
+						fieldWithPath("checklists").description("수정된 질문 체크리스트")
 					)
 				)
 			);
