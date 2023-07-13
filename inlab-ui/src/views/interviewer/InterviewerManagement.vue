@@ -40,17 +40,21 @@
               </select>
             </div>
           </template>
-          <template v-slot:footer />
+          <template v-slot:footer>
+            <div class="flex items-end">
+              <button
+                @click="init()"
+                class="flex flex-col ml-3 px-7 py-5 btn btn-primary btn-sm"
+              >
+                검색
+              </button>
+            </div>
+          </template>
         </InputSearchFilter>
       </div>
     </div>
   </header>
   <section class="mr-16 mt-8">
-    <button
-      class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-7 py-5"
-    >
-      면접 추가
-    </button>
     <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
       <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
         <div class="w-[5%] flex flex-col justify-center px-6 py-2 text-left">
@@ -80,26 +84,30 @@
 
       <div
         class="flex border-b hover:bg-gray-100"
-        v-for="(index, item) in 10"
+        v-for="(info, index) in infos"
         :key="index"
       >
         <div class="w-[5%] flex flex-col justify-center px-6 py-4 text-left">
-          {{ index }}
+          {{ index + 1 }}
         </div>
         <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
-          2023/07/09
+          {{ info.createdAt.split("T")[0] }}
         </div>
         <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
-          burpee
+          {{ info.nickname }}
         </div>
         <div class="w-[20%] flex flex-col justify-center px-6 py-4 text-left">
-          burpee@gmail.com
+          {{ info.email }}
         </div>
         <div
           class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-1 text-left"
         >
-          <button class="px-5 customBtn" @click="toggleApproval">
-            {{ approvalStatus }}
+          <button
+            class="px-5 customBtn"
+            @click="toggleApproval(info.userId, index)"
+            :class="info.isVerified ? 'customBtn1' : 'customBtn2'"
+          >
+            {{ info.isVerified ? "승인됨" : "미승인" }}
           </button>
         </div>
         <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
@@ -157,12 +165,15 @@
         <select
           class="w-full font-medium select select-primary select-sm border-gray-300 max-w-xs"
         >
-          <option value="프론트난이도1">프론트엔드 난이도1</option>
-          <option value="프론트난이도2">프론트엔드 난이도2</option>
-          <option value="프론트난이도3">프론트엔드 난이도3</option>
-          <option value="백엔드난이도1">백엔드 난이도1</option>
-          <option value="백엔드난이도2">백엔드 난이도2</option>
-          <option value="백엔드난이도3">백엔드 난이도3</option>
+          <option value="프론트">프론트</option>
+          <option value="백엔드">백엔드</option>
+        </select>
+        <select
+          class="w-full font-medium select select-primary select-sm border-gray-300 max-w-xs"
+        >
+          <option value="상">상</option>
+          <option value="중">중</option>
+          <option value="하">하</option>
         </select>
       </template>
       <template v-slot:footer>
@@ -184,32 +195,39 @@
 <script setup>
 import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
-import { getInterviewers } from "@/api/interviewer";
+import { getInterviewers, updateApprove } from "@/api/interviewer";
 import { ref } from "vue";
 
 const pagingInfo = ref({
-  page: 0,
-  pageSize: 0,
-  sortDirection: 0,
-  column: "",
+  page: 1,
   nickname: "",
-  isVerified: true,
+  isVerified: "",
 });
 
-const init = async (pagingInfo) => {
-  const interviewersInfo = await getInterviewers(pagingInfo);
-  console.log(interviewersInfo);
+const infos = ref([]);
+
+const init = async () => {
+  console.log(pagingInfo.value);
+  const interviewersInfo = await getInterviewers(pagingInfo.value);
+  infos.value = interviewersInfo.data.responseList;
+  console.log(infos.value);
+  // console.log(interviewersInfo);
 };
 
 init();
 
+const toggleApproval = async (userId, index) => {
+  console.log(userId);
+  const axiosResponse = await updateApprove(userId);
+  console.log(axiosResponse);
+
+  init();
+};
+
 // const searchBtn = async () => {
 //   const interviewersInfo = await getInterviewers(pagingInfo.value);
 //   console.log(interviewersInfo);
-// };
 
-// const approvalStatus = ref("승인");
-// const toggleApproval = () => {
-//   approvalStatus.value = approvalStatus.value === "승인" ? "미승인" : "승인";
 // };
+// const approvalStatus = ref("승인");
 </script>
