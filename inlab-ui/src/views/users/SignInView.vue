@@ -71,7 +71,7 @@
   <!--  onclick="my_modal_5.showModal()"-->
   <!--로그인 실패-->
   <!--  <teleport to="#teleport-area">-->
-  <VModal class="text-center m">
+  <VModal ref="modal" class="text-center m">
     <template v-slot:header>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -144,12 +144,29 @@ const signInData = ref({
   email: "",
   password: "",
 });
+const modal = ref(null);
+
 const signInBtn = async () => {
   const data = {
     username: signInData.value.email,
     password: signInData.value.password,
   };
-  await store.login(data);
+  const response = await store.login(data);
+  if (response.headers["password-change-required"]) {
+    // 비밀번호 변경 기간이 3개월 이상 넘었을 때
+    alert("비밀번호 변경 기간이 3개월 이상이 넘었습니다.");
+  } else if (response.headers["login-fail-block"]) {
+    console.log("blobk user");
+    // 로그인 시도 횟수가 5회 이상일 때 상태가 block이 된 경우
+    alert("로그인 시도 횟수가 5회 이상이 되어 30분간 로그인이 제한됩니다.");
+    // modal.value.showModal();
+  } else if (response.headers["login-fail-delete"]) {
+    // 탈퇴된 회원이 로그인 시도했을 경우
+    alert("탈퇴한 회원입니다.");
+  } else if (response.headers["login-fail"]) {
+    alert("비밀번호 또는 이메일이 일치 하지 않습니다.");
+    await router.push("/");
+  }
   console.log("refresh token: ", sessionStorage.getItem("refreshToken"));
   await router.push("/interview-management");
 };

@@ -3,12 +3,12 @@
     <div class="mb-10">
       <p class="mb-1 text-sm font-light text-gray-500">면접관 관리</p>
       <h2 class="text-3xl tracking-tight font-bold text-gray-800">
-        면접관 결과 관리
+        면접관 관리
       </h2>
     </div>
     <div class="mr-3">
       <div class="flex">
-        <InputSearchFilter>
+        <InputSearchFilter @click="searchBtn">
           <template v-slot:body>
             <div class="mr-3">
               <label
@@ -18,6 +18,7 @@
               >
               <input
                 type="text"
+                v-model="pagingInfo.nickname"
                 name="interviewTitle"
                 class="py-5 pl-7 pr-36 bg-gray-50 input input-bordered input-sm border-gray-300 text-sm"
                 placeholder="닉네임을 입력하세요"
@@ -32,9 +33,10 @@
               >
               <select
                 class="h-10 bg-gray-50 text-sm font-medium select select-primary select-sm border-gray-300 max-w-xs"
+                v-model="pagingInfo.isVerified"
               >
-                <option value="승인">승인</option>
-                <option value="미승인">미승인</option>
+                <option value="true">승인</option>
+                <option value="false">미승인</option>
               </select>
             </div>
           </template>
@@ -75,6 +77,7 @@
           삭제
         </div>
       </div>
+
       <div
         class="flex border-b hover:bg-gray-100"
         v-for="(index, item) in 10"
@@ -179,12 +182,34 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
+import { getInterviewers } from "@/api/interviewer";
+import { ref } from "vue";
 
-const approvalStatus = ref("승인");
-const toggleApproval = () => {
-  approvalStatus.value = approvalStatus.value === "승인" ? "미승인" : "승인";
+const pagingInfo = ref({
+  page: 0,
+  pageSize: 0,
+  sortDirection: 0,
+  column: "",
+  nickname: "",
+  isVerified: true,
+});
+
+const init = async (pagingInfo) => {
+  const interviewersInfo = await getInterviewers(pagingInfo);
+  console.log(interviewersInfo);
 };
+
+init();
+
+// const searchBtn = async () => {
+//   const interviewersInfo = await getInterviewers(pagingInfo.value);
+//   console.log(interviewersInfo);
+// };
+
+// const approvalStatus = ref("승인");
+// const toggleApproval = () => {
+//   approvalStatus.value = approvalStatus.value === "승인" ? "미승인" : "승인";
+// };
 </script>

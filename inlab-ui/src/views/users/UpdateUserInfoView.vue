@@ -7,7 +7,7 @@
         <h1
           class="mb-12 text-center text-2xl font-bold tracking-tight text-gray-800"
         >
-          회원가입
+          회원정보수정
         </h1>
         <form class="space-y-4 md:space-y-6">
           <div>
@@ -99,18 +99,12 @@
           </div>
           <div class="pt-5">
             <button
-              @click="registerBtn"
+              @click="updateBtn"
               type="submit"
               class="mt-15 btn btn-primary w-full"
             >
-              회원가입
+              회원정보수정
             </button>
-            <p class="mt-3 text-center text-sm font-light text-gray-500">
-              계정이 벌써 있으신가요?
-              <a href="/" class="font-medium text-indigo-500 hover:underline"
-                >로그인 바로가기</a
-              >
-            </p>
           </div>
         </form>
       </div>
@@ -118,15 +112,15 @@
   </section>
 </template>
 <script setup>
-import { useRouter } from "vue-router";
 import { ref } from "vue";
 import {
   checkVerificationCode,
   createVerificationCode,
-  register,
+  getUserInfo,
+  updateUserInfo,
 } from "@/api/auth";
+import { useRouter } from "vue-router";
 
-const router = useRouter();
 const email = ref("");
 const verificationCode = ref("");
 const password = ref("");
@@ -134,12 +128,21 @@ const confirmPassword = ref("");
 const nickName = ref("");
 //인증 번호 생성
 
+let router = useRouter();
+const init = async () => {
+  console.log("didididi");
+  const userInfo = await getUserInfo();
+  console.log(userInfo);
+  email.value = userInfo.data.email;
+  nickName.value = userInfo.data.nickname;
+};
+
+init();
 const createAuthenticationBtn = async () => {
   console.log(email.value);
   let response = await createVerificationCode(email.value);
   console.log(response);
 };
-
 //인증 번호 확인
 const checkVerificationCodeBtn = async () => {
   const data = {
@@ -149,12 +152,12 @@ const checkVerificationCodeBtn = async () => {
   console.log(data);
   let response = await checkVerificationCode(data);
   console.log("response:!!!!!!!!!!!" + response);
+  console.log(response);
   console.log("email: " + response.headers.email);
   sessionStorage.setItem("email", response.headers.email);
   console.log(sessionStorage.getItem("email"));
 };
-
-const registerBtn = async (event) => {
+const updateBtn = async (event) => {
   event.preventDefault();
   const data = {
     email: email.value,
@@ -162,21 +165,18 @@ const registerBtn = async (event) => {
     password: password.value,
   };
   // console.log("seesion: " + sessionStorage.getItem("email"));
-  let axiosResponse = await register(localStorage.getItem("email"), data);
-  // console.log(axiosResponse);
+  let axiosResponse = await updateUserInfo(localStorage.getItem("email"), data);
 
+  // console.log(axiosResponse);
   if (axiosResponse.status >= 200 && axiosResponse.status < 300) {
     console.log(sessionStorage.getItem("email"));
     sessionStorage.removeItem(axiosResponse.headers["clear-token"]);
-    console.log(sessionStorage.getItem("email"));
     await router.push("/");
   } else {
     alert("회원가입에 실패했습니다.");
     console.log("회원가입에 실패했습니다.");
   }
 };
-//인증 번호 확인
-// const checkVerificationCode = async () => {
-//   await auth.checkVerificationCode();
-// };
 </script>
+
+<style scoped></style>
