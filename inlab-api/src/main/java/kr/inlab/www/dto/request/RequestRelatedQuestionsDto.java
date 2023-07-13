@@ -16,4 +16,8 @@ public class RequestRelatedQuestionsDto extends RequestListDto {
 
 	private Long questionId;
 
+	@Builder
+	public RequestRelatedQuestionsDto(Long questionId) {
+		this.questionId = questionId;
+	}
 }
