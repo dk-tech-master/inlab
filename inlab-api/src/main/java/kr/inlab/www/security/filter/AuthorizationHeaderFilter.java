@@ -107,13 +107,10 @@ public class AuthorizationHeaderFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return
-            request.getServletPath().equals("/api/users/health_check") ||
                 request.getServletPath().equals("/login") ||
                 request.getServletPath().equals("/api/verification_code") ||
                 request.getServletPath().equals("/api/verification_code/check") ||
-                request.getServletPath().equals("/api/users") ||
-                request.getServletPath().startsWith("/api/users") ||
-                request.getServletPath().startsWith("/api/admin/users") ||
+                request.getServletPath().equals("/api/users")  && request.getMethod().equalsIgnoreCase("POST")||
                 request.getServletPath().equals("/docs/index.html") ||
                 request.getServletPath().contains("/swagger") ||
                 request.getServletPath().equals("/v2/api-docs");
