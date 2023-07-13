@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 
 import javax.transaction.Transactional;
@@ -72,12 +72,12 @@ class QuestionControllerTest {
 				"create-question",
 				requestHeaders(headerWithName("Authorization").description("JWT Token")),
 				requestFields(
-					fieldWithPath("positionId").description("질문의 position id"),
-					fieldWithPath("questionTypeId").description("질문의 question type id"),
-					fieldWithPath("questionLevelId").description("질문의 question level id"),
-					fieldWithPath("title").description("질문의 제목"),
-					fieldWithPath("version").description("질문의 버전"),
-					fieldWithPath("checklists").description("질문의 체크리스트")
+					fieldWithPath("positionId").description("질문 ID"),
+					fieldWithPath("questionTypeId").description("질문 유형 ID"),
+					fieldWithPath("questionLevelId").description("질문 난이도 ID"),
+					fieldWithPath("title").description("질문 제목"),
+					fieldWithPath("version").description("질문 버전"),
+					fieldWithPath("checklists").description("질문 체크리스트")
 				)
 			));
 	}
@@ -92,7 +92,7 @@ class QuestionControllerTest {
 			.questionLevelId(1)
 			.titleKeyword("질문")
 			.build();
-		String json = objectMapper.writeValueAsString(requestDto);
+		String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestDto);
 
 		// when-then
 		mockMvc.perform(get("/api/questions")
@@ -110,13 +110,14 @@ class QuestionControllerTest {
 					parameterWithName("page").optional().description("현재 페이지 (Default: 0)"),
 					parameterWithName("pageSize").optional().description("페이지당 개수 (Default: 10)"),
 					parameterWithName("sortDirection").optional().description("정렬 방식 (Default: DESC)"),
-					parameterWithName("column").optional().description("정렬 기준 컬럼 Default: null"),
+					parameterWithName("column").optional().description("정렬 기준 컬럼 (Default: null)"),
 					parameterWithName("positionId").optional().description("직무 ID"),
 					parameterWithName("questionTypeId").optional().description("질문 유형 ID"),
 					parameterWithName("questionLevelId").optional().description("질문 난이도 ID"),
 					parameterWithName("titleKeyword").optional().description("질문 제목 키워드")
 				),
 				responseFields(
+					fieldWithPath("responseList[]").description("질문 리스트"),
 					fieldWithPath("responseList[].title").description("질문 제목"),
 					fieldWithPath("responseList[].questionTypeId").description("질문 유형 ID"),
 					fieldWithPath("responseList[].questionTypeName").description("질문 유형 이름"),
@@ -158,16 +159,16 @@ class QuestionControllerTest {
 			.andDo(document(
 				"get-question",
 				requestHeaders(headerWithName("Authorization").description("JWT Token")),
-				pathParameters(parameterWithName("questionId").description("조회할 질문의 ID")),
+				pathParameters(parameterWithName("questionId").description("조회할 질문 ID")),
 				responseFields(
-					fieldWithPath("title").description("질문의 제목"),
-					fieldWithPath("questionTypeId").description("질문 유형의 ID"),
-					fieldWithPath("questionTypeName").description("질문 유형의 이름"),
-					fieldWithPath("positionId").description("직무의 ID"),
-					fieldWithPath("positionName").description("직무의 이름"),
-					fieldWithPath("questionLevelId").description("질문 난이도의 ID"),
-					fieldWithPath("questionLevelName").description("질문 난이도의 이름"),
-					fieldWithPath("version").description("질문의 버전"),
+					fieldWithPath("title").description("질문 제목"),
+					fieldWithPath("questionTypeId").description("질문 유형 ID"),
+					fieldWithPath("questionTypeName").description("질문 유형 이름"),
+					fieldWithPath("positionId").description("직무 ID"),
+					fieldWithPath("positionName").description("직무 이름"),
+					fieldWithPath("questionLevelId").description("질문 난이도 ID"),
+					fieldWithPath("questionLevelName").description("질문 난이도 이름"),
+					fieldWithPath("version").description("질문 버전"),
 					fieldWithPath("checklists[]").description("체크리스트")
 				)
 			));
@@ -199,13 +200,13 @@ class QuestionControllerTest {
 			.andDo(document(
 					"update-question",
 					requestHeaders(headerWithName("Authorization").description("JWT Token")),
-					pathParameters(parameterWithName("questionId").description("수정할 질문의 ID")),
+					pathParameters(parameterWithName("questionId").description("수정할 질문 ID")),
 					requestFields(
-						fieldWithPath("positionId").description("질문의 position id"),
-						fieldWithPath("questionTypeId").description("질문의 question type id"),
-						fieldWithPath("questionLevelId").description("질문의 question level id"),
-						fieldWithPath("title").description("수정된 질문의 제목"),
-						fieldWithPath("checklists").description("수정된 질문의 체크리스트")
+						fieldWithPath("positionId").description("질문 ID"),
+						fieldWithPath("questionTypeId").description("질문 유형 ID"),
+						fieldWithPath("questionLevelId").description("질문 난이도 ID"),
+						fieldWithPath("title").description("수정된 질문 제목"),
+						fieldWithPath("checklists").description("수정된 질문 체크리스트")
 					)
 				)
 			);

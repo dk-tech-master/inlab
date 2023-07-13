@@ -3,7 +3,6 @@ package kr.inlab.www.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import kr.inlab.www.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +33,6 @@ import kr.inlab.www.repository.QuestionLevelRepository;
 import kr.inlab.www.repository.QuestionRepository;
 import kr.inlab.www.repository.QuestionTypeRepository;
 import kr.inlab.www.repository.QuestionVersionRepository;
-import kr.inlab.www.repository.RelatedQuestionRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,7 +46,6 @@ public class QuestionServiceImpl implements QuestionService {
 	private final QuestionTypeRepository questionTypeRepository;
 	private final QuestionLevelRepository questionLevelRepository;
 	private final ChecklistRepository checklistRepository;
-	private final InterviewQuestionQueryRepository interviewQuestionQueryRepository;
 
 	private void saveChecklists(List<String> checklists, QuestionVersion questionVersion) {
 		List<Checklist> checklistEntities = checklists.stream()
@@ -97,6 +94,10 @@ public class QuestionServiceImpl implements QuestionService {
 		List<String> checklists = checklistEntities.stream()
 			.map(Checklist::getContent)
 			.collect(Collectors.toList());
+
+
+		// 추가 사항 : 열람이력에 등록 추가
+		// userQuestionHistory에 질문ID, 현재 로그인 중인 유저ID 내용 넣기
 
 		return ResponseGetQuestionDto.builder()
 			.title(questionVersion.getTitle())
@@ -162,7 +163,5 @@ public class QuestionServiceImpl implements QuestionService {
 
 		saveChecklists(requestDto.getChecklists(), savedQuestionVersion);
 		latestQuestionVersion.updateIsLatest(YesNo.N);
-
-		interviewQuestionQueryRepository.updateQuestionVersion(latestQuestionVersion, savedQuestionVersion);
 	}
 }
