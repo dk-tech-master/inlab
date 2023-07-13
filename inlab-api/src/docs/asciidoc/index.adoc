@@ -774,3 +774,32 @@ include::{snippets}/update-question/request-headers.adoc[]
 ==== 응답 Body
 
 include::{snippets}/update-question/http-response.adoc[]
+
+---
+
+== COMMENT CONTROLLER
+
+=== 코멘트 수정 / PATCH
+코멘트 수정에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/update-comment/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/update-comment/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/update-comment/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/update-comment/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/update-comment/http-response.adoc[]
+
+---
