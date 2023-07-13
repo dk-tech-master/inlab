@@ -12,7 +12,7 @@ public class ResponseInterviewDto {
     private String interviewTitle;
     private Long questionCount;
 
-    public ResponseInterviewDto(Long interviewId, String nickname, String interviewTitle, Long questionCount) {
+    public ResponseInterviewDto(Long interviewId, String interviewTitle, String nickname,Long questionCount) {
         this.interviewId = interviewId;
         this.nickname = nickname;
         this.interviewTitle = interviewTitle;

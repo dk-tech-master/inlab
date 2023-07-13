@@ -12,7 +12,7 @@ public interface PositionRepository extends JpaRepository<Position, Integer> {
 
     @Query("SELECT new kr.inlab.www.dto.response.ResponsePositionDto(p.positionId, p.positionName, COUNT(q)) " +
             "FROM Position p LEFT JOIN p.questionList q " +
-            "WHERE p.positionName LIKE CONCAT('%', :name, '%') " +
+            "WHERE (:name is null or p.positionName LIKE CONCAT('%', :name, '%') ) " +
             "GROUP BY p.positionId, p.positionName")
     Page<ResponsePositionDto> getPositionsList(@Param("name") String name, Pageable pageable);
 

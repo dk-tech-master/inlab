@@ -1,16 +1,5 @@
 package kr.inlab.www.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import kr.inlab.www.repository.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import kr.inlab.www.common.exception.*;
 import kr.inlab.www.common.type.YesNo;
 import kr.inlab.www.common.util.PagingUtil;
@@ -23,14 +12,18 @@ import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
 import kr.inlab.www.dto.response.ResponseQuestionVersionsDto;
-import kr.inlab.www.entity.Checklist;
-import kr.inlab.www.entity.Position;
-import kr.inlab.www.entity.Question;
-import kr.inlab.www.entity.QuestionLevel;
-import kr.inlab.www.entity.QuestionType;
-import kr.inlab.www.entity.QuestionVersion;
-import kr.inlab.www.entity.RelatedQuestion;
+import kr.inlab.www.entity.*;
+import kr.inlab.www.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -157,8 +150,6 @@ public class QuestionServiceImpl implements QuestionService {
 
 		saveChecklists(requestDto.getChecklists(), savedQuestionVersion);
 		latestQuestionVersion.updateIsLatest(YesNo.N);
-
-		interviewQuestionQueryRepository.updateQuestionVersion(latestQuestionVersion, savedQuestionVersion);
 	}
 
 	@Transactional
