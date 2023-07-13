@@ -102,7 +102,7 @@ class RelatedQuestionControllerTest {
 				),
 				responseFields(
 					fieldWithPath("responseList[]").description("꼬리질문 리스트"),
-					fieldWithPath("responseList[].title").description("꼬리질문의 제목"),
+					fieldWithPath("responseList[].title").description("꼬리질문 제목"),
 					fieldWithPath("responseList[].questionTypeId").description("꼬리질문 유형 ID"),
 					fieldWithPath("responseList[].questionTypeName").description("꼬리질문 유형 이름"),
 					fieldWithPath("responseList[].positionId").description("직무 ID"),
