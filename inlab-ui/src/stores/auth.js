@@ -14,6 +14,7 @@ export const authStore = defineStore("auth", () => {
     sessionStorage.setItem("accessToken", accessToken);
     sessionStorage.setItem("userId", userId);
     sessionStorage.setItem("nickname", nickname);
+    return response;
   };
 
   const logout = () => {

@@ -2,7 +2,7 @@ import InterviewerManagement from "@/views/interviewer/InterviewerManagement.vue
 
 const interviewerRoutes = [
   {
-    path: "/interviewerManagement",
+    path: "/interviewer-management",
     name: "interviewerManagement",
     component: InterviewerManagement,
   },
