@@ -8,39 +8,60 @@ import InterviewResultDetail from "@/views/interview/InterviewResultDetail.vue";
 
 const interviewRoutes = [
   {
-    path: "/start-interview",
+    path: "/interview/start",
     name: "startInterview",
+    meta: {
+      hide: false,
+    },
     component: StartInterview,
   },
 
   {
-    path: "/interview-process",
+    path: "/interview/process",
     name: "interviewProcess",
+    meta: {
+      hide: false,
+    },
     component: InterviewProcess,
   },
   {
-    path: "/interview-management",
+    path: "/interview",
     name: "interviewManagement",
+    meta: {
+      hide: true,
+    },
     component: InterviewManagement,
   },
   {
-    path: "/interviewResultManagement",
+    path: "/interview/result",
     name: "interviewResultManagement",
+    meta: {
+      hide: true,
+    },
     component: InterviewResultManagement,
   },
   {
-    path: "/interviewDetail",
+    path: "/interview/detail",
     name: "interviewDetail",
+    meta: {
+      hide: true,
+    },
     component: InterviewDetail,
   },
   {
-    path: "/interviewQuestionManagement",
+    path: "/interview/question",
     name: "interviewQuestionManagement",
+    meta: {
+      hide: true,
+    },
     component: InterviewQuestionManagement,
   },
   {
-    path: "/interviewResultDetail",
+    path: "/interview/result-detail",
     name: "interviewResultDetail",
+    meta: {
+      hide: true,
+    },
     component: InterviewResultDetail,
   },
 ];

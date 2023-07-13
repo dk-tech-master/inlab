@@ -6,16 +6,25 @@ const userRoutes = [
   {
     path: "/",
     name: "sign-in",
+    meta: {
+      hide: false,
+    },
     component: SignInView,
   },
   {
     path: "/sign-up",
     name: "sign-up",
+    meta: {
+      hide: false,
+    },
     component: SignUpView,
   },
   {
     path: "/update-userinfo",
     name: "update-userinfo",
+    meta: {
+      hide: false,
+    },
     component: UpdateUserInfoView,
   },
 ];
