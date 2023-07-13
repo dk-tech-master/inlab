@@ -13,7 +13,7 @@ import kr.inlab.www.dto.response.ResponseQuestionVersionsDto;
 public interface QuestionService {
 	void createQuestion(RequestCreateQuestionDto requestDto);
 
-	ResponseGetQuestionDto getQuestion(Long questionId);
+	ResponseGetQuestionDto getQuestion(Long questionId, String username);
 
 	ResponseListDto<ResponseGetQuestionsDto> getQuestions(RequestQuestionsDto requestDto);
 
