@@ -80,6 +80,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         FilterChain chain,
         Authentication authResult) throws IOException, ServletException {
         String email = authResult.getName();
+        User user = userService.getUserByEmail(email);
         userService.resetLoginAttempt(email);
 
         Claims claims = Jwts.claims();
@@ -89,9 +90,16 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         Map<String, String> stringStringMap = jwtTokenProvider.generateTokenSet(claims);
         stringStringMap.forEach(response::addHeader);
+
+        response.addHeader(CreateHeaders.USER_ID, user.getUserId().toString());
+        response.addHeader(CreateHeaders.USER_NICKNAME, user.getNickname());
+
         checkPasswordChangeRequiredAndThenSetHeader(email, response); // 최근 비밀번호 변경이 필요한지 여부 확인
     }
 
+    /**
+     * 비밀번호 변경이 현재 시점으로 3개월 이상됐을 경우 Password-Change-Required 를 헤더에 추가한다.
+     */
     private void checkPasswordChangeRequiredAndThenSetHeader(String email, HttpServletResponse response) {
         if (isPasswordChangeRequired(userService.getUserByEmail(email).getPasswordModifiedAt())) {
             response.addHeader(CreateHeaders.PASSWORD_CHANGE_REQUIRED, CreateHeaders.TRUE);
@@ -112,12 +120,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         // todo response 처리 변경
         if (failed instanceof UsernameNotFoundException) {
             // 올바르지 않은 이메일을 입력했을 경우
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
+            response.addHeader(CreateHeaders.LOGIN_FAIL, CreateHeaders.TRUE);
         } else if (failed instanceof AccountDeletedException) {
             // 삭제된 계정으로 로그인을 진행하는 경우
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
+            response.addHeader(CreateHeaders.LOGIN_FAIL_DELETE, CreateHeaders.TRUE);
         } else if (failed instanceof LoginBlockedException){
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
+            // 비밀번호 5회 오류 시
+            response.addHeader(CreateHeaders.LOGIN_FAIL_BLOCK, LocalDateTime.now().plusMinutes(30).toString());
         }else if (failed instanceof BadCredentialsException) {
             // 비밀번호가 틀렸을 경우
             User user = userService.getUserByEmail((String) request.getAttribute("username"));
@@ -129,7 +138,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             } else {
                 userService.increaseLoginAttempt(user.getEmail());
             }
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, failed.getMessage());
+            response.addHeader(CreateHeaders.LOGIN_FAIL, CreateHeaders.TRUE);
         }
     }
 }

@@ -2,10 +2,9 @@ package kr.inlab.www.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateQuestionDto;
-import kr.inlab.www.dto.request.RequestCreateRelatedQuestionDto;
 import kr.inlab.www.dto.request.RequestQuestionsDto;
 import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
 import kr.inlab.www.dto.request.RequestQuestionVersionsDto;
@@ -47,8 +45,8 @@ public class QuestionController {
 
 	// 질문 상세 조회 (#14)
 	@GetMapping("/{questionId}")
-	public ResponseEntity<ResponseGetQuestionDto> getQuestion(@PathVariable Long questionId) {
-		ResponseGetQuestionDto responseDto = questionService.getQuestion(questionId);
+	public ResponseEntity<ResponseGetQuestionDto> getQuestion(@PathVariable Long questionId, @AuthenticationPrincipal String username) {
+		ResponseGetQuestionDto responseDto = questionService.getQuestion(questionId, username);
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
@@ -60,7 +58,7 @@ public class QuestionController {
 	}
 
 	// 질문 수정(버전 업) (#16)
-	@PatchMapping("/{questionId}")
+	@PostMapping("/{questionId}")
 	public ResponseEntity<Void> updateQuestion(@RequestBody RequestUpdateQuestionDto requestDto, @PathVariable Long questionId) {
 		questionService.updateQuestion(requestDto, questionId);
 		return ResponseEntity.status(HttpStatus.CREATED).build();

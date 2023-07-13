@@ -8,10 +8,15 @@ import org.springframework.http.HttpHeaders;
  */
 public class CreateHeaders {
 
-    public static final String CLEAR_TOKEN = "Clear-Token";
-    public static final String PASSWORD_CHANGE_REQUIRED = "Password-Change-Required";
+    public static final String CLEAR_TOKEN = "clear-token";
+    public static final String PASSWORD_CHANGE_REQUIRED = "password-change-required";
     public static final String X_UNAUTHORIZED_USER = "X-Unauthorized-User";
     public static final String TRUE = "true";
+    public static final String LOGIN_FAIL_BLOCK = "login-fail-block";
+    public static final String LOGIN_FAIL_DELETE = "login-fail-delete";
+    public static final String LOGIN_FAIL = "login-fail";
+    public static final String USER_ID = "user-id";
+    public static final String USER_NICKNAME = "nickname";
 
     public static HttpHeaders createClearTokenHeaders(String... tokenKeys) {
         HttpHeaders headers = new HttpHeaders();

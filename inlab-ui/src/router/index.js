@@ -21,11 +21,32 @@ const router = createRouter({
       component: AudioTestView,
     },
     {
-      path: "/",
+      path: "/test",
       name: "test",
       component: TestView,
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const accessToken = sessionStorage.getItem("accessToken");
+  if (accessToken === null || accessToken === "") {
+    console.log(to.path);
+    if (to.path === "/") {
+      // 갈길이 로그인이면 로그인 가라~
+      next();
+    } else {
+      alert("로그아웃 되었습니다.");
+      next();
+    }
+  } else {
+    // 주소창에 로그인으로 가려고 할 때
+    if (to.path === "/") {
+      next("/interview-management");
+    } else {
+      next();
+    }
+  }
 });
 
 export default router;

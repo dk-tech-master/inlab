@@ -3,7 +3,6 @@ package kr.inlab.www.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import kr.inlab.www.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,16 +28,21 @@ import kr.inlab.www.entity.Question;
 import kr.inlab.www.entity.QuestionLevel;
 import kr.inlab.www.entity.QuestionType;
 import kr.inlab.www.entity.QuestionVersion;
+import kr.inlab.www.entity.User;
+import kr.inlab.www.entity.UserQuestionHistory;
 import kr.inlab.www.repository.ChecklistRepository;
 import kr.inlab.www.repository.PositionRepository;
 import kr.inlab.www.repository.QuestionLevelRepository;
 import kr.inlab.www.repository.QuestionRepository;
 import kr.inlab.www.repository.QuestionTypeRepository;
 import kr.inlab.www.repository.QuestionVersionRepository;
-import kr.inlab.www.repository.RelatedQuestionRepository;
 
+import kr.inlab.www.repository.UserQuestionHistoryRepository;
+import kr.inlab.www.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
@@ -49,6 +53,8 @@ public class QuestionServiceImpl implements QuestionService {
 	private final QuestionTypeRepository questionTypeRepository;
 	private final QuestionLevelRepository questionLevelRepository;
 	private final ChecklistRepository checklistRepository;
+	private final UserRepository userRepository;
+	private final UserQuestionHistoryRepository userQuestionHistoryRepository;
 
 	private void saveChecklists(List<String> checklists, QuestionVersion questionVersion) {
 		List<Checklist> checklistEntities = checklists.stream()
@@ -87,16 +93,22 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public ResponseGetQuestionDto getQuestion(Long questionId) {
-		// Join되어 있는 데이터 조회
+	public ResponseGetQuestionDto getQuestion(Long questionId, String username) {
 		QuestionVersion questionVersion = questionVersionRepository.findTopByQuestionQuestionIdAndIsLatest(questionId, YesNo.Y)
 			.orElseThrow(QuestionVersionNotFoundException::new);
-		// 체크리스트 조회
+
 		List<Checklist> checklistEntities = checklistRepository.findAllByQuestionVersion(questionVersion);
-		// 형변환
 		List<String> checklists = checklistEntities.stream()
 			.map(Checklist::getContent)
 			.collect(Collectors.toList());
+
+		// 열람이력 저장
+		User user = userRepository.findByEmail(username)
+			.orElseThrow(UserNotFoundException::new);
+		userQuestionHistoryRepository.save(UserQuestionHistory.builder()
+			.user(user)
+			.question(questionVersion.getQuestion())
+			.build());
 
 		return ResponseGetQuestionDto.builder()
 			.title(questionVersion.getTitle())

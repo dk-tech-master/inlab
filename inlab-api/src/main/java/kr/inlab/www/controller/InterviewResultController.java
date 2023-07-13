@@ -1,6 +1,8 @@
 package kr.inlab.www.controller;
 
+import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewResultDto;
+import kr.inlab.www.dto.request.RequestInterviewResultListDto;
 import kr.inlab.www.dto.response.ResponseInterviewResultDto;
 import kr.inlab.www.service.InterviewResultService;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +30,11 @@ public class InterviewResultController {
     public ResponseEntity<?> getInterviewResult(@PathVariable Long interviewResultId) {
         ResponseInterviewResultDto responseInterviewResultDto = interviewResultService.getInterviewResult(interviewResultId);
         return ResponseEntity.status(HttpStatus.OK).body(responseInterviewResultDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getInterviewResultList(@ModelAttribute RequestInterviewResultListDto requestDto) {
+        ResponseListDto interviewResultList = interviewResultService.getInterviewResultList(requestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(interviewResultList);
     }
 }

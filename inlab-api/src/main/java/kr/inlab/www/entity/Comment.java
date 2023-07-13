@@ -46,6 +46,11 @@ public class Comment {
                 .commentId(this.commentId)
                 .content(this.content)
                 .createdAt(this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .modifiedAt(this.modifiedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build();
+    }
+
+    public void editComment(String newContent) {
+        this.content = newContent;
     }
 }

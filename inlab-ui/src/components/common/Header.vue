@@ -16,12 +16,24 @@
       <p class="ml-2 mr-10">신다인님</p>
     </div>
     <button
-      type="submit"
+      type="button"
       class="flex flex-col items-center px-7 py-5 btn btn-primary btn-sm btn btn-outline text-sm"
+      @click="logoutBtn"
     >
       로그아웃
     </button>
   </nav>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from "vue-router";
+import { authStore } from "@/stores/auth";
+const router = useRouter();
+const store = authStore();
+const logoutBtn = async () => {
+  await store.logout();
+  // await router.push({
+  //   name: "sign-in",
+  // });
+};
+</script>
