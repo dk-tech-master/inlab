@@ -1,5 +1,7 @@
 package kr.inlab.www.service;
 
+import java.util.List;
+import kr.inlab.www.dto.common.PositionAndLevelList;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestGetPositionDto;
 import kr.inlab.www.dto.request.RequestPositionNameDto;
@@ -15,4 +17,5 @@ public interface PositionService {
 
     void updatePosition(Integer positionId, RequestPositionNameDto requestDto);
 
+    List<PositionAndLevelList> getPositionOnCategory();
 }

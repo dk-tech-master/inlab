@@ -1,7 +1,9 @@
 package kr.inlab.www.repository;
 
+import kr.inlab.www.dto.response.ResponseGetPositionLevelDto;
 import kr.inlab.www.dto.response.ResponsePositionDto;
 import kr.inlab.www.entity.Position;
+import kr.inlab.www.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

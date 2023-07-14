@@ -1,8 +1,7 @@
 package kr.inlab.www.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.inlab.www.dto.request.RequestQuestionTypeNameDto;
-import kr.inlab.www.entity.Interview;
+import kr.inlab.www.dto.request.RequestCreateQuestionTypeDto;
 import kr.inlab.www.entity.QuestionType;
 import kr.inlab.www.repository.QuestionTypeRepository;
 import org.junit.jupiter.api.Test;
@@ -47,7 +46,7 @@ public class QuestionTypeControllerTest {
     @Transactional
     @Test
     void 질문유형_생성_테스트() throws Exception {
-        RequestQuestionTypeNameDto requestDto = RequestQuestionTypeNameDto.builder().questionTypeName("테스트 유형 생성").build();
+        RequestCreateQuestionTypeDto requestDto = RequestCreateQuestionTypeDto.builder().questionTypeName("테스트 유형 생성").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(post("/api/question-type")
@@ -107,7 +106,7 @@ public class QuestionTypeControllerTest {
     public void 질문유형_수정_테스트() throws Exception {
         Integer questionTypeId = getTestQuestionTypeId();
 
-        RequestQuestionTypeNameDto requestDto = RequestQuestionTypeNameDto.builder().questionTypeName("질문 유형 수정").build();
+        RequestCreateQuestionTypeDto requestDto = RequestCreateQuestionTypeDto.builder().questionTypeName("질문 유형 수정").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(put("/api/question-type/{questionTypeId}",questionTypeId)

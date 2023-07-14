@@ -1,8 +1,12 @@
 package kr.inlab.www.controller;
 
+import javax.websocket.server.PathParam;
 import kr.inlab.www.dto.common.ResponseListDto;
+import kr.inlab.www.dto.request.RequestGetInterviewDto;
+import kr.inlab.www.dto.request.RequestGetQuestionTypeByPositionDto;
 import kr.inlab.www.dto.request.RequestQuestionTypeDto;
-import kr.inlab.www.dto.request.RequestQuestionTypeNameDto;
+import kr.inlab.www.dto.request.RequestCreateQuestionTypeDto;
+import kr.inlab.www.dto.request.RequestUpdateQuestionTypeDto;
 import kr.inlab.www.dto.response.ResponseQuestionTypeDto;
 import kr.inlab.www.service.QuestionTypeService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +24,7 @@ public class QuestionTypeController {
     private final QuestionTypeService questionTypeService;
 
     @PostMapping
-    public ResponseEntity createQuestionType(@RequestBody RequestQuestionTypeNameDto requestDto) {
+    public ResponseEntity createQuestionType(@RequestBody RequestCreateQuestionTypeDto requestDto) {
         questionTypeService.createQuestionType(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -31,8 +35,13 @@ public class QuestionTypeController {
         return ResponseEntity.ok().body(responseDto);
     }
 
+    @GetMapping("/category")
+    public ResponseEntity getQuestionTypeByPositionId(@ModelAttribute RequestGetQuestionTypeByPositionDto requestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(questionTypeService.getQuestionTypeByPosition(requestDto));
+    }
+
     @PutMapping("/{questionTypeId}")
-    public ResponseEntity updateQuestionType(@RequestBody RequestQuestionTypeNameDto requestDto, @PathVariable Integer questionTypeId) {
+    public ResponseEntity updateQuestionType(@RequestBody RequestUpdateQuestionTypeDto requestDto, @PathVariable Integer questionTypeId) {
         questionTypeService.updateQuestionType(questionTypeId,requestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -42,4 +51,6 @@ public class QuestionTypeController {
         questionTypeService.deleteQuestionType(questionTypeId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+
 }

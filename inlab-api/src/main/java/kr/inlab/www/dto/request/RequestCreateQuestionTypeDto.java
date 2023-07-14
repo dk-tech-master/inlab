@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED )
-public class RequestQuestionTypeNameDto {
+public class RequestCreateQuestionTypeDto {
 
+    private Integer positionId;
     private String questionTypeName;
 
     @Builder
-    public RequestQuestionTypeNameDto(String questionTypeName) {
+    public RequestCreateQuestionTypeDto(Integer positionId, String questionTypeName) {
+        this.positionId = positionId;
         this.questionTypeName = questionTypeName;
     }
 }
