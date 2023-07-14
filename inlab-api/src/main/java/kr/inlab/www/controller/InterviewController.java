@@ -4,17 +4,15 @@ import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewDto;
 import kr.inlab.www.dto.request.RequestGetInterviewDto;
 import kr.inlab.www.dto.response.ResponseInterviewDto;
-import kr.inlab.www.dto.response.ResponseInterviewQuestionnaireDto;
+import kr.inlab.www.dto.response.ResponseInterviewQuestionStartDto;
 import kr.inlab.www.service.InterviewService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.ResourceBundle;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,22 +26,23 @@ public class InterviewController {
         interviewService.createInterview(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
     @PreAuthorize("@userServiceImpl.isAdminOrSelf(#userId)")
     @GetMapping("/{userId}")
-    public ResponseEntity getInterview(@ModelAttribute RequestGetInterviewDto requestDto, @PathVariable Long userId){
+    public ResponseEntity getInterview(@ModelAttribute RequestGetInterviewDto requestDto, @PathVariable Long userId) {
         ResponseListDto<ResponseInterviewDto> responseDto = interviewService.getInterview(userId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping("/{InterviewId}")
-    public ResponseEntity putInterview(@RequestBody RequestCreateInterviewDto requestDto,@PathVariable Long InterviewId) {
-        interviewService.putInterview(InterviewId,requestDto);
+    public ResponseEntity putInterview(@RequestBody RequestCreateInterviewDto requestDto, @PathVariable Long InterviewId) {
+        interviewService.putInterview(InterviewId, requestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/start/{interviewId}")
     public ResponseEntity getInterviewQuestionsAndCheckList(@PathVariable Long interviewId) {
-        List<ResponseInterviewQuestionnaireDto> interviewStartList = interviewService.getInterviewQuestionnaire(interviewId);
+        List<ResponseInterviewQuestionStartDto> interviewStartList = interviewService.getInterviewQuestionStartList(interviewId);
         return ResponseEntity.ok().body(interviewStartList);
     }
 }

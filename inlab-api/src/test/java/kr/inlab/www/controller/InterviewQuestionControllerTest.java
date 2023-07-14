@@ -107,4 +107,30 @@ class InterviewQuestionControllerTest {
                         pathParameters(parameterWithName("interviewQuestionId").description("면접 질문 ID path variable"))
                 ));
     }
+
+
+    @Test
+    @Transactional
+    void 면접질문_리스트_질문_상세() throws Exception {
+        mockMvc.perform(get("/api/interview/questions/detail/{interviewQuestionId}",1L)
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "get-interview-questions-detail",
+                        requestHeaders(headerWithName("Authorization").description("JWT Token")),
+                        pathParameters(parameterWithName("interviewQuestionId").description("면접 질문의 Id")),
+                        responseFields(
+                                fieldWithPath("questionTitle").description("질문 제목"),
+                                fieldWithPath("questionTypeName").description("질문 유형 이름"),
+                                fieldWithPath("positionName").description("직무 명"),
+                                fieldWithPath("questionLevelName").description("난이도 명"),
+                                fieldWithPath("version").description("질문의 해당 버전"),
+                                fieldWithPath("checklist[].checklistId").description("체크리스트 id"),
+                                fieldWithPath("checklist[].content").description("체크리스트 내용")
+
+                        ))
+                );
+    }
 }

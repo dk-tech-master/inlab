@@ -4,7 +4,9 @@ import kr.inlab.www.common.exception.InterviewAlreadyExistsException;
 import kr.inlab.www.common.exception.InterviewNotFoundException;
 import kr.inlab.www.common.exception.InterviewQuestionNotFoundException;
 import kr.inlab.www.common.exception.QuestionNotFoundException;
+import kr.inlab.www.dto.common.ChecklistDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewQuestionDto;
+import kr.inlab.www.dto.response.ResponseInterviewQuestionDetailDto;
 import kr.inlab.www.dto.response.ResponseInterviewQuestionDto;
 import kr.inlab.www.entity.Interview;
 import kr.inlab.www.entity.InterviewQuestion;
@@ -16,7 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+
+import static kr.inlab.www.dto.response.ResponseInterviewQuestionDetailDto.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
     private final InterviewRepository interviewRepository;
     private final QuestionRepository questionRepository;
     private final QuestionVersionRepository questionVersionRepository;
+    private final ChecklistRepository checklistRepository;
 
     @Override
     public InterviewQuestion getInterviewQuestion(Long interviewQuestionId) {
@@ -37,7 +41,7 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
     @Override
     @Transactional
     public void createInterviewQuestion(RequestCreateInterviewQuestionDto requestDto) {
-        if(interviewQuestionQueryRepository.interviewQuestionExist(requestDto.getInterviewId(), requestDto.getQuestionId()))
+        if (interviewQuestionQueryRepository.interviewQuestionExist(requestDto.getInterviewId(), requestDto.getQuestionId()))
             throw new InterviewAlreadyExistsException();
 
         Interview interview = interviewRepository.findById(requestDto.getInterviewId())
@@ -65,5 +69,22 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
     public void deleteInterviewQuestion(Long interviewQuestionId) {
         InterviewQuestion interviewQuestion = getInterviewQuestion(interviewQuestionId);
         interviewQuestionRepository.delete(interviewQuestion);
+    }
+
+    public ResponseInterviewQuestionDetailDto getInterviewQuestionDetail(Long interviewQuestionId) {
+        InterviewQuestion interviewQuestion = interviewQuestionRepository.findById(interviewQuestionId)
+                .orElseThrow(InterviewQuestionNotFoundException::new);
+
+        InterviewQuestionDetailDto interviewQuestionDetailDto = interviewQuestionQueryRepository.getInterviewQuestionDetailDto(interviewQuestion);
+        List<ChecklistDto> checklist = checklistRepository.getChecklistByQuestionVersion(interviewQuestionDetailDto.getQuestionVersionId());
+
+        return ResponseInterviewQuestionDetailDto.builder()
+                .questionTitle(interviewQuestionDetailDto.getQuestionTitle())
+                .questionTypeName(interviewQuestionDetailDto.getQuestionTypeName())
+                .positionName(interviewQuestionDetailDto.getPositionName())
+                .questionLevelName(interviewQuestionDetailDto.getQuestionLevelName())
+                .version(interviewQuestionDetailDto.getVersion())
+                .checklist(checklist)
+                .build();
     }
 }

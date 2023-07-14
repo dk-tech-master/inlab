@@ -5,17 +5,16 @@ import kr.inlab.www.common.exception.InterviewNotFoundException;
 import kr.inlab.www.common.exception.InterviewTitleDuplicateException;
 import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
+import kr.inlab.www.dto.common.ChecklistDto;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewDto;
 import kr.inlab.www.dto.request.RequestGetInterviewDto;
 import kr.inlab.www.dto.response.ResponseInterviewDto;
-import kr.inlab.www.dto.response.ResponseInterviewQuestionnaireDto;
+import kr.inlab.www.dto.response.ResponseInterviewQuestionStartDto;
+import kr.inlab.www.entity.Checklist;
 import kr.inlab.www.entity.Interview;
 import kr.inlab.www.entity.User;
-import kr.inlab.www.repository.InterviewQueryRepository;
-import kr.inlab.www.repository.InterviewQuestionQueryRepository;
-import kr.inlab.www.repository.InterviewRepository;
-import kr.inlab.www.repository.UserRepository;
+import kr.inlab.www.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +24,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static kr.inlab.www.dto.response.ResponseInterviewQuestionStartDto.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class InterviewServiceImpl implements InterviewService{
     private final InterviewRepository interviewRepository;
     private final UserRepository userRepository;
     private final InterviewQueryRepository interviewQueryRepository;
+    private final ChecklistRepository checklistRepository;
 
     @Transactional
     @Override
@@ -74,9 +77,25 @@ public class InterviewServiceImpl implements InterviewService{
     }
 
     @Override
-    public List<ResponseInterviewQuestionnaireDto> getInterviewQuestionnaire(Long interviewId) {
+    public List<ResponseInterviewQuestionStartDto> getInterviewQuestionStartList(Long interviewId) {
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
-        return interviewQuestionQueryRepository.getInterviewQuestionnaire(interview);
+
+        List<InterviewQuestionStartDto> interviewQuestionStartDtoList = interviewQuestionQueryRepository.getInterviewQuestionnaire(interview);
+
+        List<ResponseInterviewQuestionStartDto> responseDto = interviewQuestionStartDtoList.stream().map(interviewQuestion -> {
+            List<ChecklistDto> checklistDto = checklistRepository.getChecklistByQuestionVersion(interviewQuestion.getQuestionVersionId());
+
+            return ResponseInterviewQuestionStartDto.builder()
+                    .interviewQuestionId(interviewQuestion.getInterviewQuestionId())
+                    .interviewTitle(interviewQuestion.getInterviewTitle())
+                    .questionVersionId(interviewQuestion.getQuestionVersionId())
+                    .questionTitle(interviewQuestion.getQuestionTitle())
+                    .version(interviewQuestion.getVersion())
+                    .checklistList(checklistDto)
+                    .build();
+        }).collect(Collectors.toList());
+
+        return responseDto;
     }
 }

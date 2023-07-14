@@ -154,8 +154,9 @@ class InterviewControllerTest {
                 );
     }
 
+    // document 수정
     @Test
-    void 면접질문_체크_리스트_테스트() throws Exception {
+    void 면접시작_질문리스트_테스트() throws Exception {
         mockMvc.perform(get("/api/interview/start/{interviewId}",1L)
                 .header(HttpHeaders.AUTHORIZATION, "jwt token")
                 .accept(MediaType.APPLICATION_JSON)
@@ -169,8 +170,11 @@ class InterviewControllerTest {
                         responseFields(
                                 fieldWithPath("[].questionTitle").description("질문 이름"),
                                 fieldWithPath("[].interviewQuestionId").description("면접 질문 리스트 Id"),
-                                fieldWithPath("[].checklistDtoList[].checklistId").description("질문의 체크리스트 id"),
-                                fieldWithPath("[].checklistDtoList[].content").description("질문의 체크리스트 내용")
+                                fieldWithPath("[].questionVersionId").description("면접 질문 버전 Id"),
+                                fieldWithPath("[].interviewTitle").description("질문 제목"),
+                                fieldWithPath("[].version").description("면접 질문 버전"),
+                                fieldWithPath("[].checklistList[].checklistId").description("질문의 체크리스트 id"),
+                                fieldWithPath("[].checklistList[].content").description("질문의 체크리스트 내용")
                         )
                 ));
     }

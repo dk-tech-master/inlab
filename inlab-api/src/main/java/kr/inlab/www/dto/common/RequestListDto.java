@@ -27,6 +27,11 @@ public class RequestListDto {
         }
     }
 
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+        if(pageSize < 1) this.pageSize = 1;
+    }
+
     public void setSortDirection(String sortDirection) {
         if (sortDirection.equalsIgnoreCase("asc")) {
             this.sortDirection = Sort.Direction.ASC;
