@@ -1,5 +1,7 @@
 package kr.inlab.www.controller;
 
+import java.util.List;
+import kr.inlab.www.dto.common.PositionAndLevelList;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestGetPositionDto;
 import kr.inlab.www.dto.request.RequestPositionNameDto;
@@ -29,6 +31,12 @@ public class PositionController {
     public ResponseEntity getPosition(@ModelAttribute RequestGetPositionDto requestDto) {
         ResponseListDto<ResponsePositionDto> responseDto = positionService.getPosition(requestDto);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity getPosition() {
+        List<PositionAndLevelList> positionOnCategory = positionService.getPositionOnCategory();
+        return ResponseEntity.ok(positionOnCategory);
     }
 
     @DeleteMapping("/{positionId}")

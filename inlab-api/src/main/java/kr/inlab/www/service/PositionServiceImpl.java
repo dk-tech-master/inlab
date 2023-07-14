@@ -1,21 +1,32 @@
 package kr.inlab.www.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import kr.inlab.www.common.exception.PositionDeleteNotAllowedException;
 import kr.inlab.www.common.exception.PositionAlreadyExistsException;
 import kr.inlab.www.common.exception.PositionNotFoundException;
+import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
+import kr.inlab.www.dto.common.PositionAndLevelList;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestGetPositionDto;
 import kr.inlab.www.dto.request.RequestPositionNameDto;
 import kr.inlab.www.dto.response.ResponsePositionDto;
 import kr.inlab.www.entity.Position;
+import kr.inlab.www.entity.PositionLevel;
+import kr.inlab.www.entity.User;
+import kr.inlab.www.repository.PositionLevelRepository;
 import kr.inlab.www.repository.PositionRepository;
 import kr.inlab.www.repository.QuestionRepository;
+import kr.inlab.www.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,6 +37,8 @@ public class PositionServiceImpl implements PositionService{
 
     private final PositionRepository positionRepository;
     private final QuestionRepository questionRepository;
+    private final UserRepository userRepository;
+    private final PositionLevelRepository positionLevelRepository;
 
     @Override
     @Transactional
@@ -67,5 +80,33 @@ public class PositionServiceImpl implements PositionService{
             throw new PositionDeleteNotAllowedException();
 
         position.updateName(requestDto.getPositionName());
+    }
+
+    @Override
+    public List<PositionAndLevelList> getPositionOnCategory() {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        List<PositionLevel> positionLevels = positionLevelRepository.findByUser(user);
+
+        Map<Integer, List<PositionLevel>> groupedPositionLevels = positionLevels.stream()
+            .collect(Collectors.groupingBy(positionLevel -> positionLevel.getPosition().getPositionId()));
+
+        return groupedPositionLevels.entrySet().stream()
+            .map(entry -> {
+                List<PositionAndLevelList.LevelDto> levelListDto = entry.getValue().stream()
+                    .map(positionLevel -> PositionAndLevelList.LevelDto.builder()
+                        .levelId(positionLevel.getLevelId())
+                        .levelName(positionLevel.getQuestionLevel().getQuestionLevelName()) // This line assumes that getQuestionLevelName() is available in QuestionLevel class.
+                        .build())
+                    .collect(Collectors.toList());
+
+                return PositionAndLevelList.builder()
+                    .positionId(entry.getKey())
+                    .positionName(entry.getValue().get(0).getPosition().getPositionName()) // This line assumes that getPositionName() is available in Position class.
+                    .levelListDto(levelListDto)
+                    .build();
+            })
+            .collect(Collectors.toList());
     }
 }
