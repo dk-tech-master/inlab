@@ -2,20 +2,20 @@ package kr.inlab.www.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.inlab.www.dto.common.ChecklistDto;
 import kr.inlab.www.dto.response.ResponseInterviewQuestionDto;
-import kr.inlab.www.dto.response.ResponseInterviewQuestionnaireDto;
-import kr.inlab.www.entity.*;
+import kr.inlab.www.entity.Interview;
+import kr.inlab.www.entity.InterviewQuestion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static kr.inlab.www.entity.QChecklist.checklist;
-import static kr.inlab.www.entity.QInterview.*;
-import static kr.inlab.www.entity.QInterviewQuestion.*;
+import static kr.inlab.www.dto.response.ResponseInterviewQuestionDetailDto.InterviewQuestionDetailDto;
+import static kr.inlab.www.dto.response.ResponseInterviewQuestionStartDto.InterviewQuestionStartDto;
+import static kr.inlab.www.entity.QInterview.interview;
+import static kr.inlab.www.entity.QInterviewQuestion.interviewQuestion;
 import static kr.inlab.www.entity.QPosition.position;
-import static kr.inlab.www.entity.QQuestion.*;
+import static kr.inlab.www.entity.QQuestion.question;
 import static kr.inlab.www.entity.QQuestionLevel.questionLevel;
 import static kr.inlab.www.entity.QQuestionType.questionType;
 import static kr.inlab.www.entity.QQuestionVersion.questionVersion;
@@ -32,7 +32,7 @@ public class InterviewQuestionQueryRepository {
                 .from(interviewQuestion)
                 .where(interviewQuestion.interview.interviewId.eq(interviewId),
                         interviewQuestion.question.questionId.eq(questionId)
-                        )
+                )
                 .fetchFirst();
 
         return fetchOne != null;
@@ -58,23 +58,40 @@ public class InterviewQuestionQueryRepository {
                 .fetch();
     }
 
-    public List<ResponseInterviewQuestionnaireDto> getInterviewQuestionnaire(Interview interview) {
-       return queryFactory
-                .select(Projections.constructor(ResponseInterviewQuestionnaireDto.class,
+    public List<InterviewQuestionStartDto> getInterviewQuestionnaire(Interview interview) {
+
+        return queryFactory
+                .select(Projections.constructor(InterviewQuestionStartDto.class,
                         interviewQuestion.interview.title,
                         interviewQuestion.interviewQuestionId,
+                        questionVersion.questionVersionId,
                         questionVersion.title,
-                        questionVersion.version,
-                        Projections.list(
-                                Projections.constructor(ChecklistDto.class,
-                                        checklist.checklistId,
-                                        checklist.content
-                                ))
+                        questionVersion.version
                 ))
-               .from(interviewQuestion)
-               .innerJoin(interviewQuestion.questionVersion, questionVersion)
-               .leftJoin(questionVersion.checklistList, checklist)
-               .where(interviewQuestion.interview.eq(interview))
-               .fetch();
-    };
+                .from(interviewQuestion)
+                .innerJoin(interviewQuestion.questionVersion, questionVersion)
+                .where(interviewQuestion.interview.eq(interview))
+                .fetch();
+    }
+
+    ;
+
+    public InterviewQuestionDetailDto getInterviewQuestionDetailDto(InterviewQuestion interviewQuestion) {
+        return queryFactory
+                .select(Projections.constructor(InterviewQuestionDetailDto.class,
+                        questionVersion.title,
+                        questionType.questionTypeName,
+                        position.positionName,
+                        questionLevel.questionLevelName,
+                        questionVersion.questionVersionId,
+                        questionVersion.version
+                ))
+                .from(questionVersion)
+                .innerJoin(questionVersion.question, question)
+                .innerJoin(question.questionType, questionType)
+                .innerJoin(question.position, position)
+                .innerJoin(questionVersion.questionLevel, questionLevel)
+                .where(questionVersion.eq(interviewQuestion.getQuestionVersion()))
+                .fetchOne();
+    }
 }

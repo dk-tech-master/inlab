@@ -1,6 +1,7 @@
 package kr.inlab.www.controller;
 
 import kr.inlab.www.dto.request.RequestCreateInterviewQuestionDto;
+import kr.inlab.www.dto.response.ResponseInterviewQuestionDetailDto;
 import kr.inlab.www.dto.response.ResponseInterviewQuestionDto;
 import kr.inlab.www.service.InterviewQuestionService;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,11 @@ public class InterviewQuestionController {
     public ResponseEntity deleteInterviewQuestion(@PathVariable Long interviewQuestionId) {
         interviewQuestionService.deleteInterviewQuestion(interviewQuestionId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/detail/{interviewQuestionId}")
+    public ResponseEntity getInterviewQuestionDetail(@PathVariable Long interviewQuestionId) {
+        ResponseInterviewQuestionDetailDto interviewQuestionDetail = interviewQuestionService.getInterviewQuestionDetail(interviewQuestionId);
+        return ResponseEntity.ok().body(interviewQuestionDetail);
     }
 }
