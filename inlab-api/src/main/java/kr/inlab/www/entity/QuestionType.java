@@ -2,6 +2,8 @@ package kr.inlab.www.entity;
 
 import java.util.List;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,8 +32,13 @@ public class QuestionType {
     @OneToMany(mappedBy = "questionType" , fetch = FetchType.LAZY)
     private List<Question> questionList;
 
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private Position position;
+
     @Builder
-    public QuestionType(String questionTypeName) {
+    public QuestionType(Position position, String questionTypeName) {
+        this.position = position;
         this.questionTypeName = questionTypeName;
     }
 
