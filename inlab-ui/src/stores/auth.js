@@ -20,6 +20,8 @@ export const authStore = defineStore("auth", () => {
   const logout = () => {
     sessionStorage.removeItem("refreshToken");
     sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("nickname");
     location.reload();
     // location.reload();
   };

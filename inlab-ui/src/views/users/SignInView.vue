@@ -169,6 +169,6 @@ const signInBtn = async () => {
   }
   console.log("refresh token: ", sessionStorage.getItem("refreshToken"));
   console.log("로그인 성공!!!!!!!!!!!!!!");
-  await router.push("/interview-management");
+  await router.push("/interviewer");
 };
 </script>

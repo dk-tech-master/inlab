@@ -3,12 +3,18 @@ import TypeManagement from "@/views/category/TypeManagement.vue";
 
 const categoryRoutes = [
   {
-    path: "/question-categories/jobs",
+    path: "/category/job",
     name: "jobs",
+    meta: {
+      hide: true,
+    },
     component: JobManagement,
   },
   {
-    path: "/question-categories/types",
+    path: "/category/type",
+    meta: {
+      hide: true,
+    },
     name: "types",
     component: TypeManagement,
   },

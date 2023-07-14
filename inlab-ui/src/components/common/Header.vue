@@ -28,12 +28,10 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { authStore } from "@/stores/auth";
-const router = useRouter();
+// const router = useRouter();
 const store = authStore();
 const logoutBtn = async () => {
   await store.logout();
-  // await router.push({
-  //   name: "sign-in",
-  // });
+  // await router.push("/");
 };
 </script>
