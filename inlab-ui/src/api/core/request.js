@@ -53,7 +53,7 @@ request.interceptors.response.use(
     } else if (response.headers["access-token-invalid"]) {
       sessionStorage.removeItem("refreshToken");
       sessionStorage.removeItem("accessToken");
-      await router.push("/sign-in");
+      await router.push("/");
     }
     return response;
   },

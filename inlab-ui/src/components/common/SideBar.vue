@@ -15,7 +15,7 @@
         <!--        1. 면접관 관리-->
         <li>
           <a
-            href="#"
+            href="/interviewer"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 hover:text-primary"
           >
             <svg
@@ -39,7 +39,7 @@
         <!--        2. 질문관리-->
         <li>
           <a
-            href="#"
+            href="/question"
             class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-200 hover:text-primary"
           >
             <svg
@@ -63,7 +63,7 @@
         <!--        3. 질문 카테고리 관리-->
         <li>
           <button
-            @click="toggleQuestionCategory"
+            @click="toggleQuestionCategory(1)"
             type="button"
             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 hover:text-primary"
             aria-controls="dropdown-example"
@@ -90,11 +90,12 @@
             </svg>
 
             <span
-              class="flex-1 ml-3 text-left whitespace-nowrap"
+              class="flex-1 ml-3 text-left whitespace-nowrap mr-2"
               sidebar-toggle-item
-              >질문 카테고리 관리</span
-            >
+              >질문 카테고리 관리
+            </span>
             <svg
+              :class="{ 'rotate-180': questionCategoryOpen }"
               sidebar-toggle-item
               class="w-6 h-6"
               fill="currentColor"
@@ -112,14 +113,14 @@
           <ul :class="{ hidden: !questionCategoryOpen }" class="py-2 space-y-2">
             <li>
               <a
-                href="#"
+                href="/category/job"
                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-indigo-100"
                 >직무 관리</a
               >
             </li>
             <li>
               <a
-                href="#"
+                href="/category/type"
                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-indigo-100"
                 >유형 관리</a
               >
@@ -130,7 +131,7 @@
         <!--        4. 면접관리-->
         <li>
           <button
-            @click="toggleInterview"
+            @click="toggleQuestionCategory(2)"
             type="button"
             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 hover:text-primary"
             aria-controls="dropdown-example"
@@ -155,6 +156,7 @@
               >면접 관리</span
             >
             <svg
+              :class="{ 'rotate-180': interviewOpen }"
               sidebar-toggle-item
               class="w-6 h-6"
               fill="currentColor"
@@ -171,7 +173,14 @@
           <ul :class="{ hidden: !interviewOpen }" class="py-2 space-y-2">
             <li>
               <a
-                href="#"
+                href="/interview"
+                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-indigo-100"
+                >면접 관리</a
+              >
+            </li>
+            <li>
+              <a
+                href="/interview/result"
                 class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-indigo-100"
                 >면접 결과 관리</a
               >
@@ -189,11 +198,23 @@ import { ref } from "vue";
 const questionCategoryOpen = ref(false);
 const interviewOpen = ref(false);
 
-const toggleQuestionCategory = () => {
-  questionCategoryOpen.value = !questionCategoryOpen.value;
+const toggleQuestionCategory = (index) => {
+  if (index === 1) {
+    questionCategoryOpen.value = !questionCategoryOpen.value;
+  } else if (index === 2) {
+    interviewOpen.value = !interviewOpen.value;
+  }
 };
 
-const toggleInterview = () => {
-  interviewOpen.value = !interviewOpen.value;
-};
+const activeMap = ref([
+  { path: "interviewer", active: true },
+  { path: "question", active: false },
+  { path: "category", active: false },
+  { path: "interviewer", active: false },
+]);
 </script>
+<style scoped>
+.rotate-180 {
+  transform: rotate(180deg);
+}
+</style>

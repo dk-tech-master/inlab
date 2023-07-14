@@ -4,18 +4,27 @@ import FollowUpQuestionManagement from "@/views/interview/FollowUpQuestionManage
 
 const questionRoutes = [
   {
-    path: "/questions",
+    path: "/question",
     name: "/questions",
+    meta: {
+      hide: true,
+    },
     component: QuestionManagement,
   },
   {
-    path: "/questions/versions",
+    path: "/question/versions",
     name: "/versions",
+    meta: {
+      hide: true,
+    },
     component: QuestionVersionManagement,
   },
   {
-    path: "/questions/follow-up",
+    path: "/question/follow-up",
     name: "/follow-up",
+    meta: {
+      hide: true,
+    },
     component: FollowUpQuestionManagement,
   },
 ];
