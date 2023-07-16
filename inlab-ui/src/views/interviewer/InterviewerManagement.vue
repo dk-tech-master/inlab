@@ -8,7 +8,7 @@
     </div>
     <div class="mr-3">
       <div class="flex">
-        <InputSearchFilter @click="searchBtn">
+        <InputSearchFilter>
           <template v-slot:body>
             <div class="mr-3">
               <label
@@ -151,7 +151,7 @@
     </div>
   </section>
   <section class="ml-72 mr-10 mt-20 mb-32">
-    <Pagination />
+    <!--    <Pagination />-->
   </section>
 
   <teleport to="teleport-area">

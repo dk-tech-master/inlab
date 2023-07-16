@@ -175,6 +175,7 @@ const registerBtn = async (event) => {
     console.log("회원가입에 실패했습니다.");
   }
 };
+
 //인증 번호 확인
 // const checkVerificationCode = async () => {
 //   await auth.checkVerificationCode();
