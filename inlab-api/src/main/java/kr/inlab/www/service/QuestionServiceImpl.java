@@ -184,16 +184,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     @Override
     public void updateQuestion(RequestUpdateQuestionDto requestDto, Long questionId) {
-		isUserHasAuthorityToQuestion(questionId);
+		// isUserHasAuthorityToQuestion(questionId);
+		// 해당 메서드에서 문제가 생겨서 추후에 변경 예정
 
         Question question = questionRepository.findById(questionId)
             .orElseThrow(QuestionNotFoundException::new);
-        Position position = positionRepository.findById(requestDto.getPositionId())
-            .orElseThrow(PositionNotFoundException::new);
-        QuestionType questionType = questionTypeRepository.findById(requestDto.getQuestionTypeId())
-            .orElseThrow(QuestionVersionNotFoundException::new);
-
-        question.update(position, questionType);
 
         QuestionLevel questionLevel = questionLevelRepository.findById(requestDto.getQuestionLevelId())
             .orElseThrow(QuestionLevelNotFoundException::new);

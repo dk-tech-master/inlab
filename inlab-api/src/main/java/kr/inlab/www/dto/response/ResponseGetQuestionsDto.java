@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResponseGetQuestionsDto {
 
+	private Long questionId;
 	private String title;
 	private Integer questionTypeId;
 	private String questionTypeName;
@@ -19,8 +20,9 @@ public class ResponseGetQuestionsDto {
 	private Integer version;
 
 	@Builder
-	public ResponseGetQuestionsDto(String title, Integer questionTypeId, String questionTypeName, Integer positionId,
+	public ResponseGetQuestionsDto(Long questionId, String title, Integer questionTypeId, String questionTypeName, Integer positionId,
 		String positionName, Integer questionLevelId, String questionLevelName, Integer version) {
+		this.questionId = questionId;
 		this.title = title;
 		this.questionTypeId = questionTypeId;
 		this.questionTypeName = questionTypeName;
