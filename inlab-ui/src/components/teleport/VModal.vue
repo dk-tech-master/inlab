@@ -1,15 +1,19 @@
 <template>
-  <!--  <button class="btn" onclick="my_modal_5.showModal()">open modal</button>-->
-  <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+  <dialog id="modal" class="modal modal-bottom sm:modal-middle">
     <form method="dialog" class="px-10 py-10 modal-box">
       <slot name="header"></slot>
       <slot name="body"></slot>
-      <slot name="footer"></slot>
+      <slot name="footer" :toggleModal="toggleModal"></slot>
     </form>
   </dialog>
 </template>
+
 <script setup>
-// const showModal = () => {
-//   console.log("in modal");
-// };
+const toggleModal = () => {
+  document.getElementById("modal").classList.toggle("modal-open");
+};
+
+defineExpose({
+  toggleModal,
+});
 </script>
