@@ -1,5 +1,6 @@
 package kr.inlab.www.security.filter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -92,9 +93,20 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         stringStringMap.forEach(response::addHeader);
 
         response.addHeader(CreateHeaders.USER_ID, user.getUserId().toString());
-        response.addHeader(CreateHeaders.USER_NICKNAME, user.getNickname());
+
+        String nicknameJson = getJson(user.getNickname());
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        response.getWriter().write(nicknameJson);
 
         checkPasswordChangeRequiredAndThenSetHeader(email, response); // 최근 비밀번호 변경이 필요한지 여부 확인
+    }
+
+    private String getJson(Object object) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(object);
     }
 
     /**
