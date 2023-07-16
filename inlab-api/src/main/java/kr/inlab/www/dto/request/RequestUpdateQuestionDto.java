@@ -11,17 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RequestUpdateQuestionDto {
 
-	private Integer positionId;
-	private Integer questionTypeId;
 	private Integer questionLevelId;
 	private String title;
 	private List<String> checklists;
 
 	@Builder
-	public RequestUpdateQuestionDto(Integer positionId, Integer questionTypeId, Integer questionLevelId, String title,
-		List<String> checklists) {
-		this.positionId = positionId;
-		this.questionTypeId = questionTypeId;
+	public RequestUpdateQuestionDto(Integer questionLevelId, String title, List<String> checklists) {
 		this.questionLevelId = questionLevelId;
 		this.title = title;
 		this.checklists = checklists;

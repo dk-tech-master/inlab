@@ -63,6 +63,7 @@ public class QuestionVersionQueryRepository {
 
         JPAQuery<ResponseGetQuestionsDto> query = queryFactory
             .select(Projections.constructor(ResponseGetQuestionsDto.class,
+                question.questionId,
                 questionVersion.title,
                 questionType.questionTypeId,
                 questionType.questionTypeName,
