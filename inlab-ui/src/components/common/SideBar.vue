@@ -127,7 +127,6 @@
             </li>
           </ul>
         </li>
-
         <!--        4. 면접관리-->
         <li>
           <button
@@ -205,13 +204,6 @@ const toggleQuestionCategory = (index) => {
     interviewOpen.value = !interviewOpen.value;
   }
 };
-
-const activeMap = ref([
-  { path: "interviewer", active: true },
-  { path: "question", active: false },
-  { path: "category", active: false },
-  { path: "interviewer", active: false },
-]);
 </script>
 <style scoped>
 .rotate-180 {
