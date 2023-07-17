@@ -20,7 +20,7 @@
               <input
                 type="email"
                 name="email"
-                v-model="signInData.email"
+                v-model="email"
                 class="input input-bordered border-gray-300 w-full text-sm"
                 placeholder="user@dktechin.com"
                 required
@@ -35,30 +35,23 @@
               <input
                 type="password"
                 name="password"
-                v-model="signInData.password"
+                v-model="password"
                 placeholder="비밀번호 입력"
                 class="input input-bordered border-gray-300 w-full text-sm"
                 required
               />
             </div>
-            <div class="flex justify-end">
-              <a
-                href="#"
-                class="mt-2 text-sm font-medium text-indigo-600 hover:underline"
-                >비밀번호를 변경하시겠습니까?</a
-              >
-            </div>
-            <!--비밀번호 입력 허용 횟수 5회 초과시 onclick="my_modal_5.showModal()"-->
             <button
               type="button"
               class="btn btn-primary w-full mt-10"
-              @click="signInBtn"
+              @click="clickSignInBtn"
             >
               로그인
             </button>
             <button
-              type="submit"
+              type="button"
               class="btn btn-outline btn-primary w-full mt-2"
+              @click="clickSignUpBtn"
             >
               회원가입
             </button>
@@ -67,10 +60,6 @@
       </div>
     </div>
   </section>
-
-  <!--  onclick="my_modal_5.showModal()"-->
-  <!--로그인 실패-->
-  <!--  <teleport to="#teleport-area">-->
   <VModal ref="modal" class="text-center m">
     <template v-slot:header>
       <svg
@@ -90,9 +79,6 @@
       <h3 class="mb-7 text-xl font-semibold tracking-tighter text-gray-800">
         로그인 실패
       </h3>
-      <!--        <h3 class="mb-7 text-xl font-semibold tracking-tighter text-gray-800">-->
-      <!--          비밀번호 변경 권고-->
-      <!--        </h3>-->
     </template>
     <template v-slot:body>
       <p class="mb-8 text-base leading-relaxed font-medium text-gray-800">
@@ -100,11 +86,6 @@
         비밀번호 입력 허용 횟수를 5회 초과하였습니다.<br />
         해당 계정은 일시적으로 로그인이 차단됩니다.
       </p>
-      <!--        <p class="mb-8 text-sm leading-relaxed font-medium text-gray-800">-->
-      <!--          개인정보를 안전하게 보호하기 위해<br />-->
-      <!--          3개월 이상 비밀번호를 변경하지 않은 경우<br />-->
-      <!--          비밀번호 변경을 권장하고 있습니다.-->
-      <!--        </p>-->
       <div class="mb-8">
         <span
           class="text-base leading-relaxed font-medium text-gray-600 text-primary"
@@ -117,18 +98,17 @@
         </span>
       </div>
     </template>
-    <template v-slot:footer>
+    <template v-slot:footer="footerProps">
       <div class="modal-action">
-        <!-- if there is a button in form, it will close the modal -->
-        <button class="btn btn-primary w-full mt-5">확인</button>
+        <button
+          class="btn btn-primary w-full mt-5"
+          @click="footerProps.toggleModal"
+        >
+          확인
+        </button>
       </div>
-      <!--        <button class="btn btn-primary w-full mt-5">비밀번호 변경하기</button>-->
-      <!--        <button class="btn btn-outline btn-primary w-full mt-2">-->
-      <!--          다음에 변경하기-->
-      <!--        </button>-->
     </template>
   </VModal>
-  <!--  </teleport>-->
 </template>
 
 <script setup>
@@ -139,36 +119,36 @@ import { useRouter } from "vue-router";
 
 const store = authStore();
 const router = useRouter();
-
-const signInData = ref({
-  email: "",
-  password: "",
-});
 const modal = ref(null);
+const email = ref();
+const password = ref();
 
-const signInBtn = async () => {
-  const data = {
-    username: signInData.value.email,
-    password: signInData.value.password,
+const clickSignInBtn = async () => {
+  const requestData = {
+    username: email.value,
+    password: password.value,
   };
-  const response = await store.login(data);
-  if (response.headers["password-change-required"]) {
-    // 비밀번호 변경 기간이 3개월 이상 넘었을 때
-    alert("비밀번호 변경 기간이 3개월 이상이 넘었습니다.");
-  } else if (response.headers["login-fail-block"]) {
-    console.log("blobk user");
-    // 로그인 시도 횟수가 5회 이상일 때 상태가 block이 된 경우
-    alert("로그인 시도 횟수가 5회 이상이 되어 30분간 로그인이 제한됩니다.");
-    // modal.value.showModal();
-  } else if (response.headers["login-fail-delete"]) {
-    // 탈퇴된 회원이 로그인 시도했을 경우
-    alert("탈퇴한 회원입니다.");
-  } else if (response.headers["login-fail"]) {
-    alert("비밀번호 또는 이메일이 일치 하지 않습니다.");
-    await router.push("/");
-  }
-  console.log("refresh token: ", sessionStorage.getItem("refreshToken"));
-  console.log("로그인 성공!!!!!!!!!!!!!!");
-  await router.push("/interviewer");
+  await store
+    .login(requestData)
+    .then(async () => {
+      await router.push("/interviewer");
+    })
+    .catch(async (error) => {
+      if (error.response.headers["password-change-required"]) {
+        alert("비밀번호 변경 기간이 3개월 이상이 넘었습니다.");
+      } else if (error.response.headers["login-fail-block"]) {
+        alert("로그인 시도 횟수가 5회 이상이 되어 30분간 로그인이 제한됩니다.");
+        modal.value.toggleModal();
+      } else if (error.response.headers["login-fail-delete"]) {
+        alert("탈퇴한 회원입니다.");
+      } else if (error.response.headers["login-fail"]) {
+        alert("비밀번호 또는 이메일이 일치 하지 않습니다.");
+      }
+      await router.push("/");
+    });
+};
+
+const clickSignUpBtn = () => {
+  router.push("/sign-up");
 };
 </script>

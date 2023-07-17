@@ -1,15 +1,10 @@
 import axios, { HttpStatusCode } from "axios";
-import { ref } from "vue";
 import { useRouter } from "vue-router";
-// import { authStore } from "@/stores/auth";
-// import { storeToRefs } from "pinia";
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 30000,
 });
-
-const modal = ref(null);
 
 request.interceptors.request.use(
   async (config) => {
@@ -17,7 +12,6 @@ request.interceptors.request.use(
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
-    console.log("성공했음");
     return config;
   },
   (error) => {
@@ -58,7 +52,9 @@ request.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log(error);
+    console.error(error);
+    alert(error.response.data.message);
+    return Promise.reject(error);
   },
 );
 
