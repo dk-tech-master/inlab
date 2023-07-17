@@ -431,6 +431,27 @@ include::{snippets}/put-interview/request-fields.adoc[]
 include::{snippets}/put-interview/http-response.adoc[]
 
 
+=== 면접 시작 질문 리스트 조회 / GET
+면접 시작 후 질문과 체크리스트를 조회하는 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-start-questionList/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-interview-start-questionList/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-start-questionList/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-start-questionList/http-response.adoc[]
+include::{snippets}/get-interview-start-questionList/response-fields.adoc[]
+
+
 == INTERVIEW QUESTION CONTROLLER
 
 === 면접 질문 리스트 생성 / POST
@@ -491,6 +512,26 @@ include::{snippets}/delete-interview-question/request-headers.adoc[]
 ==== 응답 Body
 
 include::{snippets}/delete-interview-question/http-response.adoc[]
+
+=== 면접 질문에 대한 상세 조회 / GET
+면접 질문 리스트의 각 질문에 대한 상세 조회 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-questions-detail/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-interview-questions-detail/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-questions-detail/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-questions-detail/http-response.adoc[]
+include::{snippets}/get-interview-questions-detail/response-fields.adoc[]
 
 
 == POSITIONLEVEL CONTROLLER
