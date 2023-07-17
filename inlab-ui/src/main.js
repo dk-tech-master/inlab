@@ -17,7 +17,7 @@ library.add(faFaceFrown, faRecycle);
 app.use(createPinia());
 app.use(router);
 app.component("font-awesome-icon", FontAwesomeIcon).mount("#app");
-app.component("font-awesome-icon", FontAwesomeIcon).mount("#teleport-area");
+// app.component("font-awesome-icon", FontAwesomeIcon).mount("#teleport-area");
 
 // import { fas로 시작하는 아이콘명*설명보기*} from '@fortawesome/free-solid-svg-icons'
 // import { far로 시작하는 아이콘명*설명보기* } from '@fortawesome/free-regular-svg-icons'
