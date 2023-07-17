@@ -198,40 +198,4 @@ public class QuestionServiceImpl implements QuestionService {
         checklistService.saveChecklists(requestDto.getChecklists(), savedQuestionVersion);
         latestQuestionVersion.updateIsLatest(YesNo.N);
     }
-
-    // public void isUserHasAuthorityToQuestion(Long questionId) {
-	// 	if (userService.isAdmin()) return;
-	// 	List<PositionLevel> positionLevels = getPositionLevels();
-	//
-	// 	Question question = questionRepository.findById(questionId).orElseThrow(QuestionNotFoundException::new);
-    //     Integer positionId = question.getPosition().getPositionId();
-    //     Integer questionLevelId = questionVersionRepository.findTopByQuestionQuestionIdAndIsLatest(questionId, YesNo.Y)
-    //         .orElseThrow(QuestionVersionNotFoundException::new).getQuestionLevel().getQuestionLevelId();
-	//
-    //     if (positionLevels.stream().noneMatch(positionLevel ->
-    //         positionId.equals(positionLevel.getPosition().getPositionId()) &&
-    //             questionLevelId.equals(positionLevel.getQuestionLevel().getQuestionLevelId())
-    //     )) {
-    //         throw new UserHasNotAuthorityToQuestion();
-    //     }
-    // }
-	//
-	// public void isUserHasAuthorityToQuestion(Integer positionId, Integer questionLevelId) {
-	// 	if (userService.isAdmin()) return;
-	// 	List<PositionLevel> positionLevels = getPositionLevels();
-	//
-	// 	if (positionLevels.stream().noneMatch(positionLevel ->
-    //         positionId.equals(positionLevel.getPosition().getPositionId()) &&
-    //             questionLevelId.equals(positionLevel.getQuestionLevel().getQuestionLevelId())
-    //     )) {
-    //         throw new UserHasNotAuthorityToQuestion();
-    //     }
-    // }
-	//
-	// private List<PositionLevel> getPositionLevels() {
-	// 	String email = SecurityContextHolder.getContext().getAuthentication().getName();
-	// 	User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-	// 	List<PositionLevel> positionLevels = positionLevelRepository.findByUser(user);
-	// 	return positionLevels;
-	// }
 }
