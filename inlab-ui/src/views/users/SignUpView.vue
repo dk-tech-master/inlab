@@ -26,7 +26,7 @@
                 required
               />
               <button
-                @click="createAuthenticationBtn"
+                @click="clickSendVerificationCodeBtn"
                 type="button"
                 class="btn btn-primary w-1/3"
               >
@@ -100,7 +100,7 @@
           <div class="pt-5">
             <button
               @click="registerBtn"
-              type="submit"
+              type="button"
               class="mt-15 btn btn-primary w-full"
             >
               회원가입
@@ -132,52 +132,37 @@ const verificationCode = ref("");
 const password = ref("");
 const confirmPassword = ref("");
 const nickName = ref("");
-//인증 번호 생성
 
-const createAuthenticationBtn = async () => {
-  console.log(email.value);
+const clickSendVerificationCodeBtn = async () => {
   let response = await createVerificationCode(email.value);
   console.log(response);
+  alert("인증 코드를 발송했습니다.");
 };
 
-//인증 번호 확인
 const checkVerificationCodeBtn = async () => {
-  const data = {
+  const requestData = {
     email: email.value,
     verificationCode: verificationCode.value,
   };
-  console.log(data);
-  let response = await checkVerificationCode(data);
-  console.log("response:!!!!!!!!!!!" + response);
-  console.log("email: " + response.headers.email);
+  let response = await checkVerificationCode(requestData);
   sessionStorage.setItem("email", response.headers.email);
-  console.log(sessionStorage.getItem("email"));
+  alert("인증번호 검증이 완료됐습니다.");
 };
 
-const registerBtn = async (event) => {
-  event.preventDefault();
-  const data = {
+const registerBtn = async () => {
+  const requestData = {
     email: email.value,
     nickname: nickName.value,
     password: password.value,
   };
-  // console.log("seesion: " + sessionStorage.getItem("email"));
-  let axiosResponse = await register(localStorage.getItem("email"), data);
-  // console.log(axiosResponse);
+  let response = await register(sessionStorage.getItem("email"), requestData);
 
-  if (axiosResponse.status >= 200 && axiosResponse.status < 300) {
+  if (response.status >= 200 && response.status < 300) {
     console.log(sessionStorage.getItem("email"));
-    sessionStorage.removeItem(axiosResponse.headers["clear-token"]);
+    sessionStorage.removeItem(response.headers["clear-token"]);
     console.log(sessionStorage.getItem("email"));
+    alert("회원가입이 완료됐습니다.");
     await router.push("/");
-  } else {
-    alert("회원가입에 실패했습니다.");
-    console.log("회원가입에 실패했습니다.");
   }
 };
-
-//인증 번호 확인
-// const checkVerificationCode = async () => {
-//   await auth.checkVerificationCode();
-// };
 </script>

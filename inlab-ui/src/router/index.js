@@ -31,7 +31,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const accessToken = sessionStorage.getItem("accessToken");
   if (accessToken === null || accessToken === "") {
-    console.log(to.path);
     if (to.path === "/") {
       // 갈길이 로그인이면 로그인 가라~
       next();
