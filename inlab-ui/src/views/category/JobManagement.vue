@@ -16,16 +16,29 @@
               class="block mb-2 text-base font-bold text-gray-700"
               >직무 검색</label
             >
-            <input
-              type="text"
-              name="interviewTitle"
-              class="w-[20rem] py-5 pl-7 bg-gray-50 input input-bordered input-sm border-gray-300 text-sm"
-              placeholder="면접의 직무를 검색하세요"
-              required
-            />
+            <div class="flex">
+              <input
+                type="text"
+                name="interviewTitle"
+                class="py-5 pl-7 pr-36 bg-gray-50 input input-bordered input-sm border-gray-300 text-sm"
+                placeholder="면접의 직무를 검색하세요"
+                v-model="searchInput"
+                @keyup.enter="handleSearch"
+                required
+              />
+            </div>
           </div>
         </template>
-        <template v-slot:footer />
+        <template v-slot:footer>
+          <div class="flex items-end">
+            <button
+              @click="handleSearch"
+              class="flex flex-col ml-3 px-7 py-5 btn btn-primary btn-sm"
+            >
+              검색
+            </button>
+          </div>
+        </template>
       </InputSearchFilter>
     </div>
   </header>
@@ -57,17 +70,17 @@
       </div>
       <div
         class="flex border-b hover:bg-gray-100"
-        v-for="(index, item) in 10"
-        :key="index"
+        v-for="(item, index) in jobList"
+        :key="item"
       >
         <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
-          {{ index }}
+          {{ index + 1 }}
         </div>
         <div class="w-[35%] flex flex-col justify-center px-6 py-4 text-left">
-          프론트엔드 개발자
+          {{ item.positionName }}
         </div>
         <div class="w-[20%] flex flex-col justify-center px-6 py-4 text-left">
-          10
+          {{ item.questionCount }}
         </div>
         <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
           <svg
@@ -95,6 +108,7 @@
             stroke-width="1.5"
             stroke="currentColor"
             class="w-6 h-6"
+            @click="handleDelete(item.positionId)"
           >
             <path
               stroke-linecap="round"
@@ -106,42 +120,44 @@
       </div>
     </div>
   </section>
-  <section class="ml-72 mr-10 mt-20 mb-32">
-    <Pagination />
-  </section>
-
-  <teleport to="teleport-area">
-    <VModal>
-      <template v-slot:header>
-        <h2 class="mb-6 text-xl font-semibold tracking-tight">직무 등록</h2>
-      </template>
-      <template v-slot:body>
-        <input
-          type="text"
-          name="registerJob"
-          placeholder="새로운 직무를 입력하세요"
-          class="input input-bordered w-full mr-2 border-gray-300 text-sm"
-          required
-        />
-      </template>
-      <template v-slot:footer>
-        <div class="flex justify-end mt-12">
-          <button
-            class="flex flex-col mr-3 py-5 px-7 btn btn-sm btn-primary btn-outline"
-          >
-            취소
-          </button>
-          <button class="flex flex-col py-5 px-7 btn btn-sm btn-primary">
-            확인
-          </button>
-        </div>
-      </template>
-    </VModal>
-  </teleport>
 </template>
 
 <script setup>
-import Pagination from "@/components/common/Pagination.vue";
+import { ref } from "vue";
+import { deleteJobs, getJobs } from "@/api/job";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
+
+const pagingInfo = ref({
+  page: 1,
+});
+
+const pagingUtil = ref({});
+const jobList = ref([]);
+const searchInput = ref("");
+
+const init = async () => {
+  const jobInfo = await getJobs();
+  jobList.value = jobInfo.data.responseList;
+  pagingUtil.value = jobInfo.data.pagingUtil;
+};
+
+init();
+
+const handleSearch = async () => {
+  const requestData = {
+    page: 1,
+    positionName: searchInput.value,
+  };
+  const jobInfo = await getJobs(requestData);
+  jobList.value = jobInfo.data.responseList;
+  pagingUtil.value = jobInfo.data.pagingUtil;
+};
+
+const handleDelete = async (data) => {
+  window.alert("직무를 삭제하시겠습니까?");
+  await deleteJobs(data);
+  init();
+};
+
 </script>
 <style scoped></style>
