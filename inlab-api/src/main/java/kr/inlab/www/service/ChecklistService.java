@@ -8,4 +8,6 @@ import java.util.List;
 public interface ChecklistService {
 
     List<Checklist> getChecklists(QuestionVersion questionVersion);
+
+    void saveChecklists(List<String> checklists, QuestionVersion questionVersion);
 }

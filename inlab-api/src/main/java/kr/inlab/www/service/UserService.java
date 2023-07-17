@@ -48,4 +48,6 @@ public interface UserService extends UserDetailsService {
     boolean isSelf(Long userId);
 
     boolean isAdminOrSelf(Long userId);
+
+    boolean isAdmin();
 }

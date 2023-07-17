@@ -299,7 +299,8 @@ public class UserServiceImpl implements UserService {
         return user != null && user.getEmail().equals(email);
     }
 
-    private boolean isAdmin() {
+    @Override
+    public boolean isAdmin() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
             .stream()
             .anyMatch(authority -> authority.getAuthority().equals(RoleType.ROLE_ADMIN.toString()));
