@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AutorityServiceImpl implements AutorityService {
+public class AuthorityServiceImpl implements AuthorityService {
 
 	private final UserService userService;
 	private final QuestionRepository questionRepository;

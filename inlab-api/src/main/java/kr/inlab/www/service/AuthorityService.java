@@ -4,7 +4,7 @@ import java.util.List;
 
 import kr.inlab.www.entity.PositionLevel;
 
-public interface AutorityService {
+public interface AuthorityService {
 
 	void checkUserHasAuthorityToQuestion(Long questionId);
 

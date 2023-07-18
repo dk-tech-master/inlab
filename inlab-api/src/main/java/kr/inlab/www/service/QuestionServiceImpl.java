@@ -9,7 +9,6 @@ import kr.inlab.www.common.exception.QuestionLevelNotFoundException;
 import kr.inlab.www.common.exception.QuestionNotFoundException;
 import kr.inlab.www.common.exception.QuestionTypeNotFoundException;
 import kr.inlab.www.common.exception.QuestionVersionNotFoundException;
-import kr.inlab.www.common.exception.UserHasNotAuthorityToQuestion;
 import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.type.YesNo;
 import kr.inlab.www.common.util.PagingUtil;
@@ -46,8 +45,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,7 +65,7 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionVersionQueryRepository questionVersionQueryRepository;
 
 	private final ChecklistService checklistService;
-	private final AutorityService autorityService;
+	private final AuthorityService autorityService;
 
     @Transactional
     @Override

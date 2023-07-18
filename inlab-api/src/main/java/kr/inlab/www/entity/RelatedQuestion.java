@@ -36,6 +36,7 @@ public class RelatedQuestion {
         QuestionVersion result = this.tailQuestion.getQuestionVersionList().stream()
             .filter(questionVersion -> questionVersion.getIsLatest().equals(YesNo.Y)).findFirst().get();
         return ResponseGetQuestionsDto.builder()
+            .questionId(this.tailQuestion.getQuestionId())
             .title(result.getTitle())
             .questionTypeId(this.tailQuestion.getQuestionType().getQuestionTypeId())
             .questionTypeName(this.tailQuestion.getQuestionType().getQuestionTypeName())
