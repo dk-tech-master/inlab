@@ -90,11 +90,7 @@
         <span
           class="text-base leading-relaxed font-medium text-gray-600 text-primary"
         >
-          남은 시간 :
-        </span>
-        <span class="countdown font-mono text-xl">
-          <span style="--value: 10"></span>분
-          <span style="--value: 24"></span>초
+          차단 해제 시간: {{ formattedTime }}
         </span>
       </div>
     </template>
@@ -122,6 +118,7 @@ const router = useRouter();
 const modal = ref(null);
 const email = ref();
 const password = ref();
+const formattedTime = ref(""); // 추가한 부분
 
 const clickSignInBtn = async () => {
   const requestData = {
@@ -131,18 +128,22 @@ const clickSignInBtn = async () => {
   await store
     .login(requestData)
     .then(async () => {
-      await router.push("/interviewer");
+      // todo response 의 헤더에 password-change-required 가 있을 경우 비밀번호 변경 권고 페이지 띄우기 예 를 누르면 개인정보 수정페이지 아니오를 누르면 초기화면(면접관이면 질문페이지 관리자면 관리자 페이지)
+      if (sessionStorage.getItem("role") === "ROLE_ADMIN") {
+        console.log("어드민이라 관리자페이지로 이동");
+        await router.push("/interviewer");
+      } else {
+        console.log("어드민이 아니라 질문페이지로 이동");
+        await router.push("/question");
+      }
     })
     .catch(async (error) => {
-      if (error.response.headers["password-change-required"]) {
-        alert("비밀번호 변경 기간이 3개월 이상이 넘었습니다.");
-      } else if (error.response.headers["login-fail-block"]) {
-        alert("로그인 시도 횟수가 5회 이상이 되어 30분간 로그인이 제한됩니다.");
+      if (error.response.headers["login-fail-block"]) {
+        const blockUntilTime = new Date(
+          error.response.headers["login-fail-block"],
+        );
+        formattedTime.value = blockUntilTime.toLocaleString();
         modal.value.toggleModal();
-      } else if (error.response.headers["login-fail-delete"]) {
-        alert("탈퇴한 회원입니다.");
-      } else if (error.response.headers["login-fail"]) {
-        alert("비밀번호 또는 이메일이 일치 하지 않습니다.");
       }
       await router.push("/");
     });

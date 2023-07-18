@@ -13,7 +13,7 @@
           clip-rule="evenodd"
         />
       </svg>
-      <p class="ml-2 mr-10">신다인님</p>
+      <p class="ml-2 mr-10">{{ nickname }} 님</p>
     </div>
     <button
       type="button"
@@ -27,9 +27,13 @@
 
 <script setup>
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 import { authStore } from "@/stores/auth";
 // const router = useRouter();
 const store = authStore();
+
+const nickname = ref(sessionStorage.getItem("nickname"));
+
 const logoutBtn = async () => {
   await store.logout();
   // await router.push("/");
