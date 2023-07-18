@@ -131,7 +131,13 @@ const clickSignInBtn = async () => {
   await store
     .login(requestData)
     .then(async () => {
-      await router.push("/interviewer");
+      if (sessionStorage.getItem("role") === "ROLE_ADMIN") {
+        console.log("어드민이라 관리자페이지로 이동");
+        await router.push("/interviewer");
+      } else {
+        console.log("어드민이 아니라 질문페이지로 이동");
+        await router.push("/question");
+      }
     })
     .catch(async (error) => {
       if (error.response.headers["password-change-required"]) {
