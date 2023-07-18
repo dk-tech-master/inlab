@@ -1,5 +1,5 @@
 <template>
-  <header class="mt-8">
+  <header>
     <div class="mb-10">
       <p class="mb-1 text-sm font-light text-gray-500">
         면접 관리 >
@@ -54,7 +54,7 @@
       </div>
     </div>
   </header>
-  <section v-if="interviewResultList.length > 0" class="mr-16 mt-8">
+  <section v-if="interviewResultList.length > 0" class="mt-8">
     <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
       <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
         <div class="w-[30%] flex flex-col justify-center px-6 py-2 text-left">
@@ -101,7 +101,8 @@
         >
           <button
             type="button"
-            class="flex flex-col items-center ml-3 px-7 py-5 btn btn-outline btn-primary btn-sm hover:bg-indigo-600 hover:text-white"
+            class="flex flex-col items-center ml-3 px-5 py-5 btn btn-outline btn-primary btn-sm hover:bg-indigo-600 hover:text-white"
+            @click="clickInterviewResultBtn(item.interviewResultId)"
           >
             결과 확인
           </button>
@@ -116,7 +117,7 @@
       />
     </div>
   </section>
-  <section v-else class="mr-16 mt-8">
+  <section v-else class="mt-8">
     <div class="border rounded-lg py-20">
       <div class="flex justify-center mb-10">
         <svg
@@ -144,6 +145,7 @@
 <script setup>
 import { getInterviewResultList } from "@/api/interviewResult";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import Pagination from "@/components/common/Pagination.vue";
 
 const interviewResultList = ref([]);
@@ -152,6 +154,8 @@ const intervieweeName = ref();
 const startDate = ref();
 const endDate = ref();
 const loaded = ref(false);
+
+const router = useRouter();
 
 const init = async () => {
   const response = await getInterviewResultList();
@@ -173,6 +177,11 @@ const clickSearchBtn = async () => {
   interviewResultList.value = response.data.responseList;
   pagingUtil.value = response.data.pagingUtil;
   console.log("interviewResultList: ", interviewResultList);
+};
+
+const clickInterviewResultBtn = (interviewResultId) => {
+  console.log("interviewResultId", interviewResultId);
+  router.push(`/interview/result/${interviewResultId}`);
 };
 
 const changePage = async (page) => {

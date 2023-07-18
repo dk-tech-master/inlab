@@ -10,3 +10,13 @@ export const getInterviewResultList = (data) => {
   };
   return request.get(uri, config);
 };
+
+export const getInterviewResult = (interviewResultId) => {
+  const uri = `/api/interview-result/${interviewResultId}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return request.get(uri, config);
+};
