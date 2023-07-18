@@ -7,40 +7,76 @@
       </p>
       <h2 class="text-3xl tracking-tight font-bold text-gray-800">유형 관리</h2>
     </div>
-    <div class="flex">
+    <div class="flex justify-between">
       <InputSearchFilter>
         <template v-slot:body>
-          <div>
-            <label
-              for="searchInterview"
-              class="block mb-2 text-base font-bold text-gray-700"
-              >유형 검색</label
+          <div class="flex">
+            <div class="mr-3">
+              <label
+                for="searchInterview"
+                class="block mb-2 text-base font-bold text-gray-700"
+                >직무</label
+              >
+              <select
+                class="w-32 h-[3em] bg-gray-50 font-medium select select-primary select-sm border-gray-300"
+                v-model="selectedPosition"
+              >
+                <option disabled selected>직무 선택</option>
+                <option
+                  v-for="(item, index) in positionOptions"
+                  :key="index"
+                  :value="item.positionId"
+                >
+                  {{ item.positionName }}
+                </option>
+              </select>
+            </div>
+            <div>
+              <label
+                for="searchInterview"
+                class="block mb-2 text-base font-bold text-gray-700"
+                >유형명</label
+              >
+              <div class="flex">
+                <input
+                  type="text"
+                  name="interviewTitle"
+                  class="w-64 py-5 input input-bordered input-sm border-gray-300 text-sm"
+                  placeholder="면접의 유형을 검색하세요."
+                  v-model="searchInput"
+                  @keyup.enter="handleSearch"
+                  required
+                />
+              </div>
+            </div>
+            <div class="flex items-end">
+              <button
+                @click="handleSearch"
+                class="flex flex-col ml-3 px-5 py-5 btn btn-primary btn-sm"
+              >
+                검색
+              </button>
+            </div>
+          </div>
+          <div class="self-end">
+            <button
+              class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-5 py-5"
+              @click="clickCreateType"
             >
-            <input
-              type="text"
-              name="interviewTitle"
-              class="w-[20rem] py-5 pl-7 bg-gray-50 input input-bordered input-sm border-gray-300 text-sm"
-              placeholder="면접의 유형을 검색하세요"
-              required
-            />
+              유형 등록
+            </button>
           </div>
         </template>
-        <template v-slot:footer />
       </InputSearchFilter>
     </div>
   </header>
-  <section class="mr-16 mt-8">
-    <button
-      class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-7 py-5"
-    >
-      유형 등록
-    </button>
+  <section v-if="typeList.length > 0" class="mt-8">
     <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
       <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-        <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
-          No
+        <div class="w-[25%] flex flex-col justify-center px-6 py-2 text-left">
+          직무
         </div>
-        <div class="w-[35%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[25%] flex flex-col justify-center px-6 py-2 text-left">
           유형
         </div>
         <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
@@ -57,17 +93,17 @@
       </div>
       <div
         class="flex border-b hover:bg-gray-100"
-        v-for="(index, item) in 10"
+        v-for="(item, index) in typeList"
         :key="index"
       >
-        <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
-          {{ index }}
+        <div class="w-[25%] flex flex-col justify-center px-6 py-4 text-left">
+          {{ item.positionName }}
         </div>
-        <div class="w-[35%] flex flex-col justify-center px-6 py-4 text-left">
-          기술적인 지식 및 개념 질문
+        <div class="w-[25%] flex flex-col justify-center px-6 py-4 text-left">
+          {{ item.questionTypeName }}
         </div>
-        <div class="w-[20%] flex flex-col justify-center px-6 py-4 text-left">
-          10
+        <div class="w-[20%] flex flex-col justify-center px-12 py-4 text-left">
+          {{ item.questionCount }}
         </div>
         <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
           <svg
@@ -105,43 +141,96 @@
         </div>
       </div>
     </div>
+    <div>
+      <Pagination
+        v-if="loaded"
+        :paging-util="pagingUtil"
+        @change-page="changePage"
+      />
+    </div>
   </section>
-  <section class="ml-72 mr-10 mt-20 mb-32">
-    <Pagination />
+  <section v-else class="mr-16 mt-8">
+    <div class="border rounded-lg py-20">
+      <div class="flex justify-center mb-10">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-20 h-20 text-gray-500"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
+          />
+        </svg>
+      </div>
+      <p class="text-lg text-gray-500 text-center">직무가 존재하지 않습니다.</p>
+    </div>
   </section>
-
-  <teleport to="teleport-area">
-    <VModal>
-      <template v-slot:header>
-        <h2 class="mb-6 text-xl font-semibold tracking-tight">직무 등록</h2>
-      </template>
-      <template v-slot:body>
-        <input
-          type="text"
-          name="registerJob"
-          placeholder="새로운 직무를 입력하세요"
-          class="input input-bordered w-full mr-2 border-gray-300 text-sm"
-          required
-        />
-      </template>
-      <template v-slot:footer>
-        <div class="flex justify-end mt-12">
-          <button
-            class="flex flex-col mr-3 py-5 px-7 btn btn-sm btn-primary btn-outline"
-          >
-            취소
-          </button>
-          <button class="flex flex-col py-5 px-7 btn btn-sm btn-primary">
-            확인
-          </button>
-        </div>
-      </template>
-    </VModal>
-  </teleport>
+  <CreateTypeModal ref="createTypeModal" :positionOptions="positionOptions" @init="init" />
 </template>
 
 <script setup>
 import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
+import CreateTypeModal from "@/components/modal/CreateTypeModal.vue";
+import { ref } from "vue";
+import { getTypes } from "@/api/type";
+import { getpositionOption } from "@/api/select";
+import { getJobs } from "@/api/job";
+
+const loaded = ref(false);
+const pagingUtil = ref({});
+const createTypeModal = ref(null);
+const updateTypeModal = ref(null);
+const typeList = ref([]);
+const positionOptions = ref([]);
+const searchInput = ref(null);
+const selectedPosition = ref(null);
+
+const init = async () => {
+  const responseType = await getTypes();
+  typeList.value = responseType.data.responseList;
+  pagingUtil.value = responseType.data.pagingUtil;
+
+  const responseOption = await getpositionOption();
+  positionOptions.value = responseOption.data;
+
+  loaded.value = true;
+};
+
+init();
+
+const handleSearch = async () => {
+  const requestData = {
+    positionId: selectedPosition.value,
+    questionTypeName: searchInput.value,
+  };
+  const response = await getTypes(requestData);
+  typeList.value = response.data.responseList;
+  pagingUtil.value = response.data.pagingUtil;
+
+  console.log(response.data);
+};
+
+const clickCreateType = () => {
+  console.log("clickType");
+  createTypeModal.value.toggleModal();
+};
+
+const changePage = async (page) => {
+  console.log(`changePage ${page}`);
+  const requestData = {
+    page: page,
+    positionId: selectedPosition.value,
+    questionTypeName: searchInput.value,
+  };
+  let response = await getTypes(requestData);
+  typeList.value = response.data.responseList;
+  pagingUtil.value = response.data.pagingUtil;
+};
 </script>
 <style scoped></style>
