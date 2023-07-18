@@ -180,8 +180,6 @@ class QuestionControllerTest {
 		// given
 		Long questionId = 10L;
 		RequestUpdateQuestionDto requestDto = RequestUpdateQuestionDto.builder()
-			.positionId(1)
-			.questionTypeId(1)
 			.questionLevelId(1)
 			.title("수정된 테스트 질문 제목")
 			.checklists(Arrays.asList("수정된 체크리스트1", "수정된 체크리스트2", "수정된 체크리스트3"))

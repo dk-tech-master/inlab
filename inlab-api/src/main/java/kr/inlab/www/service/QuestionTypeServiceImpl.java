@@ -56,7 +56,7 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
         Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
             Sort.by(Sort.Direction.DESC, "questionTypeId"));
         Page<ResponseQuestionTypeDto> questionTypeList = questionTypeRepository.getQuestionTypeList(
-            requestDto.getQuestionTypeName(), pageable);
+            requestDto.getQuestionTypeName(), requestDto.getPositionId(), pageable);
 
         PagingUtil pagingUtil = new PagingUtil(questionTypeList.getTotalElements(), questionTypeList.getTotalPages(),
             questionTypeList.getNumber(), questionTypeList.getSize());

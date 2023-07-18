@@ -13,5 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class RequestQuestionTypeDto extends RequestListDto {
 
+    private Integer positionId;
     private String questionTypeName;
 }

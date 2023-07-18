@@ -71,8 +71,8 @@ public class QuestionTypeControllerTest {
         Integer questionTypeId = getTestQuestionTypeId();
 
         mockMvc.perform(get("/api/question-type")
-                .param("page","1")
-                .param("questionTypeName","")
+                        .param("page","1")
+                        .param("questionTypeName","")
                 .header(HttpHeaders.AUTHORIZATION, "jwt token")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -82,7 +82,7 @@ public class QuestionTypeControllerTest {
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         requestParameters(
                                 parameterWithName("page").description("paging 위한 파리미터"),
-                                parameterWithName("questionTypeName").description("position 검색 조건을 위한 파라미터")),
+                                parameterWithName("questionTypeName").description("질문 유형명으로 검색 위한 파라미터")),
                         responseFields(
                                 fieldWithPath("pagingUtil.totalElements").description("Total number of elements"),
                                 fieldWithPath("pagingUtil.totalPages").description("총 페이지 수"),
@@ -96,6 +96,7 @@ public class QuestionTypeControllerTest {
                                 fieldWithPath("pagingUtil.existPrePageGroup").description("이전 페이지 그룹 존재 여부"),
                                 fieldWithPath("pagingUtil.existNextPageGroup").description("다음 페이지 그룹 존재 여부"),
                                 fieldWithPath("responseList[].questionTypeId").description("유형 ID"),
+                                fieldWithPath("responseList[].positionName").description("직무명"),
                                 fieldWithPath("responseList[].questionTypeName").description("유형 이름"),
                                 fieldWithPath("responseList[].questionCount").description("유형에 대한 질문 수")))
                 );
