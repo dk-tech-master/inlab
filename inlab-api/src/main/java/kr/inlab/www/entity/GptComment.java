@@ -1,5 +1,6 @@
 package kr.inlab.www.entity;
 
+import kr.inlab.www.dto.response.ResponseGptCommentDto;
 import kr.inlab.www.dto.response.ResponseGptCommentIdDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -48,6 +50,16 @@ public class GptComment {
     public ResponseGptCommentIdDto toResponseGptCommentIdDto() {
         return ResponseGptCommentIdDto.builder()
                 .gptCommentId(this.gptCommentId)
+                .build();
+    }
+
+    public ResponseGptCommentDto toResponseGptCommentDto() {
+        return ResponseGptCommentDto.builder()
+                .gptCommentId(this.gptCommentId)
+                .requestContent(this.requestContent)
+                .responseContent(this.responseContent)
+                .createdAt(this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .modifiedAt(this.modifiedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build();
     }
 

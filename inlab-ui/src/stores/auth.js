@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
 import { signIn } from "@/api/auth";
+import { ref } from "vue";
 
 export const authStore = defineStore("auth", () => {
+  let email = ref("");
   const login = async (data) => {
     await signIn(data)
       .then(async (response) => {
@@ -32,5 +34,9 @@ export const authStore = defineStore("auth", () => {
     // location.reload();
   };
 
-  return { login, logout };
+  const getEmail = () => {
+    return email.value;
+  };
+
+  return { email, getEmail, login, logout };
 });

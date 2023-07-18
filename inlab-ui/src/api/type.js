@@ -1,7 +1,7 @@
 import request from "@/api/core/request";
 
-export const getInterviewResultList = (data) => {
-  const uri = `/api/interview-result`;
+export const getTypes = (data) => {
+  const uri = "/api/question-type";
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -11,12 +11,12 @@ export const getInterviewResultList = (data) => {
   return request.get(uri, config);
 };
 
-export const getInterviewResult = (interviewResultId) => {
-  const uri = `/api/interview-result/${interviewResultId}`;
+export const createTypes = (data) => {
+  const uri = "/api/question-type";
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
-  return request.get(uri, config);
+  return request.post(uri, data, config);
 };

@@ -1,7 +1,7 @@
 package kr.inlab.www.entity;
 
 import kr.inlab.www.common.type.YesNo;
-import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
+import kr.inlab.www.dto.response.ResponseGetRelatedQuestionsDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,10 +32,12 @@ public class RelatedQuestion {
         this.tailQuestion = tailQuestion;
     }
 
-    public ResponseGetQuestionsDto toResponseQuestionsDto() {
+    public ResponseGetRelatedQuestionsDto toResponseRelatedQuestionsDto() {
         QuestionVersion result = this.tailQuestion.getQuestionVersionList().stream()
             .filter(questionVersion -> questionVersion.getIsLatest().equals(YesNo.Y)).findFirst().get();
-        return ResponseGetQuestionsDto.builder()
+        return ResponseGetRelatedQuestionsDto.builder()
+            .relatedQuestionId(this.relatedQuestionId)
+            .questionId(this.tailQuestion.getQuestionId())
             .title(result.getTitle())
             .questionTypeId(this.tailQuestion.getQuestionType().getQuestionTypeId())
             .questionTypeName(this.tailQuestion.getQuestionType().getQuestionTypeName())

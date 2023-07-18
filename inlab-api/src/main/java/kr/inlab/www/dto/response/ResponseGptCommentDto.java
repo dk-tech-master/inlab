@@ -15,10 +15,16 @@ public class ResponseGptCommentDto {
 
     private String responseContent;
 
+    private String createdAt;
+
+    private String modifiedAt;
+
     @Builder
-    public ResponseGptCommentDto(Long gptCommentId, String requestContent, String responseContent) {
+    public ResponseGptCommentDto(Long gptCommentId, String requestContent, String responseContent, String createdAt, String modifiedAt) {
         this.gptCommentId = gptCommentId;
         this.requestContent = requestContent;
         this.responseContent = responseContent;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 }
