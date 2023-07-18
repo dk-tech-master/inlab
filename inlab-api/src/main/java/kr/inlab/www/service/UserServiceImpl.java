@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import kr.inlab.www.common.exception.AccountDeletedException;
 import kr.inlab.www.common.exception.AdminCouldNotDeleteException;
@@ -158,7 +157,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByEmail(username).orElseThrow(() -> {
-            throw new UsernameNotFoundException("로그인 정보가 틀립니다.");
+            throw new UsernameNotFoundException("이메일 또는 비밀번호가 일치하지 않습니다.");
         });
 
         if (Objects.equals(user.getUserStatus(), UserStatus.DELETE)) {

@@ -1,6 +1,5 @@
 package kr.inlab.www.security.filter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -10,14 +9,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import kr.inlab.www.common.exception.AccountDeletedException;
 import kr.inlab.www.common.exception.LoginBlockedException;
 import kr.inlab.www.common.util.CreateHeaders;
+import kr.inlab.www.dto.common.ResponseErrorDto;
 import kr.inlab.www.dto.request.RequestLoginDto;
 import kr.inlab.www.entity.User;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
@@ -25,11 +24,10 @@ import kr.inlab.www.security.service.AuthenticationProviderService;
 import kr.inlab.www.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
@@ -38,6 +36,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private UserService userService;
     private Environment environment;
     private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public AuthenticationFilter(UserService userService, Environment environment) {
         this.userService = userService;
@@ -92,6 +91,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Map<String, String> stringStringMap = jwtTokenProvider.generateTokenSet(claims);
         stringStringMap.forEach(response::addHeader);
 
+        checkPasswordChangeRequiredAndThenSetHeader(email, response); // 최근 비밀번호 변경이 필요한지 여부 확인
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
@@ -99,19 +100,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         responseJson.put("userId", user.getUserId().toString());
         responseJson.put("nickname", user.getNickname());
-        responseJson.put("roles", authResult.getAuthorities());
+        responseJson.put("role", authResult.getAuthorities().stream().collect(Collectors.toList()).get(0).toString());
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         String jsonResponse = objectMapper.writeValueAsString(responseJson);
 
         response.getWriter().write(jsonResponse);
-        checkPasswordChangeRequiredAndThenSetHeader(email, response); // 최근 비밀번호 변경이 필요한지 여부 확인
-    }
-
-    private String getJson(Object object) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(object);
     }
 
     /**
@@ -134,29 +129,19 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException failed) throws IOException, ServletException {
 
-        // todo response 처리 변경
-        if (failed instanceof UsernameNotFoundException) {
-            // 올바르지 않은 이메일을 입력했을 경우
-            response.addHeader(CreateHeaders.LOGIN_FAIL, CreateHeaders.TRUE);
-            response.setStatus(401);
-        } else if (failed instanceof AccountDeletedException) {
-            // 삭제된 계정으로 로그인을 진행하는 경우
-            response.addHeader(CreateHeaders.LOGIN_FAIL_DELETE, CreateHeaders.TRUE);
-        } else if (failed instanceof LoginBlockedException) {
-            // 비밀번호 5회 오류 시
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+
+        ResponseErrorDto responseErrorDto = ResponseErrorDto.builder()
+            .code("UNAUTHORIZED")
+            .message(failed.getMessage())
+            .build();
+        String jsonResponse = objectMapper.writeValueAsString(responseErrorDto);
+        response.getWriter().write(jsonResponse);
+
+        if (failed instanceof LoginBlockedException) {
             response.addHeader(CreateHeaders.LOGIN_FAIL_BLOCK, LocalDateTime.now().plusMinutes(30).toString());
-        } else if (failed instanceof BadCredentialsException) {
-            // 비밀번호가 틀렸을 경우
-            User user = userService.getUserByEmail((String) request.getAttribute("username"));
-            int maxAttempts = Integer.parseInt(Objects.requireNonNull(environment.getProperty("myapp.max-attempt")));
-            int currentAttempts = user.getLoginAttempt();
-            int remainingAttempts = maxAttempts - currentAttempts;
-            if (remainingAttempts <= 0) {
-                userService.updateUserBlockUntil(user.getEmail());
-            } else {
-                userService.increaseLoginAttempt(user.getEmail());
-            }
-            response.addHeader(CreateHeaders.LOGIN_FAIL, CreateHeaders.TRUE);
         }
     }
 }
