@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateRelatedQuestionDto;
 import kr.inlab.www.dto.request.RequestRelatedQuestionsDto;
-import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
+import kr.inlab.www.dto.response.ResponseGetRelatedQuestionsDto;
 import kr.inlab.www.service.RelatedQuestionService;
 import lombok.RequiredArgsConstructor;
 
@@ -27,16 +27,17 @@ public class RelatedQuestionController {
 
 	// 해당 질문에 대한 꼬리 질문 등록 (#17)
 	@PostMapping
-	public ResponseEntity<Void> createRelatedQuestion(
-		@RequestBody RequestCreateRelatedQuestionDto requestDto) {
+	public ResponseEntity<Void> createRelatedQuestion(@RequestBody RequestCreateRelatedQuestionDto requestDto) {
 		relatedQuestionService.createRelatedQuestion(requestDto);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	// 해당 질문에 대한 꼬리 질문 전체 조회 (#17)
 	@GetMapping
-	public ResponseEntity<ResponseListDto<ResponseGetQuestionsDto>> getRelatedQuestions(@ModelAttribute RequestRelatedQuestionsDto requestDto) {
-		ResponseListDto<ResponseGetQuestionsDto> responseDto = relatedQuestionService.getRelatedQuestions(requestDto);
+	public ResponseEntity<ResponseListDto<ResponseGetRelatedQuestionsDto>> getRelatedQuestions(
+		@ModelAttribute RequestRelatedQuestionsDto requestDto) {
+		ResponseListDto<ResponseGetRelatedQuestionsDto> responseDto = relatedQuestionService.getRelatedQuestions(
+			requestDto);
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 

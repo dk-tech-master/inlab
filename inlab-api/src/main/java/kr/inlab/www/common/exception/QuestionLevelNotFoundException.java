@@ -9,6 +9,9 @@ public class QuestionLevelNotFoundException extends InlabException {
 	public QuestionLevelNotFoundException() {
 		super(MESSAGE);
 	}
+
 	@Override
-	public int getStatusCode() { return HttpStatus.NOT_FOUND.value();}
+	public int getStatusCode() {
+		return HttpStatus.NOT_FOUND.value();
+	}
 }
