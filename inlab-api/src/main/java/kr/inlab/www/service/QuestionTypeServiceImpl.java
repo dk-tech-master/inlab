@@ -40,7 +40,7 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     public void createQuestionType(RequestCreateQuestionTypeDto requestDto) {
         Integer positionId = requestDto.getPositionId();
         String questionTypeName = requestDto.getQuestionTypeName();
-        if (questionTypeRepository.existsByPositionAndQuestionTypeName(positionId, questionTypeName)) {
+        if (questionTypeRepository.existsByPosition_PositionIdAndQuestionTypeName(positionId, questionTypeName)) {
             throw new QuestionTypeAlreadyExistsException();
         }
         Position position = positionRepository.findById(positionId).orElseThrow(PositionNotFoundException::new);
