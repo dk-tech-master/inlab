@@ -17,16 +17,16 @@ public class ResponseInterviewQuestionResultDto {
 
     private ResponseCommentDto responseCommentDto;
 
-    private ResponseGptCommentIdDto responseGptCommentIdDto;
+    private ResponseGptCommentDto responseGptCommentDto;
 
     private List<ResponseChecklistDto> responseChecklistDtoList;
 
     @Builder
-    public ResponseInterviewQuestionResultDto(String interviewQuestionTitle, ResponseInterviewAnswerDto responseInterviewAnswerDto, ResponseCommentDto responseCommentDto, ResponseGptCommentIdDto responseGptCommentIdDto, List<ResponseChecklistDto> responseChecklistDtoList) {
+    public ResponseInterviewQuestionResultDto(String interviewQuestionTitle, ResponseInterviewAnswerDto responseInterviewAnswerDto, ResponseCommentDto responseCommentDto, ResponseGptCommentDto responseGptCommentDto, List<ResponseChecklistDto> responseChecklistDtoList) {
         this.interviewQuestionTitle = interviewQuestionTitle;
         this.responseInterviewAnswerDto = responseInterviewAnswerDto;
         this.responseCommentDto = responseCommentDto;
-        this.responseGptCommentIdDto = responseGptCommentIdDto;
+        this.responseGptCommentDto = responseGptCommentDto;
         this.responseChecklistDtoList = responseChecklistDtoList;
     }
 }

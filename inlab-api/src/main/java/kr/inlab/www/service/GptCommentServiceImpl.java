@@ -37,11 +37,11 @@ public class GptCommentServiceImpl implements GptCommentService {
     }
 
     @Override
-    public ResponseGptCommentIdDto getGptCommentId(InterviewQuestionResult interviewQuestionResult) {
+    public ResponseGptCommentDto getInterviewResultGptComment(InterviewQuestionResult interviewQuestionResult) {
         GptComment gptComment = gptCommentRepository.findByInterviewQuestionResult(interviewQuestionResult)
                 .orElseThrow(GptCommentNotFoundException::new);
 
-        return gptComment.toResponseGptCommentIdDto();
+        return gptComment.toResponseGptCommentDto();
     }
 
     @Transactional

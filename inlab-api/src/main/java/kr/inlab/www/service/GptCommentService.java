@@ -9,7 +9,7 @@ public interface GptCommentService {
 
     void createGptComment(InterviewQuestion interviewQuestion, InterviewQuestionResult interviewResult, String interviewAnswerContent);
 
-    ResponseGptCommentIdDto getGptCommentId(InterviewQuestionResult interviewQuestionResult);
+    ResponseGptCommentDto getInterviewResultGptComment(InterviewQuestionResult interviewQuestionResult);
 
     ResponseGptCommentDto getGptComment(Long gptCommentId);
 }

@@ -85,8 +85,8 @@ public class InterviewResultServiceImpl implements InterviewResultService {
                     interviewAnswerService.getInterviewAnswer(interviewQuestionResult);
             ResponseCommentDto responseCommentDto =
                     commentService.getComment(interviewQuestionResult);
-            ResponseGptCommentIdDto responseGptCommentIdDto =
-                    gptCommentService.getGptCommentId(interviewQuestionResult);
+            ResponseGptCommentDto responseGptCommentDto =
+                    gptCommentService.getInterviewResultGptComment(interviewQuestionResult);
             List<ResponseChecklistDto> responseChecklistDtoList =
                     checklistResultService.getChecklistResultList(interviewQuestionResult);
 
@@ -94,7 +94,7 @@ public class InterviewResultServiceImpl implements InterviewResultService {
                     .interviewQuestionTitle(interviewQuestion.getQuestionVersion().getTitle())
                     .responseInterviewAnswerDto(responseInterviewAnswerDto)
                     .responseCommentDto(responseCommentDto)
-                    .responseGptCommentIdDto(responseGptCommentIdDto)
+                    .responseGptCommentDto(responseGptCommentDto)
                     .responseChecklistDtoList(responseChecklistDtoList)
                     .build();
         }).collect(Collectors.toList());
