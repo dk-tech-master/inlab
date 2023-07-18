@@ -12,7 +12,7 @@ const questionRoutes = [
     component: QuestionManagement,
   },
   {
-    path: "/question/version",
+    path: "/question/version/:questionId",
     name: "/versions",
     meta: {
       hide: true,
@@ -20,7 +20,7 @@ const questionRoutes = [
     component: QuestionVersionManagement,
   },
   {
-    path: "/question/follow-up",
+    path: "/question/follow-up/:questionId",
     name: "/follow-up",
     meta: {
       hide: true,
