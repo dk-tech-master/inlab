@@ -7,7 +7,7 @@
           >직무</label
         >
         <select
-          class="bg-gray-50 font-medium select select-primary select-sm border-gray-300 max-w-xs"
+          class="font-medium select select-primary select-sm border-gray-300 max-w-xs"
           v-model="searchInfo.position"
         >
           <option value="6">프론트엔드</option>
@@ -62,6 +62,7 @@
           class="p-2.5 input input-sm input-bordered border-gray-300 text-sm"
           placeholder="제목을 입력하세요"
           required
+          @keyup.enter="onSearch"
         />
         <button class="ml-3 px-5 btn btn-primary btn-sm" @click="onSearch">
           검색

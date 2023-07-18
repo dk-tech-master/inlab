@@ -1,10 +1,15 @@
 import { defineStore } from "pinia";
 import { signIn } from "@/api/auth";
+import { ref } from "vue";
 
 export const authStore = defineStore("auth", () => {
+  let email = ref("");
   const login = async (data) => {
     await signIn(data)
       .then((response) => {
+        email.value = data.username;
+        console.log(data.username); //아이디 찍힘
+        console.log(email.value); //아이디 찍힘
         const accessToken = response.headers.get("Authorization");
         const refreshToken = response.headers.get("Refresh");
         const userId = response.headers.get("user-id");
@@ -31,5 +36,9 @@ export const authStore = defineStore("auth", () => {
     // location.reload();
   };
 
-  return { login, logout };
+  const getEmail = () => {
+    return email.value;
+  };
+
+  return { email, getEmail, login, logout };
 });
