@@ -46,6 +46,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,23 +67,13 @@ public class QuestionServiceImpl implements QuestionService {
     private final PositionLevelRepository positionLevelRepository;
     private final QuestionVersionQueryRepository questionVersionQueryRepository;
 
-	// todo 이동
-    private void saveChecklists(List<String> checklists, QuestionVersion questionVersion) {
-        List<Checklist> checklistEntities = checklists.stream()
-            .map(checklist -> Checklist.builder()
-                .content(checklist)
-                .questionVersion(questionVersion)
-                .build())
-            .collect(Collectors.toList());
-
-        checklistRepository.saveAll(checklistEntities);
-    }
+	private final ChecklistService checklistService;
+	private final AutorityService autorityService;
 
     @Transactional
     @Override
     public void createQuestion(RequestCreateQuestionDto requestDto) {
-		isUserHasAuthorityToQuestion(requestDto.getPositionId(),requestDto.getQuestionLevelId());
-        isUserHasAuthorityToQuestion(requestDto.getPositionId(), requestDto.getQuestionLevelId());
+		autorityService.checkUserHasAuthorityToQuestion(requestDto.getPositionId(), requestDto.getQuestionLevelId());
 
         Position position = positionRepository.findById(requestDto.getPositionId())
             .orElseThrow(PositionNotFoundException::new);
@@ -103,12 +94,12 @@ public class QuestionServiceImpl implements QuestionService {
             .questionLevel(questionLevel)
             .build());
 
-        saveChecklists(requestDto.getChecklists(), questionVersion);
+        checklistService.saveChecklists(requestDto.getChecklists(), questionVersion);
     }
 
     @Override
     public ResponseGetQuestionDto getQuestion(Long questionId, String username) {
-		isUserHasAuthorityToQuestion(questionId);
+		autorityService.checkUserHasAuthorityToQuestion(questionId);
         QuestionVersion questionVersion = questionVersionRepository.findTopByQuestionQuestionIdAndIsLatest(questionId,
                 YesNo.Y)
             .orElseThrow(QuestionVersionNotFoundException::new);
@@ -141,7 +132,10 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public ResponseListDto<ResponseGetQuestionsDto> getQuestions(RequestQuestionsDto requestDto) {
-		List<PositionLevel> positionLevels = getPositionLevels();
+		List<PositionLevel> positionLevels = autorityService.getPositionLevels();
+
+		// todo 리스트 조회할때도 권한에 대해 넣어야 함
+		// todo 그래도 QuestionServiceImpl에 너무 많은 로직이 포함되어 있어서 분리해야 될꺼 같습니다.
 
 		Map<Integer, List<Integer>> groupedPositionLevels = positionLevels.stream()
 			.collect(Collectors.groupingBy(
@@ -165,11 +159,9 @@ public class QuestionServiceImpl implements QuestionService {
         return new ResponseListDto<ResponseGetQuestionsDto>(questionList.getContent(), pagingUtil);
     }
 
-	// todo 이동
     @Override
-    public ResponseListDto<ResponseQuestionVersionsDto> getQuestionVersions(RequestListDto requestDto,
-        Long questionId) {
-		isUserHasAuthorityToQuestion(questionId);
+    public ResponseListDto<ResponseQuestionVersionsDto> getQuestionVersions(RequestListDto requestDto, Long questionId) {
+		autorityService.checkUserHasAuthorityToQuestion(questionId);
 
         Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
             Sort.by(Sort.Direction.DESC, "version"));
@@ -184,8 +176,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     @Override
     public void updateQuestion(RequestUpdateQuestionDto requestDto, Long questionId) {
-		// isUserHasAuthorityToQuestion(questionId);
-		// 해당 메서드에서 문제가 생겨서 추후에 변경 예정
+		autorityService.checkUserHasAuthorityToQuestion(questionId);
 
         Question question = questionRepository.findById(questionId)
             .orElseThrow(QuestionNotFoundException::new);
@@ -204,41 +195,7 @@ public class QuestionServiceImpl implements QuestionService {
             .build();
         QuestionVersion savedQuestionVersion = questionVersionRepository.save(newQuestionVersion);
 
-        saveChecklists(requestDto.getChecklists(), savedQuestionVersion);
+        checklistService.saveChecklists(requestDto.getChecklists(), savedQuestionVersion);
         latestQuestionVersion.updateIsLatest(YesNo.N);
-    }
-
-    public void isUserHasAuthorityToQuestion(Long questionId) {
-		List<PositionLevel> positionLevels = getPositionLevels();
-
-		Question question = questionRepository.findById(questionId).orElseThrow(QuestionNotFoundException::new);
-        Integer positionId = question.getPosition().getPositionId();
-        Integer questionLevelId = questionVersionRepository.findByQuestionQuestionId(questionId)
-            .orElseThrow(QuestionVersionNotFoundException::new).getQuestionLevel().getQuestionLevelId();
-
-        if (positionLevels.stream().noneMatch(positionLevel ->
-            positionId.equals(positionLevel.getPosition().getPositionId()) &&
-                questionLevelId.equals(positionLevel.getQuestionLevel().getQuestionLevelId())
-        )) {
-            throw new UserHasNotAuthorityToQuestion();
-        }
-    }
-
-	private List<PositionLevel> getPositionLevels() {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		List<PositionLevel> positionLevels = positionLevelRepository.findByUser(user);
-		return positionLevels;
-	}
-
-	public void isUserHasAuthorityToQuestion(Integer positionId, Integer questionLevelId) {
-		List<PositionLevel> positionLevels = getPositionLevels();
-
-		if (positionLevels.stream().noneMatch(positionLevel ->
-            positionId.equals(positionLevel.getPosition().getPositionId()) &&
-                questionLevelId.equals(positionLevel.getQuestionLevel().getQuestionLevelId())
-        )) {
-            throw new UserHasNotAuthorityToQuestion();
-        }
     }
 }
