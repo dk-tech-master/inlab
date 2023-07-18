@@ -113,6 +113,7 @@
             stroke-width="1.5"
             stroke="currentColor"
             class="w-6 h-6"
+            @click="clickUpdateType(index)"
           >
             <path
               stroke-linecap="round"
@@ -131,6 +132,7 @@
             stroke-width="1.5"
             stroke="currentColor"
             class="w-6 h-6"
+            @click="clickDeleteType(item.questionTypeId)"
           >
             <path
               stroke-linecap="round"
@@ -170,17 +172,26 @@
       <p class="text-lg text-gray-500 text-center">직무가 존재하지 않습니다.</p>
     </div>
   </section>
-  <CreateTypeModal ref="createTypeModal" :positionOptions="positionOptions" @init="init" />
+  <CreateTypeModal
+    ref="createTypeModal"
+    :positionOptions="positionOptions"
+    @init="init"
+  />
+  <UpdateTypeModal
+    ref="updateTypeModal"
+    :positionOptions="positionOptions"
+    @init="init"
+  />
 </template>
 
 <script setup>
 import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import CreateTypeModal from "@/components/modal/CreateTypeModal.vue";
+import UpdateTypeModal from "@/components/modal/UpdateTypeModal.vue";
 import { ref } from "vue";
-import { getTypes } from "@/api/type";
+import { deleteTypes, getTypes } from "@/api/type";
 import { getpositionOption } from "@/api/select";
-import { getJobs } from "@/api/job";
 
 const loaded = ref(false);
 const pagingUtil = ref({});
@@ -198,7 +209,7 @@ const init = async () => {
 
   const responseOption = await getpositionOption();
   positionOptions.value = responseOption.data;
-
+  console.log(positionOptions.value);
   loaded.value = true;
 };
 
@@ -219,6 +230,17 @@ const handleSearch = async () => {
 const clickCreateType = () => {
   console.log("clickType");
   createTypeModal.value.toggleModal();
+};
+
+const clickUpdateType = (index) => {
+  let typeData = typeList.value[index];
+  updateTypeModal.value.toggleModal(typeData);
+};
+
+const clickDeleteType = async (typeId) => {
+  window.confirm("유형을 삭제하시겠습니까?");
+  await deleteTypes(typeId);
+  init();
 };
 
 const changePage = async (page) => {

@@ -106,7 +106,7 @@
             stroke-width="1.5"
             stroke="currentColor"
             class="w-6 h-6 cursor-pointer"
-            @click="handleDelete(item.positionId)"
+            @click="clickDeleteJob(item.positionId)"
           >
             <path
               stroke-linecap="round"
@@ -185,9 +185,9 @@ const handleSearch = async () => {
   pagingUtil.value = jobInfo.data.pagingUtil;
 };
 
-const handleDelete = async (data) => {
-  window.alert("직무를 삭제하시겠습니까?");
-  await deleteJobs(data);
+const clickDeleteJob = async (jobId) => {
+  window.confirm("직무를 삭제하시겠습니까?");
+  await deleteJobs(jobId);
   init();
 };
 
