@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 public class ResponseQuestionTypeDto {
 
+    private Integer positionId;
+
     private String positionName;
 
     private Integer questionTypeId;
@@ -13,8 +15,11 @@ public class ResponseQuestionTypeDto {
 
     private Long questionCount;
 
-    public ResponseQuestionTypeDto(String positionName, Integer questionTypeId, String questionTypeName,
+
+
+    public ResponseQuestionTypeDto(Integer positionId, String positionName, Integer questionTypeId, String questionTypeName,
         Long questionCount) {
+        this.positionId = positionId;
         this.positionName = positionName;
         this.questionTypeId = questionTypeId;
         this.questionTypeName = questionTypeName;
