@@ -1,6 +1,7 @@
 package kr.inlab.www.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.common.util.CreateHeaders;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,7 +67,7 @@ public class UserController {
      * @throws EmailDuplicateException   특이 사항: 헤더에 클리어 해야할 토큰 정보(email 토큰)를 추가합니다.
      */
     @PostMapping("/users")
-    public ResponseEntity createUser(HttpServletRequest request, @RequestBody RequestCreateUserDto dto)
+    public ResponseEntity createUser(HttpServletRequest request, @Valid @RequestBody RequestCreateUserDto dto)
         throws EmailNotVerifiedException, EmailDuplicateException {
         userService.createUser(request, dto);
         HttpHeaders headers = CreateHeaders.createClearTokenHeaders(JwtTokenProvider.EMAIL);
