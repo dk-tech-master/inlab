@@ -50,12 +50,9 @@
       </InputSearchFilter>
     </div>
   </header>
-  <section class="mt-8">
+  <section v-if="jobList.length > 0" class="mt-8">
     <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
       <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-        <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
-          No
-        </div>
         <div class="w-[35%] flex flex-col justify-center px-6 py-2 text-left">
           직무
         </div>
@@ -76,13 +73,10 @@
         v-for="(item, index) in jobList"
         :key="item"
       >
-        <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
-          {{ index + 1 }}
-        </div>
         <div class="w-[35%] flex flex-col justify-center px-6 py-4 text-left">
           {{ item.positionName }}
         </div>
-        <div class="w-[20%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[20%] flex flex-col justify-center px-10 py-4 text-left">
           {{ item.questionCount }}
         </div>
         <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
@@ -131,6 +125,27 @@
       />
     </div>
   </section>
+  <section v-else class="mr-16 mt-8">
+    <div class="border rounded-lg py-20">
+      <div class="flex justify-center mb-10">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-20 h-20 text-gray-500"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
+          />
+        </svg>
+      </div>
+      <p class="text-lg text-gray-500 text-center">직무가 존재하지 않습니다.</p>
+    </div>
+  </section>
   <CreateJobModal ref="createJobModal" @init="init" />
   <UpdateJobModal ref="updateJobModal" @init="init" />
 </template>
@@ -155,6 +170,7 @@ const init = async () => {
   jobList.value = jobInfo.data.responseList;
   pagingUtil.value = jobInfo.data.pagingUtil;
   loaded.value = true;
+  console.log(jobInfo.data);
 };
 
 init();
