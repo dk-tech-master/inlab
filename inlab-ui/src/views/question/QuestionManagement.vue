@@ -16,7 +16,6 @@
         @click="openRegistrationModal"
         >등록</label
       >
-
       <QuestionRegistrationModal ref="registrationModalRef" />
       <div
         class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg"
