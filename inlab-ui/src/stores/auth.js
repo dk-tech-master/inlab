@@ -3,6 +3,16 @@ import { signIn } from "@/api/auth";
 import { ref } from "vue";
 
 export const authStore = defineStore("auth", () => {
+  const questionTitle = ref(null);
+
+  const setQuestionTitle = (question) => {
+    questionTitle.value = question;
+  };
+
+  const getQuestionTitle = () => {
+    return questionTitle.value;
+  };
+
   let email = ref("");
   const login = async (data) => {
     await signIn(data)
@@ -38,5 +48,13 @@ export const authStore = defineStore("auth", () => {
     return email.value;
   };
 
-  return { email, getEmail, login, logout };
+  return {
+    questionTitle,
+    setQuestionTitle,
+    getQuestionTitle,
+    email,
+    getEmail,
+    login,
+    logout,
+  };
 });
