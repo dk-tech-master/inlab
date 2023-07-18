@@ -63,3 +63,24 @@ export const getFollowUpQuestion = (data) => {
   };
   return request.get(uri, config);
 };
+
+export const addFollowUpQuestion = (data) => {
+  const uri = `/api/related-questions`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return request.post(uri, data, config);
+};
+
+export const deleteFollowUpQuestion = (relatedQuestionId) => {
+  const uri = `/api/related-questions/${relatedQuestionId}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: { relatedQuestionId },
+  };
+  return request.delete(uri, config);
+};

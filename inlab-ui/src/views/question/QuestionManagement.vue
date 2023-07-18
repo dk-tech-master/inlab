@@ -96,7 +96,10 @@
             </router-link>
           </div>
           <div class="w-[9%] flex flex-col justify-center px-6 py-2 text-left">
-            <router-link :to="`/question/follow-up/${question?.questionId}`">
+            <router-link
+              :to="`/question/follow-up/${question?.questionId}`"
+              @click="store.setQuestionTitle(question.title)"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
