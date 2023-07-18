@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.inlab.www.common.exception.QuestionNotFoundException;
+import kr.inlab.www.common.exception.RelatedQuestionDuplicateException;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateRelatedQuestionDto;
@@ -38,7 +39,7 @@ public class RelatedQuestionServiceImpl implements RelatedQuestionService {
 			.orElseThrow(QuestionNotFoundException::new);
 
 		if (relatedQuestionRepository.existsByHeadQuestionAndTailQuestion(headQuestion, tailQuestion)) {
-			throw new RuntimeException("이미 있는 꼬리질문입니다");
+			throw new RelatedQuestionDuplicateException();
 		}
 
 		relatedQuestionRepository.save(RelatedQuestion.builder()
