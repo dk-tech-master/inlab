@@ -34,6 +34,32 @@ export const checkVerificationCode = (data) => {
   return request.post(uri, data, config);
 };
 
+export const checkEmailDuplicated = (email) => {
+  const uri = `/api/users/check-email-duplicated`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      email: email,
+    },
+  };
+  return request.get(uri, config);
+};
+
+export const checkNicknameDuplicated = (nickname) => {
+  const uri = `/api/users/check-nickname-duplicated`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: {
+      nickname: nickname,
+    },
+  };
+  return request.get(uri, config);
+};
+
 export const register = (token, data) => {
   const uri = `/api/users`;
   const config = {
