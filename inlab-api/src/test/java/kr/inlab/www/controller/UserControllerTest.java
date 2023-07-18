@@ -108,9 +108,9 @@ class UserControllerTest {
     @Transactional
     void createUser() throws Exception {
         RequestCreateUserDto dto = new RequestCreateUserDto();
-        dto.setEmail("jwoo1016@gmail.com");
-        dto.setPassword("1234");
-        dto.setNickname("최정우지메일");
+//        dto.setEmail("jwoo1016@gmail.com");
+//        dto.setPassword("1234");
+//        dto.setNickname("최정우지메일");
 
         // Act
         ResultActions resultActions = mockMvc.perform(
