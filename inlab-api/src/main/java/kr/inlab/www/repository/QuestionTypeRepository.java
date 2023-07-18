@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 
 public interface QuestionTypeRepository extends JpaRepository<QuestionType, Integer> {
 
-    @Query("SELECT new kr.inlab.www.dto.response.ResponseQuestionTypeDto(p.positionName, qt.questionTypeId,qt.questionTypeName,COUNT(q) ) " +
+    @Query("SELECT new kr.inlab.www.dto.response.ResponseQuestionTypeDto(p.positionId, p.positionName, qt.questionTypeId,qt.questionTypeName,COUNT(q) ) " +
             "FROM QuestionType qt join qt.position p LEFT JOIN qt.questionList q " +
             "WHERE (:name is null or qt.questionTypeName LIKE CONCAT('%', :name, '%'))  " +
             "AND (:positionId is null or p.positionId = :positionId) " +
