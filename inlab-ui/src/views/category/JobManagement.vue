@@ -1,5 +1,5 @@
 <template>
-  <header class="mt-8">
+  <header>
     <div class="mb-10">
       <p class="mb-1 text-sm font-light text-gray-500">
         질문 카테고리 관리 >
@@ -7,47 +7,50 @@
       </p>
       <h2 class="text-3xl tracking-tight font-bold text-gray-800">직무 관리</h2>
     </div>
-    <div class="flex">
+    <div class="flex justify-between">
       <InputSearchFilter>
         <template v-slot:body>
-          <div>
-            <label
-              for="searchInterview"
-              class="block mb-2 text-base font-bold text-gray-700"
-              >직무 검색</label
-            >
-            <div class="flex">
-              <input
-                type="text"
-                name="interviewTitle"
-                class="py-5 pl-7 pr-36 bg-gray-50 input input-bordered input-sm border-gray-300 text-sm"
-                placeholder="면접의 직무를 검색하세요"
-                v-model="searchInput"
-                @keyup.enter="handleSearch"
-                required
-              />
+          <div class="flex">
+            <div>
+              <label
+                for="searchInterview"
+                class="block mb-2 text-base font-bold text-gray-700"
+                >직무 검색</label
+              >
+              <div class="flex">
+                <input
+                  type="text"
+                  name="interviewTitle"
+                  class="w-64 py-5 input input-bordered input-sm border-gray-300 text-sm"
+                  placeholder="면접의 직무를 검색하세요"
+                  v-model="searchInput"
+                  @keyup.enter="handleSearch"
+                  required
+                />
+              </div>
+            </div>
+            <div class="flex items-end">
+              <button
+                @click="handleSearch"
+                class="flex flex-col ml-3 px-5 py-5 btn btn-primary btn-sm"
+              >
+                검색
+              </button>
             </div>
           </div>
-        </template>
-        <template v-slot:footer>
-          <div class="flex items-end">
+          <div class="self-end">
             <button
-              @click="handleSearch"
-              class="flex flex-col ml-3 px-7 py-5 btn btn-primary btn-sm"
+              class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-5 py-5"
+              @click="clickCreateJob"
             >
-              검색
+              직무 등록
             </button>
           </div>
         </template>
       </InputSearchFilter>
     </div>
   </header>
-  <section class="mr-16 mt-8">
-    <button
-      class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-7 py-5"
-    >
-      직무 등록
-    </button>
+  <section class="mt-8">
     <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
       <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
         <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
@@ -89,7 +92,8 @@
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            class="w-6 h-6 cursor-pointer"
+            @click="clickUpdateJob(index)"
           >
             <path
               stroke-linecap="round"
@@ -107,7 +111,7 @@
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            class="w-6 h-6 cursor-pointer"
             @click="handleDelete(item.positionId)"
           >
             <path
@@ -119,18 +123,29 @@
         </div>
       </div>
     </div>
+    <div>
+      <Pagination
+        v-if="loaded"
+        :paging-util="pagingUtil"
+        @change-page="changePage"
+      />
+    </div>
   </section>
+  <CreateJobModal ref="createJobModal" @init="init" />
+  <UpdateJobModal ref="updateJobModal" @init="init" />
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { deleteJobs, getJobs } from "@/api/job";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
+import CreateJobModal from "@/components/modal/CreateJobModal.vue";
+import UpdateJobModal from "@/components/modal/UpdateJobModal.vue";
+import Pagination from "@/components/common/Pagination.vue";
 
-const pagingInfo = ref({
-  page: 1,
-});
-
+const loaded = ref(false);
+const createJobModal = ref(null);
+const updateJobModal = ref(null);
 const pagingUtil = ref({});
 const jobList = ref([]);
 const searchInput = ref("");
@@ -139,6 +154,7 @@ const init = async () => {
   const jobInfo = await getJobs();
   jobList.value = jobInfo.data.responseList;
   pagingUtil.value = jobInfo.data.pagingUtil;
+  loaded.value = true;
 };
 
 init();
@@ -159,5 +175,25 @@ const handleDelete = async (data) => {
   init();
 };
 
+const clickCreateJob = () => {
+  console.log("clickCreateJob");
+  createJobModal.value.toggleModal();
+};
+
+const clickUpdateJob = (index) => {
+  console.log("clickUpdateJob");
+  let jobData = jobList.value[index];
+  updateJobModal.value.toggleModal(jobData);
+};
+
+const changePage = async (page) => {
+  console.log(`changePage ${page}`);
+  const requestData = {
+    page: page,
+    positionName: searchInput.value,
+  };
+  let response = await getJobs(requestData);
+  jobList.value = response.data.responseList;
+  pagingUtil.value = response.data.pagingUtil;
+};
 </script>
-<style scoped></style>

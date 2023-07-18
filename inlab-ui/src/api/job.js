@@ -22,7 +22,7 @@ export const createJobs = (data) => {
 };
 
 export const deleteJobs = (id) => {
-  const uri = "/api/position/" + id;
+  const uri = `/api/position/${id}`;
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const deleteJobs = (id) => {
 };
 
 export const updateJobs = (data, id) => {
-  const uri = "/api/position/" + id;
+  const uri = `/api/position/${id}`;
   const config = {
     headers: {
       "Content-Type": "application/json",
