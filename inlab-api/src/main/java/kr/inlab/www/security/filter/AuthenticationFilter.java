@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.servlet.FilterChain;
@@ -74,7 +75,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
-    // 로그인이 성공적으로 끝나고 토큰을 반환하기 위한 메서드
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
         HttpServletResponse response,
@@ -92,15 +92,20 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Map<String, String> stringStringMap = jwtTokenProvider.generateTokenSet(claims);
         stringStringMap.forEach(response::addHeader);
 
-        response.addHeader(CreateHeaders.USER_ID, user.getUserId().toString());
-
-        String nicknameJson = getJson(user.getNickname());
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        response.getWriter().write(nicknameJson);
+        Map<String, Object> responseJson = new HashMap<>();
 
+        responseJson.put("userId", user.getUserId().toString());
+        responseJson.put("nickname", user.getNickname());
+        responseJson.put("roles", authResult.getAuthorities());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String jsonResponse = objectMapper.writeValueAsString(responseJson);
+
+        response.getWriter().write(jsonResponse);
         checkPasswordChangeRequiredAndThenSetHeader(email, response); // 최근 비밀번호 변경이 필요한지 여부 확인
     }
 
