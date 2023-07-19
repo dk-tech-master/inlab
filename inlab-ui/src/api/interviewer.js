@@ -19,3 +19,22 @@ export const updateApprove = (userId) => {
   };
   return request.put(uri, config);
 };
+
+export const getAccessVerification = (userId) => {
+  const uri = `/api/position_level?userId=${userId}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return request.get(uri, config);
+};
+export const updateAccessVerfication = (data) => {
+  const uri = `/api/position_level`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return request.put(uri, data, config);
+};
