@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import kr.inlab.www.common.exception.ExpiredVerificationCodeException;
+import kr.inlab.www.common.exception.IllegalVerificationCodeException;
 import kr.inlab.www.dto.request.RequestCheckVerificationCode;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
 import kr.inlab.www.service.EmailService;
@@ -37,7 +38,8 @@ public class VerificationCodeController {
     }
 
     @PutMapping
-    public ResponseEntity createVerificationCodeForUpdate(@RequestParam String email) throws MessagingException, IOException {
+    public ResponseEntity createVerificationCodeForUpdate(@RequestParam String email)
+        throws MessagingException, IOException {
         emailService.sendEmail(email, verificationCodeService.createVerificationCodeForUpdate(email));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -52,6 +54,8 @@ public class VerificationCodeController {
 
             Map<String, String> stringStringMap = jwtTokenProvider.generateEmailToken(claims);
             stringStringMap.forEach(response::addHeader);
+        } else {
+            throw new IllegalVerificationCodeException();
         }
         return ResponseEntity.status(HttpStatus.OK).build();
     }

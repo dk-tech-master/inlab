@@ -40,6 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/user-question-history").hasRole("ADMIN");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/users").permitAll();
         http.authorizeRequests().antMatchers("/api/users/*").permitAll();
+        http.authorizeRequests().antMatchers("/api/users/check-email-duplicated").permitAll();
+        http.authorizeRequests().antMatchers("/api/users/check-nickname-duplicated").permitAll();
         http.addFilterBefore(getAuthorizationHeaderFilter(), AuthenticationFilter.class);
         http.addFilter(getAuthenticationFilter());
         http.exceptionHandling()
