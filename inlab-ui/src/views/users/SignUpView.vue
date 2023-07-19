@@ -24,8 +24,8 @@
                 :class="`input input-bordered w-2/3 mr-2 text-sm ${
                   isEmailInputStarted
                     ? !isValidEmail && !isDuplicatedEmail
-                      ? 'border-green-500'
-                      : 'border-red-500'
+                      ? 'border-success'
+                      : 'border-error'
                     : 'border-gray-300'
                 }`"
                 placeholder="user@dktechin.com"
@@ -34,19 +34,20 @@
               <button
                 @click="clickSendVerificationCodeBtn"
                 type="button"
+                :disabled="isValidEmail || isDuplicatedEmail"
                 class="btn btn-primary w-1/3"
               >
                 인증번호발송
               </button>
             </div>
             <p v-if="!isEmailInputStarted"></p>
-            <p v-else-if="isValidEmail" class="text-red-500">
+            <p v-else-if="isValidEmail" class="text-error">
               유효하지 않은 이메일 입니다.
             </p>
-            <p v-else-if="isDuplicatedEmail" class="text-red-500">
+            <p v-else-if="isDuplicatedEmail" class="text-error">
               이미 존재하는 이메일 입니다.
             </p>
-            <p v-else class="text-green-500">유효한 이메일입니다</p>
+            <p v-else class="text-success">유효한 이메일입니다</p>
           </div>
 
           <div class="mb-4 flex justify-between">
@@ -61,6 +62,11 @@
             <button
               @click="checkVerificationCodeBtn"
               type="button"
+              :disabled="
+                isValidEmail ||
+                isDuplicatedEmail ||
+                !isVerificationCodeInputStarted
+              "
               class="btn btn-outline btn-primary w-1/3"
             >
               인증번호 확인
@@ -79,8 +85,8 @@
               :class="`input input-bordered w-2/3 mr-2 text-sm ${
                 isPasswordInputStarted
                   ? !isValidPassword
-                    ? 'border-green-500'
-                    : 'border-red-300'
+                    ? 'border-success'
+                    : 'border-error'
                   : 'border-gray-300'
               }`"
               placeholder="••••••••"
@@ -90,10 +96,10 @@
           </div>
           <div>
             <p v-if="!isPasswordInputStarted"></p>
-            <p v-else-if="isValidPassword" class="text-red-500">
+            <p v-else-if="isValidPassword" class="text-error">
               비밀번호는 4자 이상 20자 이하여야합니다.
             </p>
-            <p v-else class="text-green-500">유효한 비밀번호입니다.</p>
+            <p v-else class="text-success">유효한 비밀번호입니다.</p>
           </div>
           <div>
             <label
@@ -108,8 +114,8 @@
               :class="`input input-bordered w-2/3 mr-2 text-sm ${
                 isPasswordCheckInputStarted
                   ? !isValidPasswordCheck
-                    ? 'border-green-500'
-                    : 'border-red-300'
+                    ? 'border-success'
+                    : 'border-error'
                   : 'border-gray-300'
               }`"
               placeholder="••••••••"
@@ -119,10 +125,10 @@
           </div>
           <div>
             <p v-if="!isPasswordCheckInputStarted"></p>
-            <p v-else-if="isValidPasswordCheck" class="text-red-500">
-              비밀번호는 4자 이상 20자 이하여야합니다.
+            <p v-else-if="isValidPasswordCheck" class="text-error">
+              비밀번호가 일치하지 않습니다.
             </p>
-            <p v-else class="text-green-500">유효한 비밀번호입니다.</p>
+            <p v-else class="text-success">비밀번호가 일치합니다.</p>
           </div>
 
           <div>
@@ -138,8 +144,8 @@
               :class="`input input-bordered w-2/3 mr-2 text-sm ${
                 isNicknameInputStarted
                   ? !isValidNickname && !isDuplicatedNickname
-                    ? 'border-green-500'
-                    : 'border-red-500'
+                    ? 'border-success'
+                    : 'border-error'
                   : 'border-gray-300'
               }`"
               placeholder="••••••••"
@@ -149,19 +155,20 @@
           </div>
           <div>
             <p v-if="!isNicknameInputStarted"></p>
-            <p v-else-if="isValidNickname" class="text-red-500">
+            <p v-else-if="isValidNickname" class="text-error">
               유효하지 않은 닉네임 입니다.
             </p>
-            <p v-else-if="isDuplicatedNickname" class="text-red-500">
+            <p v-else-if="isDuplicatedNickname" class="text-error">
               이미 존재하는 닉네임 입니다.
             </p>
-            <p v-else class="text-green-500">유효한 닉네임입니다</p>
+            <p v-else class="text-success">유효한 닉네임입니다</p>
           </div>
           <div class="pt-5">
             <button
               @click="registerBtn"
               type="button"
               class="mt-15 btn btn-primary w-full"
+              :disabled="isValidEmail || isDuplicatedEmail || isValidNickname || isDuplicatedNickname || isValidPassword || isValidPasswordCheck"
             >
               회원가입
             </button>
@@ -206,6 +213,7 @@ const isPasswordInputStarted = ref(false);
 const isValidPassword = ref(true);
 const password = ref("");
 
+const isVerificationCodeInputStarted = ref(false);
 const verificationCode = ref("");
 
 const isPasswordCheckInputStarted = ref(false);
@@ -244,6 +252,10 @@ watch(email, (newEmail) => {
   }
 });
 
+watch(verificationCode, (newVerificationCode) => {
+  isVerificationCodeInputStarted.value = newVerificationCode.length > 0;
+});
+
 const checkNicknameDuplication = async () => {
   let response = await checkNicknameDuplicated(nickname.value); // 실제 API 호출을 적용하세요.
 
@@ -268,7 +280,7 @@ watch(nickname, (newNickname) => {
 
 watch(password, (newPassword) => {
   isPasswordInputStarted.value = newPassword.length > 0;
-  if (newPassword.length >= 4 && newPassword.length <= 20 ) {
+  if (newPassword.length >= 4 && newPassword.length <= 20) {
     isValidPassword.value = false;
   } else {
     isValidPassword.value = true;
@@ -277,7 +289,11 @@ watch(password, (newPassword) => {
 
 watch(confirmPassword, (newPasswordCheck) => {
   isPasswordCheckInputStarted.value = newPasswordCheck.length > 0;
-  if (newPasswordCheck.length >= 4 && newPasswordCheck.length <= 20 ) {
+  if (
+    newPasswordCheck.length >= 4 &&
+    newPasswordCheck.length <= 20 &&
+    newPasswordCheck === password.value
+  ) {
     isValidPasswordCheck.value = false;
   } else {
     isValidPasswordCheck.value = true;
@@ -290,8 +306,10 @@ const checkVerificationCodeBtn = async () => {
     verificationCode: verificationCode.value,
   };
   let response = await checkVerificationCode(requestData);
-  sessionStorage.setItem("email", response.headers.email);
-  alert("인증번호 검증이 완료됐습니다.");
+  if (response.status === 200) {
+    sessionStorage.setItem("email", response.headers.email);
+    alert("인증번호 검증이 완료됐습니다.");
+  }
 };
 
 const registerBtn = async () => {
