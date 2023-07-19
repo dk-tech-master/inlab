@@ -41,7 +41,6 @@ export const authStore = defineStore("auth", () => {
     sessionStorage.removeItem("nickname");
     sessionStorage.removeItem("role");
     location.reload();
-    // location.reload();
   };
 
   const getEmail = () => {
