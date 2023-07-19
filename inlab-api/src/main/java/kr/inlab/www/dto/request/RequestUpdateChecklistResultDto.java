@@ -6,31 +6,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RequestUpdateChecklistResultDto {
 
-    private List<ChecklistResultDto> checklistResultDtoList;
+    private Long checklistResultId;
 
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class ChecklistResultDto {
-
-        private Long checklistResultId;
-
-        private YesNo isChecked;
-
-        @Builder
-        public ChecklistResultDto(Long checklistResultId, YesNo isChecked) {
-            this.checklistResultId = checklistResultId;
-            this.isChecked = isChecked;
-        }
-    }
+    private YesNo isChecked;
 
     @Builder
-    public RequestUpdateChecklistResultDto(List<ChecklistResultDto> checklistResultDtoList) {
-        this.checklistResultDtoList = checklistResultDtoList;
+    public RequestUpdateChecklistResultDto(Long checklistResultId, YesNo isChecked) {
+        this.checklistResultId = checklistResultId;
+        this.isChecked = isChecked;
     }
 }

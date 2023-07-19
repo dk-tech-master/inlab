@@ -11,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResponseInterviewQuestionResultDto {
 
+    private Long interviewQuestionResultId;
+
     private String interviewQuestionTitle;
 
     private ResponseInterviewAnswerDto responseInterviewAnswerDto;
@@ -22,7 +24,8 @@ public class ResponseInterviewQuestionResultDto {
     private List<ResponseChecklistDto> responseChecklistDtoList;
 
     @Builder
-    public ResponseInterviewQuestionResultDto(String interviewQuestionTitle, ResponseInterviewAnswerDto responseInterviewAnswerDto, ResponseCommentDto responseCommentDto, ResponseGptCommentDto responseGptCommentDto, List<ResponseChecklistDto> responseChecklistDtoList) {
+    public ResponseInterviewQuestionResultDto(Long interviewQuestionResultId, String interviewQuestionTitle, ResponseInterviewAnswerDto responseInterviewAnswerDto, ResponseCommentDto responseCommentDto, ResponseGptCommentDto responseGptCommentDto, List<ResponseChecklistDto> responseChecklistDtoList) {
+        this.interviewQuestionResultId = interviewQuestionResultId;
         this.interviewQuestionTitle = interviewQuestionTitle;
         this.responseInterviewAnswerDto = responseInterviewAnswerDto;
         this.responseCommentDto = responseCommentDto;

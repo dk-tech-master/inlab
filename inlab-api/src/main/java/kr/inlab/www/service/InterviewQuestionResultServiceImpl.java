@@ -1,5 +1,6 @@
 package kr.inlab.www.service;
 
+import kr.inlab.www.dto.request.RequestUpdateInterviewQuestionResultDto;
 import kr.inlab.www.entity.InterviewQuestion;
 import kr.inlab.www.entity.InterviewQuestionResult;
 import kr.inlab.www.entity.InterviewResult;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 public class InterviewQuestionResultServiceImpl implements InterviewQuestionResultService {
 
     private final InterviewQuestionResultRepository interviewQuestionResultRepository;
+    private final CommentService commentService;
+    private final ChecklistResultService checklistResultService;
 
     @Override
     public InterviewQuestionResult createInterviewQuestionResult(InterviewQuestion interviewQuestion, InterviewResult interviewResult) {
@@ -19,5 +22,11 @@ public class InterviewQuestionResultServiceImpl implements InterviewQuestionResu
                 .interviewQuestion(interviewQuestion)
                 .interviewResult(interviewResult)
                 .build());
+    }
+
+    @Override
+    public void updateInterviewQuestionResult(RequestUpdateInterviewQuestionResultDto requestDto) {
+        commentService.updateComment(requestDto.getCommentDto().getCommentId(), requestDto.getCommentDto());
+        checklistResultService.updateChecklistResult(requestDto.getChecklistResultDtoList());
     }
 }

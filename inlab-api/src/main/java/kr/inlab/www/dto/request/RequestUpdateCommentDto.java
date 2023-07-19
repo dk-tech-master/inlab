@@ -9,10 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RequestUpdateCommentDto {
 
+    private Long commentId;
+
     private String content;
 
     @Builder
-    public RequestUpdateCommentDto(String content) {
+    public RequestUpdateCommentDto(Long commentId, String content) {
+        this.commentId = commentId;
         this.content = content;
     }
 }

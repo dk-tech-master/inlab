@@ -38,12 +38,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public ResponseCommentDto updateComment(Long commentId, RequestUpdateCommentDto requestDto) {
+    public void updateComment(Long commentId, RequestUpdateCommentDto requestDto) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
         comment.editComment(requestDto.getContent());
-
-        return comment.toResponseCommentDto();
     }
 }
