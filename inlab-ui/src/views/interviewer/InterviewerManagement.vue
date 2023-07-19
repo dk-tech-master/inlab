@@ -193,7 +193,6 @@
 </template>
 
 <script setup>
-import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import { getInterviewers, updateApprove } from "@/api/interviewer";
 import { ref } from "vue";

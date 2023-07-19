@@ -11,19 +11,19 @@ export const getQuestion = (data) => {
   return request.get(uri, config);
 };
 
-export const getQuestionDetail = (data) => {
-  const uri = `/api/questions/${data.questionId}`;
+export const getQuestionDetail = (questionId, username) => {
+  const uri = `/api/questions/${questionId}`;
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
-    params: data,
+    params: { username },
   };
   return request.get(uri, config);
 };
 
-export const updateQuestion = (data) => {
-  const uri = `/api/questions/${data.questionId}`;
+export const updateQuestion = (data, id) => {
+  const uri = `/api/questions/${id}`;
   const config = {
     headers: {
       "Content-Type": "application/json",

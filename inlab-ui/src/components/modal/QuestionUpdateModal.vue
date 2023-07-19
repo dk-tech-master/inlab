@@ -1,14 +1,14 @@
 <template>
-  <input type="checkbox" id="registerModal" class="modal-toggle" />
+  <input type="checkbox" id="updateModal" class="modal-toggle" />
   <div class="modal">
     <div class="modal-box pt-10 px-10">
       <div class="font-semibold text-2xl text-gray-800 mb-10">
         <label
           class="cursor-pointer modal-backdrop text-gray-700 flex items-end justify-end"
-          for="registerModal"
+          for="updateModal"
           >x</label
         >
-        질문등록
+        질문수정
       </div>
 
       <div class="mb-5">
@@ -20,7 +20,7 @@
         <input
           type="text"
           v-model="title"
-          class="w-full input input-sm input-bordered border-gray-300 text-sm"
+          class="w-full input input-primary input-sm input-bordered border-gray-300 text-sm"
           placeholder="질문을 입력해주세요"
           required
           autofocus
@@ -33,26 +33,9 @@
           class="block mb-1.5 text-sm font-semibold text-gray-700"
           >질문 유형</label
         >
-        <select
-          class="w-full font-medium select select-primary select-sm border-gray-300 max-w-xs"
-          v-model="type"
-        >
-          <option value="1">운영체제</option>
-          <option value="8">데이터베이스</option>
-          <option value="10">Javascript</option>
-          <option value="11">네트워크</option>
-          <option value="12">Vue.js</option>
-          <option value="145">자료구조</option>
-          <option value="146">알고리즘</option>
-          <option value="147">웹 기초</option>
-          <option value="148">형상관리</option>
-          <option value="149">프로그래밍 공통</option>
-          <option value="150">기타</option>
-          <option value="151">Java</option>
-          <option value="152">Spring</option>
-          <option value="153">클라우드</option>
-          <option value="154">CI/CD</option>
-        </select>
+        <p class="w-full input input-sm text-sm pl-0 text-primary">
+          {{ type }}
+        </p>
       </div>
 
       <div class="w-full flex justify-between mb-5">
@@ -62,14 +45,9 @@
             class="block mb-1.5 text-sm font-semibold text-gray-700"
             >직무</label
           >
-          <select
-            class="w-full select select-primary select-sm font-medium border-gray-300 max-w-xs"
-            v-model="position"
-          >
-            <option value="152">공동</option>
-            <option value="1">백엔드</option>
-            <option value="6">프론트앤드</option>
-          </select>
+          <p class="w-full input input-sm text-sm pl-0 text-primary">
+            {{ position }}
+          </p>
         </div>
 
         <div class="w-[30%]">
@@ -93,12 +71,9 @@
             class="block mb-1.5 text-sm font-semibold text-gray-700"
             >버전</label
           >
-          <input
-            type="text"
-            class="w-full p-2.5 input input-sm input-bordered border-gray-300 text-sm"
-            placeholder="1"
-            disabled
-          />
+          <p class="w-full input input-sm text-sm pl-0 text-primary">
+            {{ version }}
+          </p>
         </div>
       </div>
       <div class="mb-5 checkInput">
@@ -114,7 +89,7 @@
         >
           <input
             type="text"
-            v-model="inputCheck[index]"
+            v-model="checkList[index]"
             class="w-[85%] p-2.5 input input-sm input-primary input-bordered border-gray-300 text-sm"
             placeholder="체크내용을 입력해주세요"
             required
@@ -134,15 +109,11 @@
               />
             </svg>
           </button>
-          <button
-            type="button"
-            @click="addCheckList(inputCheck[index])"
-            :class="{ 'blue-icon': index === checkList.length - 1 }"
-          >
+          <button type="button" @click="addCheckList(inputCheck[index])">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              :fill="index === checkList.length - 1 ? 'black' : 'blue'"
+              fill="black"
               class="w-6 h-6"
             >
               <path
@@ -153,7 +124,6 @@
             </svg>
           </button>
         </div>
-
         <button
           class="addCheckbtn flex items-center leading-5 mt-2"
           @click="makeCheckList()"
@@ -184,11 +154,11 @@
           초기화
         </button>
         <button
-          @click="registerBtn"
+          @click="updateBtn"
           type="button"
           class="btn btn-primary btn-md w-full mt-2"
         >
-          등록
+          수정
         </button>
       </div>
     </div>
@@ -196,7 +166,10 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { createQuestion } from "@/api/question";
+import { getQuestionDetail, updateQuestion } from "@/api/question";
+
+const username = ref("");
+const questionId = ref(null);
 
 const title = ref("");
 const type = ref("");
@@ -204,11 +177,10 @@ const position = ref("");
 const level = ref("");
 const checkList = ref([]);
 const inputCheck = ref([]);
+const version = ref("");
 
 const resetFields = () => {
   title.value = "";
-  type.value = "";
-  position.value = "";
   level.value = "";
   checkList.value = [];
   inputCheck.value = [];
@@ -219,13 +191,13 @@ const makeCheckList = () => {
   checkList.value.push("");
   console.log("2: ", checkList.value.length);
 };
+
 const addCheckList = (check) => {
   if (
     checkList.value.length > 0 &&
     checkList.value[checkList.value.length - 1] === ""
   ) {
     console.log("3: ", checkList.value.length);
-    console.log("inputCheck: ", inputCheck);
     checkList.value[checkList.value.length - 1] = check;
     console.log(check);
     console.log("4: ", checkList.value.length);
@@ -236,33 +208,44 @@ const removeCheckList = (index) => {
   checkList.value.splice(index, 1);
 };
 
-const registerBtn = async () => {
+const updateBtn = async () => {
   if (
     checkList.value.length > 0 &&
     checkList.value[checkList.value.length - 1] === ""
   ) {
     checkList.value.pop();
   }
-  const registerData = {
+  const updateData = {
     checklists: checkList.value,
-    positionId: position.value,
     questionLevelId: level.value,
-    questionTypeId: type.value,
     title: title.value,
-    version: 0,
   };
-  console.log(registerData);
   try {
-    const response = await createQuestion(registerData);
-    console.log(response);
-    alert("등록이 완료되었습니다.");
+    const response = await updateQuestion(updateData, questionId);
+    alert("수정이 완료되었습니다.");
   } catch (error) {
     console.error(error);
   }
 };
 
-const toggleModal = () => {
-  document.getElementById("registerModal").classList.toggle("modal-open");
+const init = async (id) => {
+  username.value = sessionStorage.getItem("email");
+  questionId.value = id;
+  const response = await getQuestionDetail(id, username.value);
+  console.log(response.data);
+  title.value = response.data.title;
+  position.value = response.data.positionName;
+  type.value = response.data.questionTypeName;
+  level.value = response.data.questionLevelId;
+  checkList.value = response.data.checklists;
+  version.value = response.data.version;
+  console.log(response.data.checklists);
+  console.log(checkList.value);
+};
+
+const toggleModal = async (id) => {
+  document.getElementById("updateModal").classList.toggle("modal-open");
+  await init(id);
 };
 
 defineExpose({
