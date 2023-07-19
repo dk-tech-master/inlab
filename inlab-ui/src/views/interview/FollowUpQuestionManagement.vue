@@ -1,7 +1,7 @@
 <template>
   <div>
-    <header class="mt-8">
-      <div class="mb-10">
+    <header>
+      <div class="mb-6">
         <p class="mb-1 text-sm font-light text-gray-500">
           질문 관리 >
           <span class="font-medium text-indigo-500">꼬리 질문 관리</span>
@@ -11,7 +11,7 @@
         </h2>
       </div>
     </header>
-    <section class="mr-16 mt-8 px-10 py-10 shadow-md">
+    <section class="mr-16 border border-gray-300 rounded-md px-10  py-10 shadow-md">
       <!--    <h2 class="mb-10 text-2xl font-bold">질문 내용</h2>-->
       <label
         for="searchInterview"
@@ -20,9 +20,9 @@
       >
       <h2 class="mb-2 text-2xl font-bold">{{ questionTitle }}</h2>
     </section>
-    <section class="mr-16 mt-8 px-10 py-10 shadow-md">
+    <section class="mr-16 mt-2 px-10 py-10 shadow-md">
       <div class="flex justify-between">
-        <h2 class="mb-10 text-2xl font-bold">꼬리 질문 관리</h2>
+        <h2 class="mb-10 text-2xl font-bold">질문 검색</h2>
       </div>
 
       <div class="flex">
@@ -169,7 +169,7 @@ import {
   getFollowUpQuestion,
   getQuestion,
 } from "@/api/question";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import SearchFilter from "@/components/common/SearchFilter.vue";
 import Pagination from "@/components/common/Pagination.vue";
@@ -216,8 +216,18 @@ const init = async () => {
 };
 init();
 
+const requestSearchDate = ref({
+  page: 1,
+  pageSize: 5,
+  positionId: null,
+  questionLevelId: null,
+  questionTypeId: null,
+  titleKeyword: null,
+});
+
+
 const handleSearch = async (searchInfos) => {
-  const requestData = {
+  const inputRequest = {
     page: 1,
     pageSize: 5,
     positionId: searchInfos.position,
@@ -225,8 +235,9 @@ const handleSearch = async (searchInfos) => {
     questionTypeId: searchInfos.type,
     titleKeyword: searchInfos.title,
   };
-  console.log("요청데이터는 이거다 : ", requestData);
-  const searchedInfos = await getQuestion(requestData);
+  requestSearchDate.value = inputRequest;
+  console.log("요청데이터는 이거다 : ", requestSearchDate.value);
+  const searchedInfos = await getQuestion(requestSearchDate.value);
   console.log("응답받은 데이터: ", searchedInfos);
   questionList.value = searchedInfos.data.responseList;
   pagingUtil.value = searchedInfos.data.pagingUtil;
@@ -235,12 +246,8 @@ const handleSearch = async (searchInfos) => {
 const changePage = async (page) => {
   console.log(`changePage ${page}`);
   pagingUtil.value.page = page;
-  const requestData = {
-    page: pagingUtil.value.page,
-    pageSize: pagingInfos.value.pageSize,
-    questionId: questionId.value,
-  };
-  const questionsInfos = await getQuestion(requestData);
+  requestSearchDate.value.page = page;
+  const questionsInfos = await getQuestion(requestSearchDate.value);
   questionList.value = questionsInfos.data.responseList;
   console.log(questionsInfos.data);
   pagingUtil.value = questionsInfos.data.pagingUtil;

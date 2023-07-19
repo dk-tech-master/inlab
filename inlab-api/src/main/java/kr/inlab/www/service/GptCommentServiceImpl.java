@@ -1,5 +1,7 @@
 package kr.inlab.www.service;
 
+import io.github.flashvayne.chatgpt.dto.ChatRequest;
+import io.github.flashvayne.chatgpt.dto.ChatResponse;
 import io.github.flashvayne.chatgpt.service.ChatgptService;
 import kr.inlab.www.common.exception.GptCommentNotFoundException;
 import kr.inlab.www.dto.response.ResponseGptCommentDto;
@@ -50,14 +52,11 @@ public class GptCommentServiceImpl implements GptCommentService {
         GptComment gptComment = gptCommentRepository.findById(gptCommentId)
                 .orElseThrow(GptCommentNotFoundException::new);
 
-        String gptResponse = chatgptService.sendMessage(gptComment.getRequestContent());
+        ChatResponse chatResponse = chatgptService.sendChatRequest(new ChatRequest("text-davinci-003", gptComment.getRequestContent(), 2000, 1.0, 1.0));
+        String gptResponse = chatResponse.getChoices().get(0).getText();
         gptComment.saveGptResponse(gptResponse);
 
-        return ResponseGptCommentDto.builder()
-                .gptCommentId(gptCommentId)
-                .requestContent(gptComment.getRequestContent())
-                .responseContent(gptResponse)
-                .build();
+        return gptComment.toResponseGptCommentDto();
     }
 
     private String getRequestContent(String title, List<Checklist> checklists, String content) {
