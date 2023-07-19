@@ -191,6 +191,7 @@ const handleSearch = async (searchInfos) => {
   };
   const searchedInfos = await getQuestion(requestData);
   questionList.value = searchedInfos.data.responseList;
+  pagingUtil.value = searchedInfos.data.pagingUtil;
 };
 
 const changePage = async (page) => {
