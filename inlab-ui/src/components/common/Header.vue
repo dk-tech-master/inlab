@@ -56,7 +56,6 @@ const logoutBtn = async () => {
 };
 
 const loginBtn = async () => {
-  // await router.push("/");
-  // await router.push("/");
+
 };
 </script>
