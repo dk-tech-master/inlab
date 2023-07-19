@@ -110,6 +110,8 @@ public class AuthorizationHeaderFilter extends OncePerRequestFilter {
                 request.getServletPath().equals("/login") ||
                 request.getServletPath().equals("/api/verification_code") ||
                 request.getServletPath().equals("/api/verification_code/check") ||
+                request.getServletPath().equals("/api/users/check-email-duplicated") ||
+                request.getServletPath().equals("/api/users/check-nickname-duplicated") ||
                 request.getServletPath().equals("/api/users")  && request.getMethod().equalsIgnoreCase("POST")||
                 request.getServletPath().equals("/docs/index.html") ||
                 request.getServletPath().contains("/swagger") ||
