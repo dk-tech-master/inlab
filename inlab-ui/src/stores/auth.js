@@ -13,7 +13,6 @@ export const authStore = defineStore("auth", () => {
     return questionTitle.value;
   };
 
-  let email = ref("");
   const login = async (data) => {
     await signIn(data)
       .then(async (response) => {
@@ -27,6 +26,7 @@ export const authStore = defineStore("auth", () => {
         sessionStorage.setItem("userId", userId);
         sessionStorage.setItem("nickname", nickname);
         sessionStorage.setItem("role", role);
+        sessionStorage.setItem("email", data.username);
         return response;
       })
       .catch((error) => {
@@ -43,16 +43,10 @@ export const authStore = defineStore("auth", () => {
     location.reload();
   };
 
-  const getEmail = () => {
-    return email.value;
-  };
-
   return {
     questionTitle,
     setQuestionTitle,
     getQuestionTitle,
-    email,
-    getEmail,
     login,
     logout,
   };
