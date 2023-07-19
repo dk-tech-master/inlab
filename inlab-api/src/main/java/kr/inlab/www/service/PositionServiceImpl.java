@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import kr.inlab.www.common.exception.PositionDeleteNotAllowedException;
 import kr.inlab.www.common.exception.PositionAlreadyExistsException;
 import kr.inlab.www.common.exception.PositionNotFoundException;
 import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.PositionAndLevelList;
+import kr.inlab.www.dto.common.PositionDto;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestGetPositionDto;
 import kr.inlab.www.dto.request.RequestPositionNameDto;
+import kr.inlab.www.dto.response.ResponseGetAllPositionLevelDto;
 import kr.inlab.www.dto.response.ResponsePositionDto;
 import kr.inlab.www.entity.Position;
 import kr.inlab.www.entity.PositionLevel;
@@ -33,17 +36,18 @@ import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class PositionServiceImpl implements PositionService{
+public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository positionRepository;
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
     private final PositionLevelRepository positionLevelRepository;
+    private final QuestionLevelService questionLevelService;
 
     @Override
     @Transactional
     public void createPosition(RequestPositionNameDto requestDto) {
-        if(positionRepository.existsByPositionName(requestDto.getPositionName()))
+        if (positionRepository.existsByPositionName(requestDto.getPositionName()))
             throw new PositionAlreadyExistsException();
 
         Position position = Position.builder()
@@ -58,7 +62,7 @@ public class PositionServiceImpl implements PositionService{
         Page<ResponsePositionDto> positionList = positionRepository.getPositionsList(requestDto.getPositionName(), pageable);
         PagingUtil pagingUtil = new PagingUtil(positionList.getTotalElements(), positionList.getTotalPages(), positionList.getNumber(), positionList.getSize());
 
-        return new ResponseListDto<ResponsePositionDto>(positionList.getContent(),pagingUtil);
+        return new ResponseListDto<ResponsePositionDto>(positionList.getContent(), pagingUtil);
     }
 
     @Override
@@ -72,11 +76,11 @@ public class PositionServiceImpl implements PositionService{
 
     @Override
     @Transactional
-    public void updatePosition(Integer positionId , RequestPositionNameDto requestDto) {
+    public void updatePosition(Integer positionId, RequestPositionNameDto requestDto) {
         Position position = positionRepository.findById(positionId)
                 .orElseThrow(PositionNotFoundException::new);
 
-        if(questionRepository.countByPosition(position) > 0)
+        if (questionRepository.countByPosition(position) > 0)
             throw new PositionDeleteNotAllowedException();
 
         position.updateName(requestDto.getPositionName());
@@ -90,23 +94,37 @@ public class PositionServiceImpl implements PositionService{
         List<PositionLevel> positionLevels = positionLevelRepository.findByUser(user);
 
         Map<Integer, List<PositionLevel>> groupedPositionLevels = positionLevels.stream()
-            .collect(Collectors.groupingBy(positionLevel -> positionLevel.getPosition().getPositionId()));
+                .collect(Collectors.groupingBy(positionLevel -> positionLevel.getPosition().getPositionId()));
 
         return groupedPositionLevels.entrySet().stream()
-            .map(entry -> {
-                List<PositionAndLevelList.LevelDto> levelListDto = entry.getValue().stream()
-                    .map(positionLevel -> PositionAndLevelList.LevelDto.builder()
-                        .levelId(positionLevel.getLevelId())
-                        .levelName(positionLevel.getQuestionLevel().getQuestionLevelName()) // This line assumes that getQuestionLevelName() is available in QuestionLevel class.
-                        .build())
-                    .collect(Collectors.toList());
+                .map(entry -> {
+                    List<PositionAndLevelList.LevelDto> levelListDto = entry.getValue().stream()
+                            .map(positionLevel -> PositionAndLevelList.LevelDto.builder()
+                                    .levelId(positionLevel.getLevelId())
+                                    .levelName(positionLevel.getQuestionLevel().getQuestionLevelName()) // This line assumes that getQuestionLevelName() is available in QuestionLevel class.
+                                    .build())
+                            .collect(Collectors.toList());
 
-                return PositionAndLevelList.builder()
-                    .positionId(entry.getKey())
-                    .positionName(entry.getValue().get(0).getPosition().getPositionName()) // This line assumes that getPositionName() is available in Position class.
-                    .levelListDto(levelListDto)
-                    .build();
-            })
-            .collect(Collectors.toList());
+                    return PositionAndLevelList.builder()
+                            .positionId(entry.getKey())
+                            .positionName(entry.getValue().get(0).getPosition().getPositionName()) // This line assumes that getPositionName() is available in Position class.
+                            .levelListDto(levelListDto)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ResponseGetAllPositionLevelDto getAllPositionAndLevelList() {
+        return ResponseGetAllPositionLevelDto.builder()
+                .positionList(getAllPosition())
+                .questionLevelList(questionLevelService.getAllQuestionLevel())
+                .build();
+    }
+
+
+    @Override
+    public List<PositionDto> getAllPosition() {
+        return positionRepository.findAll().stream().map(Position::toDto).collect(Collectors.toList());
     }
 }
