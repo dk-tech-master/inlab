@@ -1,10 +1,7 @@
 <template>
   <nav class="px-10 navbar border flex justify-end">
     <div v-if="isAccessTokenPresent">
-      <a
-        href="/update-userinfo"
-        class="flex items-center text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-indigo-100"
-      >
+      <a href="/update-userinfo">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
