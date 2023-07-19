@@ -1,5 +1,6 @@
 package kr.inlab.www.entity;
 
+import kr.inlab.www.dto.common.PositionDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,4 +36,10 @@ public class Position {
         this.positionName = positionName;
     }
 
+    public PositionDto toDto() {
+        return PositionDto.builder()
+                .positionId(this.positionId)
+                .positionName(this.positionName)
+                .build();
+    }
 }

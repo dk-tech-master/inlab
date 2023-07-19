@@ -1,5 +1,6 @@
 package kr.inlab.www.entity;
 
+import kr.inlab.www.dto.common.QuestionLevelDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,5 +27,12 @@ public class QuestionLevel {
     @Builder
     public QuestionLevel(String questionLevelName) {
         this.questionLevelName = questionLevelName;
+    }
+
+    public QuestionLevelDto toDto() {
+        return QuestionLevelDto.builder()
+                .questionLevelId(this.questionLevelId)
+                .questionLevelName(this.questionLevelName)
+                .build();
     }
 }
