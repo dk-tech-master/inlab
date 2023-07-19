@@ -44,6 +44,12 @@
             </button>
             <button
               class="flex flex-col items-center mr-2 px-5 py-5 btn btn-primary btn-sm"
+              @click="
+                requestChatGptEvaluation(
+                  index,
+                  item.responseGptCommentDto.gptCommentId,
+                )
+              "
             >
               AI 평가 측정
             </button>
@@ -98,23 +104,23 @@
         </div>
         <div class="mb-8">
           <h3 class="text-xl font-semibold mb-4">코멘트</h3>
-          <div class="bg-gray-100 rounded-lg p-4">
+          <div class="bg-gray-100 rounded-lg p-4 whitespace-pre-line">
             <p>{{ item.responseCommentDto.content }}</p>
           </div>
         </div>
         <div class="mb-8">
           <h3 class="text-xl font-semibold mb-4">응답기록</h3>
-          <div class="bg-gray-100 rounded-lg p-4">
+          <div class="bg-gray-100 rounded-lg p-4 whitespace-pre-line">
             <p>{{ item.responseInterviewAnswerDto.content }}</p>
           </div>
         </div>
         <div class="mb-8">
           <h3 class="text-xl font-semibold mb-4">AI평가</h3>
-          <div class="bg-gray-100 rounded-lg p-4">
+          <div class="bg-gray-100 rounded-lg p-4 whitespace-pre-line">
             <p>
               {{
                 item.responseGptCommentDto.responseContent
-                  ? iterm.responseGptCommentDto.responseContent
+                  ? item.responseGptCommentDto.responseContent
                   : `AI 평가가 존재하지 않습니다. ChatGPT를 이용한 AI 평가를 경험해 보세요.`
               }}
             </p>
@@ -174,7 +180,7 @@
         </div>
         <div class="mb-8">
           <h3 class="text-xl font-semibold mb-4">응답기록</h3>
-          <div class="bg-gray-100 rounded-lg p-4">
+          <div class="bg-gray-100 rounded-lg p-4 whitespace-pre-line">
             <p>
               {{
                 newInterviewQuestionResult.responseInterviewAnswerDto.content
@@ -184,7 +190,7 @@
         </div>
         <div class="mb-8">
           <h3 class="text-xl font-semibold mb-4">AI평가</h3>
-          <div class="bg-gray-100 rounded-lg p-4">
+          <div class="bg-gray-100 rounded-lg p-4 whitespace-pre-line">
             <p>
               {{
                 newInterviewQuestionResult.responseGptCommentDto.responseContent
@@ -198,6 +204,7 @@
       </div>
     </template>
   </section>
+  <LoadingModal ref="loadingModal" />
 </template>
 
 <script setup>
@@ -205,8 +212,11 @@ import { useRoute } from "vue-router";
 import { getInterviewResult } from "@/api/interviewResult";
 import { ref } from "vue";
 import { updateInterviewQuestionResult } from "@/api/interviewQuestionResult";
+import { getGptComment } from "@/api/gptComment";
+import LoadingModal from "@/components/modal/LoadingModal.vue";
 
 const route = useRoute();
+const loadingModal = ref(null);
 const interviewResultId = route.params.interviewResultId;
 const interviewResultData = ref({});
 const editModes = ref();
@@ -277,5 +287,20 @@ const clickUpdateInterviewResultBtn = async () => {
   console.log(requestData);
   await updateInterviewQuestionResult(requestData);
   await init();
+};
+
+const requestChatGptEvaluation = async (index, gptCommentId) => {
+  const agreeFlag = confirm("ChatGPT에게 답변 평가 요청을 하시겠습니까?");
+  if (!agreeFlag) {
+    return;
+  }
+  loadingModal.value.toggleModal();
+  const response = await getGptComment(gptCommentId);
+  console.log(response.data);
+  let currentInterviewResult =
+    interviewResultData.value.responseInterviewQuestionResultDtoList[index];
+  currentInterviewResult.responseGptCommentDto.responseContent =
+    response.data.responseContent;
+  loadingModal.value.toggleModal();
 };
 </script>
