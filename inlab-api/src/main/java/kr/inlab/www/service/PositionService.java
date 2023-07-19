@@ -21,6 +21,5 @@ public interface PositionService {
 
     List<PositionAndLevelList> getPositionOnCategory();
 
-    ResponseGetAllPositionLevelDto getAllPositionAndLevelList();
     List<PositionDto> getAllPosition();
 }

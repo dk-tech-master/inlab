@@ -1,12 +1,7 @@
 package kr.inlab.www.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import kr.inlab.www.common.exception.PositionDeleteNotAllowedException;
 import kr.inlab.www.common.exception.PositionAlreadyExistsException;
+import kr.inlab.www.common.exception.PositionDeleteNotAllowedException;
 import kr.inlab.www.common.exception.PositionNotFoundException;
 import kr.inlab.www.common.exception.UserNotFoundException;
 import kr.inlab.www.common.util.PagingUtil;
@@ -15,7 +10,6 @@ import kr.inlab.www.dto.common.PositionDto;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestGetPositionDto;
 import kr.inlab.www.dto.request.RequestPositionNameDto;
-import kr.inlab.www.dto.response.ResponseGetAllPositionLevelDto;
 import kr.inlab.www.dto.response.ResponsePositionDto;
 import kr.inlab.www.entity.Position;
 import kr.inlab.www.entity.PositionLevel;
@@ -33,6 +27,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -113,15 +110,6 @@ public class PositionServiceImpl implements PositionService {
                 })
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public ResponseGetAllPositionLevelDto getAllPositionAndLevelList() {
-        return ResponseGetAllPositionLevelDto.builder()
-                .positionList(getAllPosition())
-                .questionLevelList(questionLevelService.getAllQuestionLevel())
-                .build();
-    }
-
 
     @Override
     public List<PositionDto> getAllPosition() {
