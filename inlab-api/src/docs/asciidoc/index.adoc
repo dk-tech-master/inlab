@@ -984,3 +984,27 @@ include::{snippets}/get-user-question-history-list/http-response.adoc[]
 include::{snippets}/get-user-question-history-list/response-fields.adoc[]
 
 ---
+
+== INTERVIEW QUESTION RESULT CONTROLLER
+
+=== 면접질문 결과 수정 / PATCH
+면접질문 결과 수정에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/update-interview-question-result/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/update-interview-question-result/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/update-interview-question-result/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/update-interview-question-result/http-response.adoc[]
+include::{snippets}/update-interview-question-result/response-fields.adoc[]
+
+---

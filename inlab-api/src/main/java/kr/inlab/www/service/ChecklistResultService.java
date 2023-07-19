@@ -3,7 +3,6 @@ package kr.inlab.www.service;
 import kr.inlab.www.dto.request.RequestCreateInterviewResultDto.ChecklistResultDto;
 import kr.inlab.www.dto.request.RequestUpdateChecklistResultDto;
 import kr.inlab.www.dto.response.ResponseChecklistDto;
-import kr.inlab.www.dto.response.ResponseChecklistResultDto;
 import kr.inlab.www.entity.InterviewQuestionResult;
 
 import java.util.List;
@@ -14,5 +13,5 @@ public interface ChecklistResultService {
 
     List<ResponseChecklistDto> getChecklistResultList(InterviewQuestionResult interviewQuestionResult);
 
-    List<ResponseChecklistResultDto> updateChecklistResult(RequestUpdateChecklistResultDto requestDto);
+    void updateChecklistResult(List<RequestUpdateChecklistResultDto> requestDto);
 }

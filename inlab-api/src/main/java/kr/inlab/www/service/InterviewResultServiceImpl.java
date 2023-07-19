@@ -91,6 +91,7 @@ public class InterviewResultServiceImpl implements InterviewResultService {
                     checklistResultService.getChecklistResultList(interviewQuestionResult);
 
             return ResponseInterviewQuestionResultDto.builder()
+                    .interviewQuestionResultId(interviewQuestionResult.getInterviewQuestionResultId())
                     .interviewQuestionTitle(interviewQuestion.getQuestionVersion().getTitle())
                     .responseInterviewAnswerDto(responseInterviewAnswerDto)
                     .responseCommentDto(responseCommentDto)

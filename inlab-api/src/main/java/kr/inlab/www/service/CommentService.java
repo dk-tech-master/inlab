@@ -10,5 +10,5 @@ public interface CommentService {
 
     ResponseCommentDto getComment(InterviewQuestionResult interviewQuestionResult);
 
-    ResponseCommentDto updateComment(Long commentId, RequestUpdateCommentDto requestDto);
+    void updateComment(Long commentId, RequestUpdateCommentDto requestDto);
 }
