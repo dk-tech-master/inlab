@@ -130,17 +130,18 @@ const nickName = ref("");
 
 let router = useRouter();
 const init = async () => {
+  console.log("didididi");
   const userInfo = await getUserInfo();
+  console.log(userInfo);
   email.value = userInfo.data.email;
   nickName.value = userInfo.data.nickname;
 };
 
 init();
 const createAuthenticationBtn = async () => {
+  console.log(email.value);
   let response = await createVerificationCode(email.value);
-  if (response.status >= 200 && response.status < 400) {
-    alert("인증 코드를 발송했습니다.");
-  }
+  console.log(response);
 };
 //인증 번호 확인
 const checkVerificationCodeBtn = async () => {
@@ -150,10 +151,11 @@ const checkVerificationCodeBtn = async () => {
   };
   console.log(data);
   let response = await checkVerificationCode(data);
-  if (response.status === 200) {
-    sessionStorage.setItem("email", response.headers.email);
-    alert("인증번호 검증이 완료됐습니다.");
-  }
+  console.log("response:!!!!!!!!!!!" + response);
+  console.log(response);
+  console.log("email: " + response.headers.email);
+  sessionStorage.setItem("email", response.headers.email);
+  console.log(sessionStorage.getItem("email"));
 };
 const updateBtn = async (event) => {
   event.preventDefault();
@@ -162,22 +164,17 @@ const updateBtn = async (event) => {
     nickname: nickName.value,
     password: password.value,
   };
-  let axiosResponse = await updateUserInfo(
-    sessionStorage.getItem("email"),
-    data,
-  );
+  // console.log("seesion: " + sessionStorage.getItem("email"));
+  let axiosResponse = await updateUserInfo(localStorage.getItem("email"), data);
 
+  // console.log(axiosResponse);
   if (axiosResponse.status >= 200 && axiosResponse.status < 300) {
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("refreshToken");
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("role");
-    sessionStorage.removeItem("userId");
-    sessionStorage.removeItem("nickname");
-    alert("회원 정보 수정이 완료되었습니다. 다시 로그인을 해주세요.");
+    console.log(sessionStorage.getItem("email"));
+    sessionStorage.removeItem(axiosResponse.headers["clear-token"]);
     await router.push("/");
   } else {
     alert("회원가입에 실패했습니다.");
+    console.log("회원가입에 실패했습니다.");
   }
 };
 </script>

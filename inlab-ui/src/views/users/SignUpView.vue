@@ -222,6 +222,7 @@ const confirmPassword = ref("");
 
 const clickSendVerificationCodeBtn = async () => {
   let response = await createVerificationCode(email.value);
+  console.log(response);
   alert("인증 코드를 발송했습니다.");
 };
 
@@ -320,7 +321,9 @@ const registerBtn = async () => {
   let response = await register(sessionStorage.getItem("email"), requestData);
 
   if (response.status >= 200 && response.status < 300) {
-    sessionStorage.removeItem("email");
+    console.log(sessionStorage.getItem("email"));
+    sessionStorage.removeItem(response.headers["clear-token"]);
+    console.log(sessionStorage.getItem("email"));
     alert("회원가입이 완료됐습니다.");
     await router.push("/");
   }
