@@ -9,3 +9,14 @@ export const getpositionOption = () => {
   };
   return request.get(uri, config);
 };
+
+export const getTypeOption = (data) => {
+  const uri = `/api/question-type/category`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    params: data,
+  };
+  return request.get(uri, config);
+};

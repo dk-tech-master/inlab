@@ -9,9 +9,16 @@
         <select
           class="font-medium select select-primary select-sm border-gray-300 max-w-xs"
           v-model="searchInfo.position"
+          @change="changePosition()"
         >
-          <option value="6">프론트엔드</option>
-          <option value="1">백엔드</option>
+          <option value="">All</option>
+          <option
+            v-for="(option, index) in positionOptions"
+            :key="index"
+            :value="option.positionId"
+          >
+            {{ option.positionName }}
+          </option>
         </select>
       </div>
       <div class="mr-3">
@@ -21,16 +28,18 @@
           >유형</label
         >
         <select
-          class="font-medium select select-primary select-sm border-gray-300 max-w-xs"
+          class="w-32 font-medium select select-primary select-sm border-gray-300 max-w-xs"
           v-model="searchInfo.type"
+          :disabled="!searchInfo.position"
         >
-          <option value="1">운영체제</option>
-          <option value="2">실무경험 및 프로젝트 질문</option>
-          <option value="3">문제 해결 능력 질문</option>
-          <option value="4">팀워크 및 소통 질문</option>
-          <option value="7">프로그래밍 언어</option>
-          <option value="8">데이터베이스</option>
-          <option value="9">네트워크</option>
+          <option value="">All</option>
+          <option
+            v-for="(option, index) in typeOptions"
+            :key="index"
+            :value="option?.questionTypeId"
+          >
+            {{ option?.questionTypeName }}
+          </option>
         </select>
       </div>
       <div class="mr-3">
@@ -40,13 +49,18 @@
           >난이도</label
         >
         <select
-          class="font-medium select select-primary select-sm border-gray-300 max-w-xs"
+          class="w-32 font-medium select select-primary select-sm border-gray-300 max-w-xs"
           v-model="searchInfo.level"
+          :disabled="!searchInfo.position"
         >
           <option value="">All</option>
-          <option value="3">상</option>
-          <option value="2">중</option>
-          <option value="1">하</option>
+          <option
+            v-for="(option, index) in levelOptions"
+            :key="index"
+            :value="option.levelId"
+          >
+            {{ option?.levelName }}
+          </option>
         </select>
       </div>
       <div class="mr-3">
@@ -73,6 +87,7 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import { getpositionOption, getTypeOption } from "@/api/select";
 
 const searchInfo = ref({
   position: "",
@@ -80,6 +95,29 @@ const searchInfo = ref({
   level: "",
   title: "",
 });
+
+const positionOptions = ref([]);
+const levelOptions = ref([]);
+const typeOptions = ref([]);
+
+const init = async () => {
+  const positionOptionInfo = await getpositionOption();
+  positionOptions.value = positionOptionInfo.data;
+};
+
+init();
+
+const changePosition = async () => {
+  const selectedOption = searchInfo.value.position;
+  levelOptions.value = positionOptions?.value.find(
+    (option) => option.positionId === selectedOption,
+  )?.levelListDto;
+  const requestData = {
+    positionId: selectedOption,
+  };
+  const typeOptionInfo = await getTypeOption(requestData);
+  typeOptions.value = typeOptionInfo.data;
+};
 
 const emit = defineEmits(["search-info"]);
 
