@@ -6,6 +6,7 @@ import userRoutes from "@/router/userRoutes";
 import interviewRoutes from "@/router/interviewRoutes";
 import interviewerRoutes from "@/router/interviewerRoutes";
 import AudioTestView from "@/views/AudioTestView.vue";
+import userQuestionHistoryRoutes from "@/router/userQuestionHistory";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +16,7 @@ const router = createRouter({
     ...interviewerRoutes,
     ...questionRoutes,
     ...categoryRoutes,
+    ...userQuestionHistoryRoutes,
     {
       path: "/audioTest",
       name: "audioTest",
