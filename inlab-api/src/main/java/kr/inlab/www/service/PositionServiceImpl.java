@@ -1,9 +1,6 @@
 package kr.inlab.www.service;
 
-import kr.inlab.www.common.exception.PositionAlreadyExistsException;
-import kr.inlab.www.common.exception.PositionDeleteNotAllowedException;
-import kr.inlab.www.common.exception.PositionNotFoundException;
-import kr.inlab.www.common.exception.UserNotFoundException;
+import kr.inlab.www.common.exception.*;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.PositionAndLevelList;
 import kr.inlab.www.dto.common.PositionDto;
@@ -78,7 +75,7 @@ public class PositionServiceImpl implements PositionService {
                 .orElseThrow(PositionNotFoundException::new);
 
         if (questionRepository.countByPosition(position) > 0)
-            throw new PositionDeleteNotAllowedException();
+            throw new PositionUpdateNotAllowedException();
 
         position.updateName(requestDto.getPositionName());
     }
