@@ -21,7 +21,6 @@ public class RequestQuestionsDto extends RequestListDto {
 	private String titleKeyword;
 
 	@Builder
-
 	public RequestQuestionsDto(Integer positionId, Integer questionTypeId, Integer questionLevelId,
 		String titleKeyword) {
 		this.positionId = positionId;
