@@ -204,7 +204,7 @@
       </div>
     </template>
   </section>
-  <LoadingModal ref="loadingModal" />
+  <GptLoadingModal ref="gptLoadingModal" />
 </template>
 
 <script setup>
@@ -213,10 +213,10 @@ import { getInterviewResult } from "@/api/interviewResult";
 import { ref } from "vue";
 import { updateInterviewQuestionResult } from "@/api/interviewQuestionResult";
 import { getGptComment } from "@/api/gptComment";
-import LoadingModal from "@/components/modal/LoadingModal.vue";
+import GptLoadingModal from "@/components/modal/GptLoadingModal.vue";
 
 const route = useRoute();
-const loadingModal = ref(null);
+const gptLoadingModal = ref(null);
 const interviewResultId = route.params.interviewResultId;
 const interviewResultData = ref({});
 const editModes = ref();
@@ -294,13 +294,13 @@ const requestChatGptEvaluation = async (index, gptCommentId) => {
   if (!agreeFlag) {
     return;
   }
-  loadingModal.value.toggleModal();
+  gptLoadingModal.value.toggleModal();
   const response = await getGptComment(gptCommentId);
   console.log(response.data);
   let currentInterviewResult =
     interviewResultData.value.responseInterviewQuestionResultDtoList[index];
   currentInterviewResult.responseGptCommentDto.responseContent =
     response.data.responseContent;
-  loadingModal.value.toggleModal();
+  gptLoadingModal.value.toggleModal();
 };
 </script>

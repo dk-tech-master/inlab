@@ -42,3 +42,13 @@ export const updateInterview = (data, interviewId) => {
   };
   return request.put(uri, data, config);
 };
+
+export const getInterviewQuestionList = (interviewId) => {
+  const uri = `/api/interview/start/${interviewId}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return request.get(uri, config);
+};

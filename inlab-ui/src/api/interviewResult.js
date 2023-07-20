@@ -20,3 +20,13 @@ export const getInterviewResult = (interviewResultId) => {
   };
   return request.get(uri, config);
 };
+
+export const createInterviewResult = (data) => {
+  const uri = `/api/interview-result`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return request.post(uri, data, config);
+};
