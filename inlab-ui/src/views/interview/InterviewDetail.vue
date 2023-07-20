@@ -18,6 +18,7 @@
         </button>
         <button
           class="flex flex-col items-center px-7 py-5 btn btn-outline btn-primary btn-sm"
+          @click="clickUpdateInterviewBtn"
         >
           정보 수정
         </button>
@@ -144,6 +145,7 @@
       </div>
     </div>
   </section>
+  <UpdateInterviewModal ref="updateInterviewModal" @init="init" />
 </template>
 
 <script setup>
@@ -151,10 +153,12 @@ import { useRoute } from "vue-router";
 import { getInterviewQuestion } from "@/api/interviewQuestion";
 import { getInterview } from "@/api/interview";
 import { ref } from "vue";
+import UpdateInterviewModal from "@/components/modal/UpdateInterviewModal.vue";
 
 const route = useRoute();
 const interviewQuestionList = ref([]);
 const interviewInfo = ref();
+const updateInterviewModal = ref(null);
 
 const init = async () => {
   const interviewQuestionResponse = await getInterviewQuestion(
@@ -172,6 +176,9 @@ const init = async () => {
 
 init();
 
+const clickUpdateInterviewBtn = () => {
+  updateInterviewModal.value.toggleModal(interviewInfo.value);
+};
 const deleteInterviewQuestion = (index) => {};
 </script>
 <style scoped></style>
