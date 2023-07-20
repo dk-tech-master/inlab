@@ -1,5 +1,5 @@
 <template>
-  <section class="mr-16 mt-8">
+  <section class="mt-8">
     <div class="border rounded-lg py-20">
       <div class="flex justify-center mb-10">
         <svg
