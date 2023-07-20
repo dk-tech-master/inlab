@@ -1,24 +1,6 @@
 package kr.inlab.www.service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import kr.inlab.www.common.exception.LatestQuestionVersionNotFoundException;
-import kr.inlab.www.common.exception.PositionNotFoundException;
-import kr.inlab.www.common.exception.QuestionLevelNotFoundException;
-import kr.inlab.www.common.exception.QuestionNotFoundException;
-import kr.inlab.www.common.exception.QuestionTypeNotFoundException;
-import kr.inlab.www.common.exception.QuestionVersionNotFoundException;
-import kr.inlab.www.common.exception.UserNotFoundException;
+import kr.inlab.www.common.exception.*;
 import kr.inlab.www.common.type.YesNo;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.RequestListDto;
@@ -29,26 +11,21 @@ import kr.inlab.www.dto.request.RequestUpdateQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionDto;
 import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
 import kr.inlab.www.dto.response.ResponseQuestionVersionsDto;
-import kr.inlab.www.entity.Checklist;
-import kr.inlab.www.entity.Position;
-import kr.inlab.www.entity.PositionLevel;
-import kr.inlab.www.entity.Question;
-import kr.inlab.www.entity.QuestionLevel;
-import kr.inlab.www.entity.QuestionType;
-import kr.inlab.www.entity.QuestionVersion;
-import kr.inlab.www.entity.User;
-import kr.inlab.www.entity.UserQuestionHistory;
-import kr.inlab.www.repository.ChecklistRepository;
-import kr.inlab.www.repository.PositionRepository;
-import kr.inlab.www.repository.QuestionLevelRepository;
-import kr.inlab.www.repository.QuestionRepository;
-import kr.inlab.www.repository.QuestionTypeRepository;
-import kr.inlab.www.repository.QuestionVersionQueryRepository;
-import kr.inlab.www.repository.QuestionVersionRepository;
-import kr.inlab.www.repository.UserQuestionHistoryRepository;
-import kr.inlab.www.repository.UserRepository;
+import kr.inlab.www.entity.*;
+import kr.inlab.www.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -181,7 +158,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	private ResponseListDto<ResponseGetQuestionsDto> getAllQuestions(RequestQuestionsDto requestDto) {
 		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
-			Sort.by(Sort.Direction.DESC, "questionVersionId"));
+			Sort.by(Sort.Direction.ASC, "questionVersionId"));
 		Page<ResponseGetQuestionsDto> questionList = questionVersionQueryRepository.findQuestions(
 			Collections.emptyMap(),
 			requestDto,
@@ -205,7 +182,7 @@ public class QuestionServiceImpl implements QuestionService {
 			));
 
 		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
-			Sort.by(Sort.Direction.DESC, "questionVersionId"));
+			Sort.by(Sort.Direction.ASC, "questionVersionId"));
 		Page<ResponseGetQuestionsDto> questionList = questionVersionQueryRepository.findQuestions(
 			groupedPositionLevels,
 			requestDto,

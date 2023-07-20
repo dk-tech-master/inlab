@@ -17,11 +17,14 @@ public class ResponseGetQuestionsDto {
 	private String positionName;
 	private Integer questionLevelId;
 	private String questionLevelName;
+	private Long questionVersionId;
 	private Integer version;
 
+
 	@Builder
+
 	public ResponseGetQuestionsDto(Long questionId, String title, Integer questionTypeId, String questionTypeName, Integer positionId,
-		String positionName, Integer questionLevelId, String questionLevelName, Integer version) {
+								   String positionName, Integer questionLevelId, String questionLevelName, Long questionVersionId, Integer version) {
 		this.questionId = questionId;
 		this.title = title;
 		this.questionTypeId = questionTypeId;
@@ -30,6 +33,7 @@ public class ResponseGetQuestionsDto {
 		this.positionName = positionName;
 		this.questionLevelId = questionLevelId;
 		this.questionLevelName = questionLevelName;
+		this.questionVersionId = questionVersionId;
 		this.version = version;
 	}
 }

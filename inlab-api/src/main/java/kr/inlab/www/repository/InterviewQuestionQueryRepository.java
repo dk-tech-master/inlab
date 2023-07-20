@@ -38,6 +38,28 @@ public class InterviewQuestionQueryRepository {
         return fetchOne != null;
     }
 
+//    public List<ResponseInterviewQuestionDto> getInterviewQuestionList(Long interviewId) {
+//        return queryFactory
+//                .select(Projections.constructor(ResponseInterviewQuestionDto.class,
+//                        interviewQuestion.interviewQuestionId,
+//                        questionVersion.title,
+//                        questionLevel.questionLevelName,
+//                        position.positionName,
+//                        questionType.questionTypeName,
+//                        questionVersion.version
+//                ))
+//                .from(interviewQuestion)
+//                .innerJoin(interviewQuestion.interview, interview)
+//                .innerJoin(interviewQuestion.question, question)
+//                .innerJoin(interviewQuestion.questionVersion, questionVersion)
+//                .innerJoin(question.questionType, questionType)
+//                .innerJoin(question.position, position)
+//                .innerJoin(questionVersion.questionLevel, questionLevel)
+//                .where(interview.interviewId.eq(interviewId),
+//                        questionVersion.isLatest.eq(YesNo.Y))
+//                .fetch();
+//    }
+
     public List<ResponseInterviewQuestionDto> getInterviewQuestionList(Long interviewId) {
         return queryFactory
                 .select(Projections.constructor(ResponseInterviewQuestionDto.class,
@@ -45,7 +67,8 @@ public class InterviewQuestionQueryRepository {
                         questionVersion.title,
                         questionLevel.questionLevelName,
                         position.positionName,
-                        questionType.questionTypeName
+                        questionType.questionTypeName,
+                        questionVersion.version
                 ))
                 .from(interviewQuestion)
                 .innerJoin(interviewQuestion.interview, interview)
