@@ -47,7 +47,8 @@ public class InterviewQuestionQueryRepository {
                         questionVersion.title,
                         questionLevel.questionLevelName,
                         position.positionName,
-                        questionType.questionTypeName
+                        questionType.questionTypeName,
+                        questionVersion.version
                 ))
                 .from(interviewQuestion)
                 .innerJoin(interviewQuestion.interview, interview)

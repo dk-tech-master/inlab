@@ -1,28 +1,26 @@
 package kr.inlab.www.repository;
 
-import static kr.inlab.www.entity.QPosition.*;
-import static kr.inlab.www.entity.QQuestion.*;
-import static kr.inlab.www.entity.QQuestionLevel.*;
-import static kr.inlab.www.entity.QQuestionType.*;
-import static kr.inlab.www.entity.QQuestionVersion.*;
-
-import java.util.List;
-import java.util.Map;
-
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.inlab.www.common.type.YesNo;
+import kr.inlab.www.dto.request.RequestQuestionsDto;
+import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
+import java.util.Map;
 
-import kr.inlab.www.common.type.YesNo;
-import kr.inlab.www.dto.request.RequestQuestionsDto;
-import kr.inlab.www.dto.response.ResponseGetQuestionsDto;
-import lombok.RequiredArgsConstructor;
+import static kr.inlab.www.entity.QPosition.position;
+import static kr.inlab.www.entity.QQuestion.question;
+import static kr.inlab.www.entity.QQuestionLevel.questionLevel;
+import static kr.inlab.www.entity.QQuestionType.questionType;
+import static kr.inlab.www.entity.QQuestionVersion.questionVersion;
 
 @Repository
 @RequiredArgsConstructor
@@ -73,6 +71,7 @@ public class QuestionVersionQueryRepository {
 				position.positionName,
 				questionLevel.questionLevelId,
 				questionLevel.questionLevelName,
+				questionVersion.questionVersionId,
 				questionVersion.version))
 			.from(questionVersion)
 			.join(questionVersion.question, question)
