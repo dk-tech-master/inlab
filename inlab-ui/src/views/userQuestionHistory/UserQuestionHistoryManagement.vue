@@ -21,7 +21,7 @@
                   type="text"
                   name="interviewTitle"
                   class="w-64 py-5 input input-bordered input-sm border-gray-300 text-sm"
-                  placeholder="질문 열람내역을 검색하세요"
+                  placeholder="열람한 계정 및 질문 제목을 검색하세요"
                   v-model="searchInput"
                   @keyup.enter="handleSearch"
                   required
@@ -44,17 +44,17 @@
   <section v-if="userQuestionHistoryList.length > 0" class="mt-8">
     <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
       <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-        <div class="w-[55%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[40%] flex flex-col justify-center px-6 py-2 text-left">
           질문 제목
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-center">
           현재 버전
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-center">
           열람 계정
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
-          열람 계정
+        <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-center">
+          열람일
         </div>
       </div>
       <div
@@ -62,16 +62,16 @@
         v-for="(item, index) in userQuestionHistoryList"
         :key="item"
       >
-        <div class="w-[55%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[40%] flex flex-col justify-center px-6 py-4 text-left">
           {{ item.questionTitle }}
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-10 py-4 text-left">
+        <div class="w-[20%] flex flex-col justify-center px-10 py-4 text-center">
           {{ item.questionVersion }}
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-10 py-4 text-left">
+        <div class="w-[20%] flex flex-col justify-center px-10 py-4 text-center">
           {{ item.nickname }}
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-10 py-4 text-left">
+        <div class="w-[20%] flex flex-col justify-center px-10 py-4 text-center">
           {{ item.readingTime }}
         </div>
       </div>

@@ -10,15 +10,20 @@ import lombok.NoArgsConstructor;
 public class ResponseInterviewQuestionDto {
 
     private Long interviewQuestionId;
+    private Integer levelId;
+    private String levelName;
     private String questionTitle;
     private String questionLevelName;
     private String positionName;
     private String questionTypeName;
 
+
     @Builder
-    public ResponseInterviewQuestionDto(Long interviewQuestionId, String questionTitle,
-                                        String questionLevelName, String positionName, String questionTypeName) {
+    public ResponseInterviewQuestionDto(Long interviewQuestionId, Integer levelId, String levelName,
+                                        String questionTitle, String questionLevelName, String positionName, String questionTypeName) {
         this.interviewQuestionId = interviewQuestionId;
+        this.levelId = levelId;
+        this.levelName = levelName;
         this.questionTitle = questionTitle;
         this.questionLevelName = questionLevelName;
         this.positionName = positionName;

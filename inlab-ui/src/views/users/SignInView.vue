@@ -129,11 +129,7 @@ const clickSignInBtn = async () => {
     .login(requestData)
     .then(async () => {
       // todo response 의 헤더에 password-change-required 가 있을 경우 비밀번호 변경 권고 페이지 띄우기 예 를 누르면 개인정보 수정페이지 아니오를 누르면 초기화면(면접관이면 질문페이지 관리자면 관리자 페이지)
-      if (sessionStorage.getItem("role") === "ROLE_ADMIN") {
-        await router.push("/interviewer");
-      } else {
-        await router.push("/question");
-      }
+      await router.push("/question");
     })
     .catch(async (error) => {
       if (error.response.headers["login-fail-block"]) {

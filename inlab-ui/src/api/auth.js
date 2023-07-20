@@ -93,3 +93,14 @@ export const updateUserInfo = (token, data) => {
   };
   return request.put(uri, data, config);
 };
+
+export const deleteUser = (userId) => {
+  const uri = `/api/admin/users/${userId}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  console.log(uri);
+  return request.delete(uri, config);
+};

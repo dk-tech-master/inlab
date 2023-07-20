@@ -43,6 +43,7 @@ public class InterviewResultServiceImpl implements InterviewResultService {
     private final CommentService commentService;
     private final GptCommentService gptCommentService;
     private final ChecklistResultService checklistResultService;
+    private final UserService userService;
 
     @Transactional
     @Override
@@ -57,16 +58,21 @@ public class InterviewResultServiceImpl implements InterviewResultService {
         interviewResultRepository.save(interviewResult);
 
         requestDto.getInterviewQuestionResultDtoList().stream().forEach(interviewQuestionResultDto -> {
-            InterviewQuestion interviewQuestion = interviewQuestionRepository.findById(interviewQuestionResultDto.getInterviewQuestionId())
+            InterviewQuestion interviewQuestion = interviewQuestionRepository.findById(
+                            interviewQuestionResultDto.getInterviewQuestionId())
                     .orElseThrow(InterviewQuestionNotFoundException::new);
 
             InterviewQuestionResult interviewQuestionResult =
                     interviewQuestionResultService.createInterviewQuestionResult(interviewQuestion, interviewResult);
 
-            interviewAnswerService.createInterviewAnswer(interviewQuestionResult, interviewQuestionResultDto.getInterviewAnswerDto().getContent());
-            commentService.createComment(interviewQuestionResult, interviewQuestionResultDto.getCommentDto().getContent());
-            gptCommentService.createGptComment(interviewQuestion, interviewQuestionResult, interviewQuestionResultDto.getInterviewAnswerDto().getContent());
-            checklistResultService.createChecklistResult(interviewQuestionResult, interviewQuestionResultDto.getChecklistResultDtoList());
+            interviewAnswerService.createInterviewAnswer(interviewQuestionResult,
+                    interviewQuestionResultDto.getInterviewAnswerDto().getContent());
+            commentService.createComment(interviewQuestionResult,
+                    interviewQuestionResultDto.getCommentDto().getContent());
+            gptCommentService.createGptComment(interviewQuestion, interviewQuestionResult,
+                    interviewQuestionResultDto.getInterviewAnswerDto().getContent());
+            checklistResultService.createChecklistResult(interviewQuestionResult,
+                    interviewQuestionResultDto.getChecklistResultDtoList());
         });
     }
 
@@ -77,28 +83,31 @@ public class InterviewResultServiceImpl implements InterviewResultService {
         Interview interview = interviewResult.getInterview();
 
         List<InterviewQuestion> interviewQuestions = interviewQuestionRepository.findAllByInterview(interview);
-        List<ResponseInterviewQuestionResultDto> responseInterviewQuestionResultDtoList = interviewQuestions.stream().map(interviewQuestion -> {
-            InterviewQuestionResult interviewQuestionResult =
-                    interviewQuestionResultRepository.findByInterviewQuestionAndInterviewResult(interviewQuestion, interviewResult);
+        List<ResponseInterviewQuestionResultDto> responseInterviewQuestionResultDtoList = interviewQuestions.stream()
+                .map(interviewQuestion -> {
+                    InterviewQuestionResult interviewQuestionResult =
+                            interviewQuestionResultRepository.findByInterviewQuestionAndInterviewResult(interviewQuestion,
+                                    interviewResult);
 
-            ResponseInterviewAnswerDto responseInterviewAnswerDto =
-                    interviewAnswerService.getInterviewAnswer(interviewQuestionResult);
-            ResponseCommentDto responseCommentDto =
-                    commentService.getComment(interviewQuestionResult);
-            ResponseGptCommentDto responseGptCommentDto =
-                    gptCommentService.getInterviewResultGptComment(interviewQuestionResult);
-            List<ResponseChecklistDto> responseChecklistDtoList =
-                    checklistResultService.getChecklistResultList(interviewQuestionResult);
+                    ResponseInterviewAnswerDto responseInterviewAnswerDto =
+                            interviewAnswerService.getInterviewAnswer(interviewQuestionResult);
+                    ResponseCommentDto responseCommentDto =
+                            commentService.getComment(interviewQuestionResult);
+                    ResponseGptCommentDto responseGptCommentDto =
+                            gptCommentService.getInterviewResultGptComment(interviewQuestionResult);
+                    List<ResponseChecklistDto> responseChecklistDtoList =
+                            checklistResultService.getChecklistResultList(interviewQuestionResult);
 
-            return ResponseInterviewQuestionResultDto.builder()
-                    .interviewQuestionResultId(interviewQuestionResult.getInterviewQuestionResultId())
-                    .interviewQuestionTitle(interviewQuestion.getQuestionVersion().getTitle())
-                    .responseInterviewAnswerDto(responseInterviewAnswerDto)
-                    .responseCommentDto(responseCommentDto)
-                    .responseGptCommentDto(responseGptCommentDto)
-                    .responseChecklistDtoList(responseChecklistDtoList)
-                    .build();
-        }).collect(Collectors.toList());
+                    return ResponseInterviewQuestionResultDto.builder()
+                            .interviewQuestionResultId(interviewQuestionResult.getInterviewQuestionResultId())
+                            .interviewQuestionTitle(interviewQuestion.getQuestionVersion().getTitle())
+                            .responseInterviewAnswerDto(responseInterviewAnswerDto)
+                            .responseCommentDto(responseCommentDto)
+                            .responseGptCommentDto(responseGptCommentDto)
+                            .responseChecklistDtoList(responseChecklistDtoList)
+                            .build();
+                })
+                .collect(Collectors.toList());
 
         return ResponseInterviewResultDto.builder()
                 .interviewTitle(interview.getTitle())
@@ -109,10 +118,12 @@ public class InterviewResultServiceImpl implements InterviewResultService {
 
     @Override
     public ResponseListDto getInterviewResultList(RequestInterviewResultListDto requestDto) {
-        PageRequest pageRequest = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), requestDto.getSortDirection(), "interviewResultId");
+        PageRequest pageRequest = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
+                requestDto.getSortDirection(), "interviewResultId");
         Specification<InterviewResult> specification = getInterviewResultListSpecification(requestDto);
         Page<InterviewResult> interviewResultList = interviewResultRepository.findAll(specification, pageRequest);
-        PagingUtil pagingUtil = new PagingUtil(interviewResultList.getTotalElements(), interviewResultList.getTotalPages(), interviewResultList.getNumber(), interviewResultList.getSize());
+        PagingUtil pagingUtil = new PagingUtil(interviewResultList.getTotalElements(),
+                interviewResultList.getTotalPages(), interviewResultList.getNumber(), interviewResultList.getSize());
 
         List<Object> responseDto = interviewResultList.stream()
                 .map(InterviewResult::toResponseInterviewResultListDto)
@@ -124,7 +135,8 @@ public class InterviewResultServiceImpl implements InterviewResultService {
                 .build();
     }
 
-    private Specification<InterviewResult> getInterviewResultListSpecification(RequestInterviewResultListDto requestDto) {
+    private Specification<InterviewResult> getInterviewResultListSpecification(
+            RequestInterviewResultListDto requestDto) {
         Specification<InterviewResult> specification = Specification.where(null);
 
         if (Strings.isNotEmpty(requestDto.getIntervieweeName())) {
@@ -142,6 +154,15 @@ public class InterviewResultServiceImpl implements InterviewResultService {
                                     LocalDate.parse(requestDto.getEndDate()).atTime(LocalTime.MAX)
                             )
             );
+        }
+
+        if (!userService.isAdmin()) {
+            String loginUserNickname = userService.getLoginUserNickname();
+            specification = specification.and(
+                    (root, query, criteriaBuilder) ->
+                            criteriaBuilder.equal(root.get("interview").get("user").get("nickname"), loginUserNickname)
+            );
+
         }
 
         return specification;

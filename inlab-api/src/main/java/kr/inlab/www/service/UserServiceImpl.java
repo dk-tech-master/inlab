@@ -4,7 +4,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import kr.inlab.www.common.exception.AccountDeletedException;
 import kr.inlab.www.common.exception.AdminCouldNotDeleteException;
 import kr.inlab.www.common.exception.EmailDuplicateException;
@@ -30,14 +41,6 @@ import kr.inlab.www.security.CustomUserDetails;
 import kr.inlab.www.security.filter.AuthenticationFilter;
 import kr.inlab.www.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -307,5 +310,10 @@ public class UserServiceImpl implements UserService {
 
     private String getPrincipalFromSecurityContext() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @Override
+    public String getLoginUserNickname() {
+        return userRepository.findByEmail(getPrincipalFromSecurityContext()).orElseThrow(UserNotFoundException::new).getNickname();
     }
 }

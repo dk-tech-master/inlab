@@ -17,7 +17,7 @@ const interviewRoutes = [
   },
 
   {
-    path: "/interview/process",
+    path: "/interview/process/:interviewId",
     name: "interviewProcess",
     meta: {
       hide: false,

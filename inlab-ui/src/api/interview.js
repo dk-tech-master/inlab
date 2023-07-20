@@ -72,3 +72,4 @@ export const deleteInterviewQuestion = (interviewQuestionId) => {
   };
   return request.delete(uri, config);
 };
+

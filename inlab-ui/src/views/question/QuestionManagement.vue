@@ -1,5 +1,5 @@
 <template>
-  <header class="mt-8 mr-16">
+  <header class="mr-16">
     <div class="mb-6">
       <p class="mb-1 text-sm font-light text-gray-500">질문 관리</p>
       <h2 class="text-3xl tracking-tight font-bold text-gray-800">질문 관리</h2>
@@ -16,7 +16,7 @@
       </div>
     </div>
   </header>
-  <section v-if="questionList.length > 0" class="mt-8 py-10 mr-16 ">
+  <section v-if="questionList.length > 0" class="mt-8 py-10 mr-16">
     <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
       <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
         <div class="w-[28%] flex flex-col justify-center px-6 py-2 text-left">
@@ -28,7 +28,7 @@
         <div class="w-[17%] flex flex-col justify-center px-6 py-2 text-left">
           유형
         </div>
-        <div class="w-[9%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[9%] flex flex-col justify-center px-6 py-2 text-center">
           난이도
         </div>
         <div
@@ -37,17 +37,17 @@
           버전
         </div>
         <div
-          class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-left"
+          class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-center"
         >
           버전관리
         </div>
         <div
-          class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-left"
+          class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-center"
         >
           꼬리질문
         </div>
         <div
-          class="w-[8%] flex flex-col items-center justify-center px-6 py-2 text-left"
+          class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-center"
         >
           수정
         </div>
@@ -69,55 +69,59 @@
         <div class="w-[17%] flex flex-col justify-center px-6 py-4 text-left">
           {{ question.questionTypeName }}
         </div>
-        <div class="w-[9%] flex flex-col x-6 py-4 text-left">
-          {{ question.questionLevelId }}
+        <div class="w-[9%] flex flex-col px-6 py-4 text-center">
+          {{ question.questionLevelName }}
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[10%] flex flex-col px-6 py-4 text-center">
           {{ question.version }}
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-center">
           <router-link :to="`/question/version/${question?.questionId}`">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
-              />
-            </svg>
+            <label class="flex cursor-pointer justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+                />
+              </svg>
+            </label>
           </router-link>
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[10%] flex flex-col justify-center px-6 py-2">
           <router-link
             :to="`/question/follow-up/${question?.questionId}`"
             @click="store.setQuestionTitle(question.title)"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9"
-              />
-            </svg>
+            <label class="flex cursor-pointer justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9"
+                />
+              </svg>
+            </label>
           </router-link>
         </div>
-        <div class="w-[9%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[10%] flex flex-col justify-center px-6 py-2">
           <label
             for="updateModal"
-            class="flex hover:bg-gray-100 cursor-pointer"
+            class="flex cursor-pointer justify-center"
             :key="question.title"
             @click="openUpdateModal(question.questionId)"
           >
@@ -143,30 +147,10 @@
       <Pagination :paging-util="pagingUtil" @changePage="changePage" />
     </div>
   </section>
-  <section v-else class="mr-16 mt-8">
-    <div class="border rounded-lg py-20">
-      <div class="flex justify-center mb-10">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-20 h-20 text-gray-500"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
-          />
-        </svg>
-      </div>
-      <p class="text-lg text-gray-500 text-center">질문이 존재하지 않습니다.</p>
-    </div>
-  </section>
+  <EmptyState v-else :message="'질문이 존재하지 않습니다.'" />
   <QuestionDetailModal ref="detailViewModal" />
   <QuestionRegistrationModal ref="registerModal" />
-  <QuestionUpdateModal ref="updateModal" />
+  <QuestionUpdateModal ref="updateModal" :questionId="questionId" />
 </template>
 
 <script setup>
@@ -178,12 +162,14 @@ import { authStore } from "@/stores/auth";
 import QuestionRegistrationModal from "@/components/modal/QuestionRegistrationModal.vue";
 import QuestionUpdateModal from "@/components/modal/QuestionUpdateModal.vue";
 import QuestionDetailModal from "@/components/modal/QuestionDetailModal.vue";
+import EmptyState from "@/components/common/EmptyState.vue";
 
 const store = authStore();
 
 const registerModal = ref(null);
 const detailViewModal = ref(null);
 const updateModal = ref(null);
+const questionId = ref();
 
 const openRegisterModal = () => {
   registerModal.value.toggleModal();
@@ -194,7 +180,7 @@ const openDetailViewModal = (id) => {
 };
 
 const openUpdateModal = (id) => {
-  updateModal.value.toggleModal(id);
+  updateModal.value.openModal(id);
 };
 
 const pagingInfos = ref({
@@ -209,6 +195,7 @@ const init = async () => {
   const questionsInfos = await getQuestion(pagingInfos.value);
   questionList.value = questionsInfos.data.responseList;
   pagingUtil.value = questionsInfos.data.pagingUtil;
+  console.log(questionList.value);
 };
 
 init();
