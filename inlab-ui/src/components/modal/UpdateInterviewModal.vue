@@ -42,6 +42,7 @@ const interviewTitle = ref("");
 const toggleModal = (interviewData) => {
   if (interviewData) {
     interviewId.value = interviewData.interviewId;
+    interviewTitle.value = interviewData.interviewTitle;
   }
   document
     .getElementById("updateInterviewModal")
