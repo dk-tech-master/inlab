@@ -84,7 +84,7 @@
           {{ interview.questionCount }}
         </div>
         <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-left">
-          <button type="button" @click="clickUpdateInterviewBtn(index)">
+          <button type="button" @click.stop="clickUpdateInterviewBtn(index)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
