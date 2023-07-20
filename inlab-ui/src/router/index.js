@@ -53,6 +53,8 @@ router.beforeEach((to, from, next) => {
       next();
     } else if (to.path === "/question") {
       next("/");
+    } else if (to.path === "/sign-up") {
+      next();
     } else {
       alert("로그인을 해주세요");
       next("/");
