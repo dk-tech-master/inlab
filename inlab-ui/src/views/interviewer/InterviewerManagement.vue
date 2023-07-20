@@ -50,6 +50,12 @@
                 >
                   검색
                 </button>
+                <button
+                  @click="resetPage"
+                  class="flex flex-col ml-3 px-7 py-5 btn btn-primary btn-sm"
+                >
+                  초기화
+                </button>
               </div>
             </template>
           </InputSearchFilter>
@@ -186,7 +192,7 @@ import QuestionVerificationAddModal from "@/components/modal/QuestionVerificatio
 
 const pagingUtil = ref({
   page: 1,
-  pageSize: 4,
+  pageSize: 5,
   nickname: "",
   isVerified: "",
 });
@@ -196,7 +202,6 @@ const verificationModal = ref(null);
 const verificationAddModal = ref(null);
 
 const init = async () => {
-  console.log(pagingUtil.value);
   const requestData = {
     page: pagingUtil.value.page,
     pageSize: pagingUtil.value.pageSize,
@@ -204,10 +209,10 @@ const init = async () => {
     isVerified: pagingUtil.value.isVerified,
   };
   const interviewersInfo = await getInterviewers(requestData);
-  console.log(interviewersInfo);
   infos.value = interviewersInfo.data.responseList;
-  console.log("삭제할 정보: ", infos.value);
   pagingUtil.value = interviewersInfo.data.pagingUtil;
+  pagingUtil.value.nickname = requestData.nickname;
+  pagingUtil.value.isVerified = requestData.isVerified;
 };
 
 init();
@@ -265,5 +270,11 @@ const changePage = async (page) => {
   console.log(interviewersInfo);
   infos.value = interviewersInfo.data.responseList;
   pagingUtil.value = interviewersInfo.data.pagingUtil;
+};
+
+const resetPage = () => {
+  pagingUtil.value.nickname = "";
+  pagingUtil.value.isVerified = "";
+  init();
 };
 </script>
