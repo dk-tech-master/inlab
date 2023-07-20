@@ -209,7 +209,7 @@ const init = async () => {
     isVerified: pagingUtil.value.isVerified,
   };
   const interviewersInfo = await getInterviewers(requestData);
-  infos.value = interviewersInfo.data.responseList;
+  infos.value = interv정iewersInfo.data.responseList;
   pagingUtil.value = interviewersInfo.data.pagingUtil;
   pagingUtil.value.nickname = requestData.nickname;
   pagingUtil.value.isVerified = requestData.isVerified;
