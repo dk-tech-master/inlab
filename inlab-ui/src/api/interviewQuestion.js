@@ -10,20 +10,8 @@ export const createInterview = (data) => {
   return request.post(uri, data, config);
 };
 
-export const getInterviewList = (data, userId) => {
-  console.log(data);
-  const uri = `/api/interview/${userId}`;
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    params: data,
-  };
-  return request.get(uri, config);
-};
-
-export const getInterview = (interviewId) => {
-  const uri = `/api/interview/${interviewId}/info`;
+export const getInterviewQuestion = (interviewId) => {
+  const uri = `/api/interview/questions/${interviewId}`;
   const config = {
     headers: {
       "Content-Type": "application/json",

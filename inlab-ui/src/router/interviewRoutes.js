@@ -41,7 +41,7 @@ const interviewRoutes = [
     component: InterviewResultManagement,
   },
   {
-    path: "/interview/detail",
+    path: "/interview/detail/:interviewId",
     name: "interviewDetail",
     meta: {
       hide: true,
