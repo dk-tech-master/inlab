@@ -7,6 +7,7 @@ import interviewRoutes from "@/router/interviewRoutes";
 import interviewerRoutes from "@/router/interviewerRoutes";
 import AudioTestView from "@/views/AudioTestView.vue";
 import userQuestionHistoryRoutes from "@/router/userQuestionHistory";
+import NotFound from "@/views/common/NotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,25 +28,34 @@ const router = createRouter({
       name: "test",
       component: TestView,
     },
+    {
+      path: "/404",
+      name: "notFound",
+      component: NotFound,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      redirect: "/404",
+    },
   ],
 });
 
 router.beforeEach((to, from, next) => {
   const accessToken = sessionStorage.getItem("accessToken");
-  if (accessToken === null || accessToken === "") {
+  if (accessToken) {
     if (to.path === "/") {
-      // 갈길이 로그인이면 로그인 가라~
-      next();
+      next("/question");
     } else {
-      alert("로그아웃 되었습니다.");
       next();
     }
   } else {
-    // 주소창에 로그인으로 가려고 할 때
     if (to.path === "/") {
-      next("/interview-management");
-    } else {
       next();
+    } else if (to.path === "/question") {
+      next("/");
+    } else {
+      alert("로그인을 해주세요");
+      next("/");
     }
   }
 });
