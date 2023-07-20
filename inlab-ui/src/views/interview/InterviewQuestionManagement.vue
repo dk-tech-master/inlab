@@ -243,6 +243,9 @@ const addInterviewQuestionBtn = async (questionId, versionId) => {
   console.log(addRequestData);
   const axiosResponse = await createInterviewQuestion(addRequestData);
 
+  if (axiosResponse.status >= 200 && axiosResponse.status < 300) {
+    alert("꼬리 질문이 성공적으로 등록되었습니다.");
+  }
   const interviewQuestionInfos = await getInterviewQuestionInfo(
     interviewId.value,
   );
