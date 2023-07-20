@@ -1,32 +1,41 @@
 <template>
-  <dialog id="verificationAddModal" class="modal">
+  <dialog id="verificationModal" class="modal">
     <div method="dialog" class="modal-box p-10">
       <h2 class="mb-8 text-xl font-semibold tracking-tight">질문 접근 권한</h2>
-      <div
-        class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg"
-      >
-        <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-          <div class="w-[50%] flex flex-col justify-center px-6 py-2 text-left">
-            직무
-          </div>
-          <div class="w-[50%] flex flex-col justify-center px-6 py-2 text-left">
-            난이도
+      <template v-if="infos.length > 0">
+        <div
+          class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg"
+        >
+          <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
+            <div
+              class="w-[50%] flex flex-col justify-center px-6 py-2 text-left"
+            >
+              직무
+            </div>
+            <div
+              class="w-[50%] flex flex-col justify-center px-6 py-2 text-left"
+            >
+              난이도
+            </div>
           </div>
         </div>
-      </div>
 
-      <div
-        class="flex border-b hover:bg-gray-100"
-        v-for="info in infos"
-        :key="info.positionId"
-      >
-        <div class="w-[50%] flex flex-col justify-center px-6 py-4 text-left">
-          {{ info }}
+        <div
+          class="flex border-b hover:bg-gray-100"
+          v-for="info in infos"
+          :key="info.positionId"
+        >
+          <div class="w-[50%] flex flex-col justify-center px-6 py-4 text-left">
+            {{ info.positionName }}
+          </div>
+          <div class="w-[50%] flex flex-col justify-center px-6 py-4 text-left">
+            {{ info.levelName }}
+          </div>
         </div>
-        <div class="w-[50%] flex flex-col justify-center px-6 py-4 text-left">
-          {{ info }}
-        </div>
-      </div>
+      </template>
+      <template v-else>
+        <EmptyState :message="`질문 접근권한이 존재하지 않습니다.`" />
+      </template>
 
       <button
         class="mt-10 w-full flex flex-col mr-3 py-5 px-7 btn btn-sm btn-primary btn-outline"
@@ -41,6 +50,7 @@
 <script setup>
 import { ref } from "vue";
 import { getAccessVerification } from "@/api/interviewer";
+import EmptyState from "@/components/common/EmptyState.vue";
 
 const userId = ref(null);
 const infos = ref([]);
@@ -54,9 +64,7 @@ const init = async (userId) => {
 
 const toggleModal = async (id) => {
   userId.value = id;
-  document
-    .getElementById("verificationAddModal")
-    .classList.toggle("modal-open");
+  document.getElementById("verificationModal").classList.toggle("modal-open");
   await init(id);
 };
 

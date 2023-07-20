@@ -128,7 +128,7 @@
                 stroke-width="1.5"
                 stroke="currentColor"
                 class="w-6 h-6 cursor-pointer"
-                @click="openModal()"
+                @click="openModal(info.userId)"
               >
                 <path
                   stroke-linecap="round"
@@ -188,12 +188,12 @@
 
 <script setup>
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
+import QuestionVerificationModal from "@/components/modal/QuestionVerificationModal.vue";
+import QuestionVerificationAddModal from "@/components/modal/QuestionVerificationAddModal.vue";
 import { getInterviewers, updateApprove } from "@/api/interviewer";
 import { ref } from "vue";
-import QuestionVerificationModal from "@/components/modal/QuestionVerificationAddModal.vue";
 import Pagination from "@/components/common/Pagination.vue";
 import { deleteUser } from "@/api/auth";
-import QuestionVerificationAddModal from "@/components/modal/QuestionVerificationAddModal.vue";
 
 const pagingUtil = ref({
   page: 1,
@@ -218,6 +218,7 @@ const init = async () => {
   pagingUtil.value = interviewersInfo.data.pagingUtil;
   pagingUtil.value.nickname = requestData.nickname;
   pagingUtil.value.isVerified = requestData.isVerified;
+  console.log(infos.value);
 };
 
 init();
@@ -253,9 +254,9 @@ const deleteInterviewerBtn = async (userId) => {
   }
 };
 
-const openModal = () => {
+const openModal = (userId) => {
   console.log("oooooooooooooo");
-  verificationModal.value.toggleModal();
+  verificationModal.value.toggleModal(userId);
 };
 
 const openAddModal = (userId) => {
