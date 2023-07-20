@@ -42,6 +42,8 @@ public class InterviewQuestionQueryRepository {
         return queryFactory
                 .select(Projections.constructor(ResponseInterviewQuestionDto.class,
                         interviewQuestion.interviewQuestionId,
+                        questionLevel.questionLevelId,
+                        questionLevel.questionLevelName,
                         questionVersion.title,
                         questionLevel.questionLevelName,
                         position.positionName,
