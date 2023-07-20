@@ -18,6 +18,7 @@
         </button>
         <button
           class="flex flex-col items-center px-7 py-5 btn btn-outline btn-primary btn-sm"
+          @click="clickUpdateInterviewBtn"
         >
           정보 수정
         </button>
@@ -33,7 +34,7 @@
         <div
           class="flex items-center py-6 pl-5 w-48 bg-gray-50 input input-sm input-bordered text-base text-primary"
         >
-          Sunday
+          {{ interviewInfo.interviewerNickname }}
         </div>
       </div>
       <div class="mr-5">
@@ -45,7 +46,7 @@
         <div
           class="flex items-center py-6 pl-5 w-96 bg-gray-50 input input-sm input-bordered text-base text-primary"
         >
-          Java의 정의
+          {{ interviewInfo.interviewTitle }}
         </div>
       </div>
       <div class="mr-5">
@@ -57,7 +58,7 @@
         <div
           class="flex items-center py-6 pl-5 w-30 bg-gray-50 input input-sm input-bordered text-base text-primary"
         >
-          10
+          {{ interviewInfo.questionCount }}
         </div>
       </div>
       <div class="mr-5">
@@ -69,7 +70,7 @@
         <div
           class="flex items-center py-6 pl-5 w-52 bg-gray-50 input input-sm input-bordered text-base text-primary"
         >
-          2023.07.06
+          {{ interviewInfo.createdAt.split("T")[0] }}
         </div>
       </div>
     </div>
@@ -85,9 +86,6 @@
     </div>
     <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
       <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-        <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
-          No
-        </div>
         <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
           면접 제목
         </div>
@@ -108,23 +106,20 @@
       </div>
       <div
         class="flex border-b hover:bg-gray-100"
-        v-for="(index, item) in 10"
+        v-for="(interviewQuestion, index) in interviewQuestionList"
         :key="index"
       >
-        <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-left">
-          {{ index }}
-        </div>
         <div class="w-[20%] flex flex-col justify-center px-6 py-4 text-left">
-          Java의 정의
+          {{ interviewQuestion.questionTitle }}
         </div>
         <div class="w-[30%] flex flex-col justify-center px-6 py-4 text-left">
-          프론트앤드
+          {{ interviewQuestion.positionName }}
         </div>
         <div class="w-[30%] flex flex-col justify-center px-6 py-4 text-left">
-          기술적인 지식 및 개념 질문
+          {{ interviewQuestion.questionTypeName }}
         </div>
         <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-left">
-          1
+          {{ interviewQuestion.questionLevelName }}
         </div>
         <div
           class="w-[10%] flex flex-col justify-center items-center px-6 py-4 text-center"
@@ -136,7 +131,9 @@
             stroke-width="1.5"
             stroke="currentColor"
             class="w-6 h-6 cursor-pointer"
-            @click="deleteInterviewQuestion(index)"
+            @click="
+              deleteInterviewQuestion(interviewQuestinon.interviewQuestionId)
+            "
           >
             <path
               stroke-linecap="round"
@@ -148,14 +145,40 @@
       </div>
     </div>
   </section>
-  <section class="ml-72 mr-10 mt-20 mb-32">
-    <Pagination />
-  </section>
+  <UpdateInterviewModal ref="updateInterviewModal" @init="init" />
 </template>
 
 <script setup>
-import Pagination from "@/components/common/Pagination.vue";
+import { useRoute } from "vue-router";
+import { getInterviewQuestion } from "@/api/interviewQuestion";
+import { getInterview } from "@/api/interview";
+import { ref } from "vue";
+import UpdateInterviewModal from "@/components/modal/UpdateInterviewModal.vue";
 
+const route = useRoute();
+const interviewQuestionList = ref([]);
+const interviewInfo = ref();
+const updateInterviewModal = ref(null);
+
+const init = async () => {
+  const interviewQuestionResponse = await getInterviewQuestion(
+    route.params.interviewId,
+  );
+
+  const interviewInfoResponse = await getInterview(route.params.interviewId);
+
+  interviewQuestionList.value = interviewQuestionResponse.data;
+
+  interviewInfo.value = interviewInfoResponse.data;
+  console.log(interviewQuestionList.value);
+  console.log(interviewInfo.value);
+};
+
+init();
+
+const clickUpdateInterviewBtn = () => {
+  updateInterviewModal.value.toggleModal(interviewInfo.value);
+};
 const deleteInterviewQuestion = (index) => {};
 </script>
 <style scoped></style>

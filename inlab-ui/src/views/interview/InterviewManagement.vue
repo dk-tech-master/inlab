@@ -1,7 +1,10 @@
 <template>
   <header class="mt-8">
     <div class="mb-10">
-      <p class="mb-1 text-sm font-medium text-indigo-500">면접 관리</p>
+      <p class="mb-1 text-sm font-light text-gray-500">
+        면접 관리 >
+        <span class="font-medium text-indigo-500">면접 관리</span>
+      </p>
       <h2 class="text-3xl tracking-tight font-bold text-gray-800">면접 관리</h2>
     </div>
     <div class="flex">
@@ -69,6 +72,7 @@
         class="flex border-b hover:bg-gray-100"
         v-for="(interview, index) in interviewList"
         :key="index"
+        @click="clickDetail(interview)"
       >
         <div class="w-[30%] flex flex-col justify-center px-6 py-4 text-left">
           {{ interview.interviewTitle }}
@@ -80,10 +84,7 @@
           {{ interview.questionCount }}
         </div>
         <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-left">
-          <button
-            type="button"
-            @click="clickUpdateInterviewBtn(index)"
-          >
+          <button type="button" @click="clickUpdateInterviewBtn(index)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -165,6 +166,7 @@ import { getInterviewList } from "@/api/interview";
 import { ref } from "vue";
 import CreateInterviewModal from "@/components/modal/CreateInterviewModal.vue";
 import UpdateInterviewModal from "@/components/modal/UpdateInterviewModal.vue";
+import router from "@/router";
 
 const interviewList = ref([]);
 const pagingUtil = ref({});
@@ -214,6 +216,25 @@ const clickSearchInterviewBtn = async () => {
   );
   interviewList.value = response.data.responseList;
   pagingUtil.value = response.data.pagingUtil;
+};
+
+const changePage = async (page) => {
+  console.log(`changePage ${page}`);
+  const requestData = {
+    interviewTitle: interviewTitle.value,
+    nickname: nickname.value,
+    page: page,
+  };
+  let response = await getInterviewList(
+    requestData,
+    sessionStorage.getItem("userId"),
+  );
+  interviewList.value = response.data.responseList;
+  pagingUtil.value = response.data.pagingUtil;
+};
+const clickDetail = (interview) => {
+  console.log(interview.interviewId);
+  router.push(`/interview/detail/${interview.interviewId}`);
 };
 </script>
 <style scoped></style>
