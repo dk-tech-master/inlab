@@ -55,8 +55,8 @@ public class InterviewQuestionQueryRepository {
                 .innerJoin(question.questionType, questionType)
                 .innerJoin(question.position, position)
                 .innerJoin(questionVersion.questionLevel, questionLevel)
-                .where(interview.interviewId.eq(interviewId))
-                .where(interviewQuestion.interviewQuestionStatus.eq(InterviewQuestionStatus.ACTIVE))
+                .where(interview.interviewId.eq(interviewId), interviewQuestion.interviewQuestionStatus.eq(
+                    InterviewQuestionStatus.ACTIVE))
                 .fetch();
     }
 
@@ -72,7 +72,8 @@ public class InterviewQuestionQueryRepository {
                 ))
                 .from(interviewQuestion)
                 .innerJoin(interviewQuestion.questionVersion, questionVersion)
-                .where(interviewQuestion.interview.eq(interview))
+                .where(interviewQuestion.interview.eq(interview), interviewQuestion.interviewQuestionStatus.eq(
+                    InterviewQuestionStatus.ACTIVE))
                 .fetch();
     }
 

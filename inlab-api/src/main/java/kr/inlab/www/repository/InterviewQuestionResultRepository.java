@@ -10,4 +10,6 @@ import java.util.List;
 public interface InterviewQuestionResultRepository extends JpaRepository<InterviewQuestionResult, Long> {
 
     InterviewQuestionResult findByInterviewQuestionAndInterviewResult(InterviewQuestion interviewQuestion, InterviewResult interviewResult);
+
+    List<InterviewQuestionResult> findAllByInterviewResult(InterviewResult interviewResult);
 }

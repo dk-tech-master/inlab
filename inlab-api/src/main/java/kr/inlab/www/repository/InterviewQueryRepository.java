@@ -4,6 +4,7 @@ import antlr.StringUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.inlab.www.common.type.InterviewQuestionStatus;
 import kr.inlab.www.dto.request.RequestGetInterviewDto;
 import kr.inlab.www.dto.response.ResponseInterviewDto;
 import lombok.RequiredArgsConstructor;
@@ -33,26 +34,28 @@ public class InterviewQueryRepository {
 
     private List<ResponseInterviewDto> getInterviewList(Long userId, RequestGetInterviewDto requestDto, Pageable pageable) {
         return queryFactory
-                .select(Projections.constructor(ResponseInterviewDto.class,
-                        interview.interviewId,
-                        interview.title,
-                        user.nickname,
-                        interviewQuestion.count()
-                ))
-                .from(interview)
-                .innerJoin(interview.user, user)
-                .leftJoin(interview.questions, interviewQuestion)
-                .where(
-                        questionTitleEq(requestDto.getInterviewTitle()),
-                        userIdEq(userId),
-                        nickNameEq(requestDto.getNickname())
-                )
-                .orderBy(interview.interviewId.desc())
-                .groupBy(interview.interviewId)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+            .select(Projections.constructor(ResponseInterviewDto.class,
+                interview.interviewId,
+                interview.title,
+                user.nickname,
+                interviewQuestion.count()
+            ))
+            .from(interview)
+            .innerJoin(interview.user, user)
+            .leftJoin(interview.questions, interviewQuestion)
+            .on(interviewQuestion.interviewQuestionStatus.coalesce(InterviewQuestionStatus.DELETE).eq(InterviewQuestionStatus.ACTIVE))
+            .where(
+                questionTitleEq(requestDto.getInterviewTitle()),
+                userIdEq(userId),
+                nickNameEq(requestDto.getNickname())
+            )
+            .orderBy(interview.interviewId.desc())
+            .groupBy(interview.interviewId)
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
     }
+
 
     private Long getCount(Long userId, RequestGetInterviewDto requestDto) {
         return queryFactory
