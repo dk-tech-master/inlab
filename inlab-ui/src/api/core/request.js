@@ -52,8 +52,7 @@ request.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.error(error);
-    // alert(error.response.data.message);
+    alert(error.response.data.message);
     return Promise.reject(error);
   },
 );
