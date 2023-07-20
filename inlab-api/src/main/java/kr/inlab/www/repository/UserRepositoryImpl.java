@@ -24,13 +24,13 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     private final QRole role = QRole.role;
 
     public Page<User> findUsers(String nickname, Boolean isVerified, Pageable pageable) {
-        BooleanExpression hasRoleUser = user.roles.any().roleType.eq(RoleType.ROLE_USER);
-        BooleanExpression hasRoleAdmin = user.roles.any().roleType.eq(RoleType.ROLE_ADMIN);
+
+        BooleanExpression hasRoleGuest = user.roles.any().roleType.eq(RoleType.ROLE_GUEST);
         BooleanExpression nicknameFilter = nickname == null ? null : user.nickname.contains(nickname);
         BooleanExpression deleteFilter = user.userStatus.eq(UserStatus.DELETE);
 
-        BooleanExpression isVerifiedExpression = isVerified != null ? isVerified ? hasRoleUser : hasRoleUser.not() : null;
-        BooleanExpression filter = Expressions.allOf(nicknameFilter, isVerifiedExpression,hasRoleAdmin.not(), deleteFilter.not());
+        BooleanExpression isVerifiedExpression = isVerified != null ? isVerified ? hasRoleGuest.not() : hasRoleGuest  : null;
+        BooleanExpression filter = Expressions.allOf(nicknameFilter, isVerifiedExpression, deleteFilter.not());
 
 
         QueryResults<User> queryResults = queryFactory.selectFrom(user)
