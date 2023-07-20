@@ -21,7 +21,7 @@
                   type="text"
                   name="interviewTitle"
                   class="w-64 py-5 input input-bordered input-sm border-gray-300 text-sm"
-                  placeholder="질문 열람내역을 검색하세요"
+                  placeholder="열람한 계정 및 질문 제목을 검색하세요"
                   v-model="searchInput"
                   @keyup.enter="handleSearch"
                   required
@@ -54,7 +54,7 @@
           열람 계정
         </div>
         <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-center">
-          열람 계정
+          열람일
         </div>
       </div>
       <div
