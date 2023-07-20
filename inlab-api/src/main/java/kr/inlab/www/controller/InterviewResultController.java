@@ -24,25 +24,25 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/interview-result")
 public class InterviewResultController {
 
-	private final InterviewResultService interviewResultService;
+    private final InterviewResultService interviewResultService;
 
-	@PostMapping
-	public ResponseEntity<?> createInterviewResult(@RequestBody RequestCreateInterviewResultDto requestDto) {
-		interviewResultService.createInterviewResult(requestDto);
+    @PostMapping
+    public ResponseEntity<?> createInterviewResult(@RequestBody RequestCreateInterviewResultDto requestDto) {
+        interviewResultService.createInterviewResult(requestDto);
 
-		return ResponseEntity.status(HttpStatus.CREATED).build();
-	}
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
-	@GetMapping("/{interviewResultId}")
-	public ResponseEntity<?> getInterviewResult(@PathVariable Long interviewResultId) {
-		ResponseInterviewResultDto responseInterviewResultDto = interviewResultService.getInterviewResult(
-			interviewResultId);
-		return ResponseEntity.status(HttpStatus.OK).body(responseInterviewResultDto);
-	}
+    @GetMapping("/{interviewResultId}")
+    public ResponseEntity<?> getInterviewResult(@PathVariable Long interviewResultId) {
+        ResponseInterviewResultDto responseInterviewResultDto = interviewResultService.getInterviewResult(
+                interviewResultId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseInterviewResultDto);
+    }
 
-	@GetMapping
-	public ResponseEntity<?> getInterviewResultList(@ModelAttribute RequestInterviewResultListDto requestDto) {
-		ResponseListDto interviewResultList = interviewResultService.getInterviewResultList(requestDto);
-		return ResponseEntity.status(HttpStatus.OK).body(interviewResultList);
-	}
+    @GetMapping
+    public ResponseEntity<?> getInterviewResultList(@ModelAttribute RequestInterviewResultListDto requestDto) {
+        ResponseListDto interviewResultList = interviewResultService.getInterviewResultList(requestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(interviewResultList);
+    }
 }
