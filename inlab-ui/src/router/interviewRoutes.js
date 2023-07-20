@@ -49,7 +49,7 @@ const interviewRoutes = [
     component: InterviewDetail,
   },
   {
-    path: "/interview/question",
+    path: "/interview/question/:interviewId",
     name: "interviewQuestionManagement",
     meta: {
       hide: true,

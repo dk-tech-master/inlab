@@ -80,6 +80,7 @@
     <div class="flex justify-between">
       <h2 class="mb-10 text-2xl font-bold">면접 질문 리스트</h2>
       <button
+        @click="clickInterviewQuestionBtn(interviewInfo.interviewId)"
         class="block ml-auto flex flex-col items-center px-7 py-5 btn btn-primary btn-sm"
       >
         질문 관리
@@ -167,11 +168,14 @@ const init = async () => {
     route.params.interviewId,
   );
 
+  console.log(interviewQuestionResponse);
   const interviewInfoResponse = await getInterview(route.params.interviewId);
+  console.log(interviewInfoResponse);
 
   interviewQuestionList.value = interviewQuestionResponse.data;
 
   interviewInfo.value = interviewInfoResponse.data;
+  console.log();
 };
 
 init();
@@ -179,10 +183,12 @@ init();
 const clickUpdateInterviewBtn = () => {
   updateInterviewModal.value.toggleModal(interviewInfo.value);
 };
-const deleteInterviewQuestion = (index) => {};
 
 const clickInterviewStartBtn = (interviewId) => {
   router.push(`/interview/start/${interviewId}`);
+};
+const clickInterviewQuestionBtn = (interviewId) => {
+  router.push(`/interview/question/${interviewId}`);
 };
 </script>
 <style scoped></style>
