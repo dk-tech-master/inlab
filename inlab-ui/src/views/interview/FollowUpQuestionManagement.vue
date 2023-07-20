@@ -11,7 +11,9 @@
         </h2>
       </div>
     </header>
-    <section class="mr-16 border border-gray-300 rounded-md px-10  py-10 shadow-md">
+    <section
+      class="mr-16 border border-gray-300 rounded-md px-10 py-10 shadow-md"
+    >
       <!--    <h2 class="mb-10 text-2xl font-bold">질문 내용</h2>-->
       <label
         for="searchInterview"
@@ -169,7 +171,7 @@ import {
   getFollowUpQuestion,
   getQuestion,
 } from "@/api/question";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { ref } from "vue";
 import SearchFilter from "@/components/common/SearchFilter.vue";
 import Pagination from "@/components/common/Pagination.vue";
@@ -216,7 +218,7 @@ const init = async () => {
 };
 init();
 
-const requestSearchDate = ref({
+const requestSearchData = ref({
   page: 1,
   pageSize: 5,
   positionId: null,
@@ -224,7 +226,6 @@ const requestSearchDate = ref({
   questionTypeId: null,
   titleKeyword: null,
 });
-
 
 const handleSearch = async (searchInfos) => {
   const inputRequest = {
@@ -235,9 +236,9 @@ const handleSearch = async (searchInfos) => {
     questionTypeId: searchInfos.type,
     titleKeyword: searchInfos.title,
   };
-  requestSearchDate.value = inputRequest;
-  console.log("요청데이터는 이거다 : ", requestSearchDate.value);
-  const searchedInfos = await getQuestion(requestSearchDate.value);
+  requestSearchData.value = inputRequest;
+  console.log("요청데이터는 이거다 : ", requestSearchData.value);
+  const searchedInfos = await getQuestion(requestSearchData.value);
   console.log("응답받은 데이터: ", searchedInfos);
   questionList.value = searchedInfos.data.responseList;
   pagingUtil.value = searchedInfos.data.pagingUtil;
@@ -246,8 +247,8 @@ const handleSearch = async (searchInfos) => {
 const changePage = async (page) => {
   console.log(`changePage ${page}`);
   pagingUtil.value.page = page;
-  requestSearchDate.value.page = page;
-  const questionsInfos = await getQuestion(requestSearchDate.value);
+  requestSearchData.value.page = page;
+  const questionsInfos = await getQuestion(requestSearchData.value);
   questionList.value = questionsInfos.data.responseList;
   console.log(questionsInfos.data);
   pagingUtil.value = questionsInfos.data.pagingUtil;
