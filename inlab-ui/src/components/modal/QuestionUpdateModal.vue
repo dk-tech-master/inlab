@@ -1,16 +1,12 @@
 <template>
-  <input type="checkbox" id="updateModal" class="modal-toggle" />
-  <div class="modal">
-    <div class="modal-box pt-10 px-10">
-      <div class="font-semibold text-2xl text-gray-800 mb-10">
-        <label
-          class="cursor-pointer modal-backdrop text-gray-700 flex items-end justify-end"
-          for="updateModal"
-          >x</label
+  <dialog id="updateModal" class="modal">
+    <form method="dialog" class="modal-box">
+      <div class="flex justify-between items-center mb-10">
+        <h2 class="font-bold text-xl">질문 제목</h2>
+        <label class="btn btn-sm btn-circle btn-ghost" @click="toggleModal"
+          >✕</label
         >
-        질문수정
       </div>
-
       <div class="mb-5">
         <label
           for="questionTitle"
@@ -26,7 +22,6 @@
           autofocus
         />
       </div>
-
       <div class="mb-5">
         <label
           for="questionType"
@@ -84,12 +79,12 @@
         >
         <div
           class="flex justify-between mb-3"
-          v-for="(check, index) in checkList"
+          v-for="(check, index) in newCheckList"
           :key="index"
         >
           <input
             type="text"
-            v-model="checkList[index]"
+            v-model="newCheckList[index]"
             class="w-[85%] p-2.5 input input-sm input-primary input-bordered border-gray-300 text-sm"
             placeholder="체크내용을 입력해주세요"
             required
@@ -105,20 +100,6 @@
               <path
                 fill-rule="evenodd"
                 d="M5.25 12a.75.75 0 01.75-.75h12a.75.75 0 010 1.5H6a.75.75 0 01-.75-.75z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
-          <button type="button" @click="addCheckList(inputCheck[index])">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="black"
-              class="w-6 h-6"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M12 5.25a.75.75 0 01.75.75v5.25H18a.75.75 0 010 1.5h-5.25V18a.75.75 0 01-1.5 0v-5.25H6a.75.75 0 010-1.5h5.25V6a.75.75 0 01.75-.75z"
                 clip-rule="evenodd"
               />
             </svg>
@@ -147,7 +128,7 @@
       </div>
       <div class="mb-10">
         <button
-          @click="resetFields"
+          @click="init(questionId)"
           type="submit"
           class="btn btn-outline btn-primary btn-md w-full mt-2"
         >
@@ -161,95 +142,76 @@
           수정
         </button>
       </div>
-    </div>
-  </div>
+    </form>
+  </dialog>
 </template>
 <script setup>
 import { ref } from "vue";
 import { getQuestionDetail, updateQuestion } from "@/api/question";
 
 const username = ref("");
-const questionId = ref(null);
-
 const title = ref("");
 const type = ref("");
 const position = ref("");
-const level = ref("");
-const checkList = ref([]);
-const inputCheck = ref([]);
+const levelId = ref("");
+const newCheckList = ref([]);
+const oldCheckList = ref([]);
 const version = ref("");
-
-const resetFields = () => {
-  title.value = "";
-  level.value = "";
-  checkList.value = [];
-  inputCheck.value = [];
-};
-
-const makeCheckList = () => {
-  console.log("1: ", checkList.value.length);
-  checkList.value.push("");
-  console.log("2: ", checkList.value.length);
-};
-
-const addCheckList = (check) => {
-  if (
-    checkList.value.length > 0 &&
-    checkList.value[checkList.value.length - 1] === ""
-  ) {
-    console.log("3: ", checkList.value.length);
-    checkList.value[checkList.value.length - 1] = check;
-    console.log(check);
-    console.log("4: ", checkList.value.length);
-  }
-};
-
-const removeCheckList = (index) => {
-  checkList.value.splice(index, 1);
-};
-
-const updateBtn = async () => {
-  if (
-    checkList.value.length > 0 &&
-    checkList.value[checkList.value.length - 1] === ""
-  ) {
-    checkList.value.pop();
-  }
-  const updateData = {
-    checklists: checkList.value,
-    questionLevelId: level.value,
-    title: title.value,
-  };
-  try {
-    const response = await updateQuestion(updateData, questionId);
-    alert("수정이 완료되었습니다.");
-  } catch (error) {
-    console.error(error);
-  }
-};
+const questionId = ref();
 
 const init = async (id) => {
   username.value = sessionStorage.getItem("email");
   questionId.value = id;
-  const response = await getQuestionDetail(id, username.value);
-  console.log(response.data);
+  console.log(questionId.value);
+  const response = await getQuestionDetail(questionId.value, username.value);
   title.value = response.data.title;
   position.value = response.data.positionName;
   type.value = response.data.questionTypeName;
-  level.value = response.data.questionLevelId;
-  checkList.value = response.data.checklists;
+  levelId.value = response.data.questionLevelId;
+  oldCheckList.value = response.data.checklists;
+  newCheckList.value = oldCheckList.value;
   version.value = response.data.version;
-  console.log(response.data.checklists);
-  console.log(checkList.value);
+  console.log("newCheckList");
+  console.log(newCheckList.value);
 };
 
-const toggleModal = async (id) => {
+const makeCheckList = () => {
+  newCheckList?.value.push("");
+};
+
+const removeCheckList = (index) => {
+  newCheckList.value.splice(index, 1);
+};
+
+const updateBtn = async () => {
+  const resultCheckList = newCheckList.value.filter(
+    (data) => data.trim() !== "",
+  );
+  console.log(resultCheckList);
+  const updateData = {
+    questionLevelId: levelId.value,
+    title: title.value,
+    checklists: resultCheckList,
+  };
+  console.log(updateData);
+
+  const response = await updateQuestion(updateData, questionId.value);
+  console.log(response);
+  window.alert("수정이 완료되었습니다.");
+  toggleModal();
+};
+
+const openModal = (id) => {
+  init(id);
+  toggleModal();
+};
+
+const toggleModal = async () => {
   document.getElementById("updateModal").classList.toggle("modal-open");
-  await init(id);
 };
 
 defineExpose({
-  toggleModal,
+  openModal,
 });
 </script>
 <style scoped></style>

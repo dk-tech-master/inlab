@@ -125,27 +125,7 @@
       />
     </div>
   </section>
-  <section v-else class="mr-16 mt-8">
-    <div class="border rounded-lg py-20">
-      <div class="flex justify-center mb-10">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-20 h-20 text-gray-500"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
-          />
-        </svg>
-      </div>
-      <p class="text-lg text-gray-500 text-center">직무가 존재하지 않습니다.</p>
-    </div>
-  </section>
+  <EmptyState v-else :message="'직무가 존재하지 않습니다.'" />
   <CreateJobModal ref="createJobModal" @init="init" />
   <UpdateJobModal ref="updateJobModal" @init="init" />
 </template>
@@ -157,6 +137,7 @@ import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import CreateJobModal from "@/components/modal/CreateJobModal.vue";
 import UpdateJobModal from "@/components/modal/UpdateJobModal.vue";
 import Pagination from "@/components/common/Pagination.vue";
+import EmptyState from "@/components/common/EmptyState.vue";
 
 const loaded = ref(false);
 const createJobModal = ref(null);
