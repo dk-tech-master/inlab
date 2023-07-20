@@ -16,11 +16,11 @@ public class ResponseInterviewQuestionDto {
     private String questionLevelName;
     private String positionName;
     private String questionTypeName;
-
+    private Integer version;
 
     @Builder
     public ResponseInterviewQuestionDto(Long interviewQuestionId, Integer levelId, String levelName,
-                                        String questionTitle, String questionLevelName, String positionName, String questionTypeName) {
+                                        String questionTitle, String questionLevelName, String positionName, String questionTypeName, Integer version) {
         this.interviewQuestionId = interviewQuestionId;
         this.levelId = levelId;
         this.levelName = levelName;
@@ -28,5 +28,6 @@ public class ResponseInterviewQuestionDto {
         this.questionLevelName = questionLevelName;
         this.positionName = positionName;
         this.questionTypeName = questionTypeName;
+        this.version = version;
     }
 }

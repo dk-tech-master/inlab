@@ -158,16 +158,16 @@ public class QuestionServiceImpl implements QuestionService {
         latestQuestionVersion.updateIsLatest(YesNo.N);
     }
 
-    private ResponseListDto<ResponseGetQuestionsDto> getAllQuestions(RequestQuestionsDto requestDto) {
-        Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "questionVersionId"));
-        Page<ResponseGetQuestionsDto> questionList = questionVersionQueryRepository.findQuestions(
-                Collections.emptyMap(),
-                requestDto,
-                pageable
-        );
-        PagingUtil pagingUtil = new PagingUtil(questionList.getTotalElements(), questionList.getTotalPages(),
-                questionList.getNumber(), questionList.getSize());
+	private ResponseListDto<ResponseGetQuestionsDto> getAllQuestions(RequestQuestionsDto requestDto) {
+		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
+			Sort.by(Sort.Direction.ASC, "questionVersionId"));
+		Page<ResponseGetQuestionsDto> questionList = questionVersionQueryRepository.findQuestions(
+			Collections.emptyMap(),
+			requestDto,
+			pageable
+		);
+		PagingUtil pagingUtil = new PagingUtil(questionList.getTotalElements(), questionList.getTotalPages(),
+			questionList.getNumber(), questionList.getSize());
 
         return new ResponseListDto<ResponseGetQuestionsDto>(questionList.getContent(), pagingUtil);
     }
@@ -183,17 +183,17 @@ public class QuestionServiceImpl implements QuestionService {
                         )
                 ));
 
-        Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "questionVersionId"));
-        Page<ResponseGetQuestionsDto> questionList = questionVersionQueryRepository.findQuestions(
-                groupedPositionLevels,
-                requestDto,
-                pageable
-        );
-        PagingUtil pagingUtil = new PagingUtil(questionList.getTotalElements(), questionList.getTotalPages(),
-                questionList.getNumber(), questionList.getSize());
+		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
+			Sort.by(Sort.Direction.ASC, "questionVersionId"));
+		Page<ResponseGetQuestionsDto> questionList = questionVersionQueryRepository.findQuestions(
+			groupedPositionLevels,
+			requestDto,
+			pageable
+		);
+		PagingUtil pagingUtil = new PagingUtil(questionList.getTotalElements(), questionList.getTotalPages(),
+			questionList.getNumber(), questionList.getSize());
 
-        return new ResponseListDto<ResponseGetQuestionsDto>(questionList.getContent(), pagingUtil);
-    }
+		return new ResponseListDto<ResponseGetQuestionsDto>(questionList.getContent(), pagingUtil);
+	}
 }
 

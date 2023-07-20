@@ -15,7 +15,7 @@
           <label
             for="searchInterview"
             class="block mb-2 text-base font-bold text-gray-700"
-            >면접 결과 검색</label
+            >면접자 이름 검색</label
           >
           <input
             v-model="intervieweeName"
@@ -188,7 +188,7 @@ const changePage = async (page) => {
   console.log(`changePage ${page}`);
   const requestData = {
     intervieweeName: intervieweeName.value,
-    starDate: startDate.value,
+    startDate: startDate.value,
     endDate: endDate.value,
     page: page,
   };

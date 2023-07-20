@@ -121,7 +121,7 @@ import {
   updateAccessVerfication,
 } from "@/api/interviewer";
 
-const userId = ref(null);
+const userId = ref();
 const levelNumber = ref("");
 const positionName = ref("");
 
@@ -177,6 +177,7 @@ const init = async (userId) => {
 
 const toggleModal = async (id) => {
   userId.value = id;
+  console.log(userId.value);
   document
     .getElementById("verificationAddModal")
     .classList.toggle("modal-open");
@@ -184,6 +185,7 @@ const toggleModal = async (id) => {
 };
 
 const permitBtn = async () => {
+  console.log("in permitBtn", userId.value);
   const requestData = {
     positionAndLevelInfos: requestBox.value,
     userId: userId.value,
@@ -195,7 +197,7 @@ const permitBtn = async () => {
       accessBox.value = [];
       requestBox.value = [];
       alert("등록이 완료되었습니다.");
-      toggleModal();
+      toggleModal(userId.value);
     } else {
       alert("등록에 실패했습니다. 다시 시도해주세요.");
     }

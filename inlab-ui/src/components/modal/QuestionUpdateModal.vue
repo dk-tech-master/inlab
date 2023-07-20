@@ -146,8 +146,10 @@
   </dialog>
 </template>
 <script setup>
-import { ref } from "vue";
+import {defineEmits, ref} from "vue";
 import { getQuestionDetail, updateQuestion } from "@/api/question";
+
+const emit = defineEmits(["init"]);
 
 const username = ref("");
 const title = ref("");
@@ -158,6 +160,7 @@ const newCheckList = ref([]);
 const oldCheckList = ref([]);
 const version = ref("");
 const questionId = ref();
+
 
 const init = async (id) => {
   username.value = sessionStorage.getItem("email");
@@ -171,8 +174,6 @@ const init = async (id) => {
   oldCheckList.value = response.data.checklists;
   newCheckList.value = oldCheckList.value;
   version.value = response.data.version;
-  console.log("newCheckList");
-  console.log(newCheckList.value);
 };
 
 const makeCheckList = () => {
@@ -199,6 +200,7 @@ const updateBtn = async () => {
   console.log(response);
   window.alert("수정이 완료되었습니다.");
   toggleModal();
+  emit("init");
 };
 
 const openModal = (id) => {
