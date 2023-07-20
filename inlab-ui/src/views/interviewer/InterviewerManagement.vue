@@ -106,13 +106,18 @@
           <div
             class="w-[20%] mx-auto flex flex-col items-center justify-center px-6 py-1 text-left"
           >
-            <button
-              class="px-5 customBtn"
-              @click="toggleApproval(info.userId, index)"
-              :class="info.isVerified ? 'customBtn1' : 'customBtn2'"
-            >
-              {{ info.isVerified ? "승인됨" : "미승인" }}
-            </button>
+            <div v-if="info.isVerified">
+              <p class="text-green-500 font-semibold">승인됨</p>
+            </div>
+            <div v-else>
+              <button
+                class="px-5 customBtn"
+                @click="toggleApproval(info.userId, index)"
+                :class="info.isVerified ? 'customBtn1' : 'customBtn2'"
+              >
+                미승인
+              </button>
+            </div>
           </div>
           <div class="w-[20%] flex justify-start px-6 py-4 text-left">
             <div>
