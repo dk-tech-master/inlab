@@ -9,6 +9,7 @@ import kr.inlab.www.dto.common.ChecklistDto;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewDto;
 import kr.inlab.www.dto.request.RequestGetInterviewDto;
+import kr.inlab.www.dto.response.ResponseGetInterviewDto;
 import kr.inlab.www.dto.response.ResponseInterviewDto;
 import kr.inlab.www.dto.response.ResponseInterviewQuestionStartDto;
 import kr.inlab.www.entity.Checklist;
@@ -56,7 +57,21 @@ public class InterviewServiceImpl implements InterviewService{
     }
 
     @Override
-    public ResponseListDto<ResponseInterviewDto> getInterview(Long userId, RequestGetInterviewDto requestDto) {
+    public ResponseGetInterviewDto getInterview(Long interviewId) {
+        Interview interview = interviewRepository.findById(interviewId).orElseThrow(InterviewNotFoundException::new);
+
+        return ResponseGetInterviewDto
+            .builder()
+            .interviewId(interview.getInterviewId())
+            .interviewerNickname(interview.getUser().getNickname())
+            .interviewTitle(interview.getTitle())
+            .questionCount(interview.getQuestions().size())
+            .createdAt(interview.getCreatedAt())
+            .build();
+    }
+
+    @Override
+    public ResponseListDto<ResponseInterviewDto> getInterviews(Long userId, RequestGetInterviewDto requestDto) {
         Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(), Sort.Direction.DESC, "interviewId");
         Page<ResponseInterviewDto> interviewList = interviewQueryRepository.getInterview(userId, requestDto, pageable);
         PagingUtil pagingUtil = new PagingUtil(interviewList.getTotalElements(), interviewList.getTotalPages(), interviewList.getNumber(), interviewList.getSize());
@@ -98,4 +113,6 @@ public class InterviewServiceImpl implements InterviewService{
 
         return responseDto;
     }
+
+
 }

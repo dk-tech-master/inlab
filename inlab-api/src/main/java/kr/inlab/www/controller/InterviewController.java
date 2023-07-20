@@ -29,9 +29,14 @@ public class InterviewController {
 
     @PreAuthorize("@userServiceImpl.isAdminOrSelf(#userId)")
     @GetMapping("/{userId}")
-    public ResponseEntity getInterview(@ModelAttribute RequestGetInterviewDto requestDto, @PathVariable Long userId) {
-        ResponseListDto<ResponseInterviewDto> responseDto = interviewService.getInterview(userId, requestDto);
+    public ResponseEntity getInterviews(@ModelAttribute RequestGetInterviewDto requestDto, @PathVariable Long userId) {
+        ResponseListDto<ResponseInterviewDto> responseDto = interviewService.getInterviews(userId, requestDto);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/{interviewId}/info")
+    public ResponseEntity getInterview(@PathVariable Long interviewId) {
+        return ResponseEntity.ok(interviewService.getInterview(interviewId));
     }
 
     @PutMapping("/{InterviewId}")
