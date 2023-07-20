@@ -1,16 +1,12 @@
 <template>
-  <input type="checkbox" id="registerModal" class="modal-toggle" />
-  <div class="modal">
-    <div class="modal-box pt-10 px-10">
-      <div class="font-semibold text-2xl text-gray-800 mb-10">
-        <label
-          class="cursor-pointer modal-backdrop text-gray-700 flex items-end justify-end"
-          for="registerModal"
-          >x</label
+  <dialog id="registerModal" class="modal">
+    <form method="dialog" class="modal-box">
+      <div class="flex justify-between items-center mb-10">
+        <h2 class="font-bold text-xl">질문 제목</h2>
+        <label class="btn btn-sm btn-circle btn-ghost" @click="toggleModal"
+          >✕</label
         >
-        질문등록
       </div>
-
       <div class="mb-5">
         <label
           for="questionTitle"
@@ -19,8 +15,8 @@
         >
         <input
           type="text"
-          v-model="title"
-          class="w-full input input-sm input-bordered border-gray-300 text-sm"
+          v-model="registerData.title"
+          class="w-11/12 input input-sm input-bordered border-gray-300 text-sm"
           placeholder="질문을 입력해주세요"
           required
           autofocus
@@ -31,48 +27,47 @@
         <label
           for="questionType"
           class="block mb-1.5 text-sm font-semibold text-gray-700"
-          >질문 유형</label
+          >직무</label
         >
         <select
           class="w-full font-medium select select-primary select-sm border-gray-300 max-w-xs"
-          v-model="type"
+          v-model="registerData.positionId"
+          @change="changePosition"
         >
-          <option value="1">운영체제</option>
-          <option value="8">데이터베이스</option>
-          <option value="10">Javascript</option>
-          <option value="11">네트워크</option>
-          <option value="12">Vue.js</option>
-          <option value="145">자료구조</option>
-          <option value="146">알고리즘</option>
-          <option value="147">웹 기초</option>
-          <option value="148">형상관리</option>
-          <option value="149">프로그래밍 공통</option>
-          <option value="150">기타</option>
-          <option value="151">Java</option>
-          <option value="152">Spring</option>
-          <option value="153">클라우드</option>
-          <option value="154">CI/CD</option>
+          <option disabled value="">직무 선택</option>
+          <option
+            v-for="(option, index) in positionOptions"
+            :key="index"
+            :value="option.positionId"
+          >
+            {{ option.positionName }}
+          </option>
         </select>
       </div>
-
       <div class="w-full flex justify-between mb-5">
-        <div class="w-[30%]">
+        <div class="w-[45%]">
           <label
             for="job"
             class="block mb-1.5 text-sm font-semibold text-gray-700"
-            >직무</label
+            >유형</label
           >
           <select
-            class="w-full select select-primary select-sm font-medium border-gray-300 max-w-xs"
-            v-model="position"
+            class="w-full select select-primary select-sm border-gray-300 font-medium max-w-xs"
+            v-model="registerData.questionTypeId"
+            :disabled="!registerData.positionId"
           >
-            <option value="152">공동</option>
-            <option value="1">백엔드</option>
-            <option value="6">프론트앤드</option>
+            <option selected disabled value="">유형 선택</option>
+            <option
+              v-for="(type, index) in typeOptions"
+              :key="index"
+              :value="type.questionTypeId"
+            >
+              {{ type.questionTypeName }}
+            </option>
           </select>
         </div>
 
-        <div class="w-[30%]">
+        <div class="w-[25%]">
           <label
             for="questionLevel"
             class="block mb-1.5 text-sm font-semibold text-gray-700"
@@ -80,14 +75,20 @@
           >
           <select
             class="w-full font-medium select select-primary select-sm border-gray-300 max-w-xs"
-            v-model="level"
+            v-model="registerData.questionLevelId"
+            :disabled="!registerData.positionId"
           >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+            <option disabled value="">난이도</option>
+            <option
+              v-for="(option, index) in levelOptions"
+              :key="index"
+              :value="option.levelId"
+            >
+              {{ option.levelName }}
+            </option>
           </select>
         </div>
-        <div class="w-[30%]">
+        <div class="w-[25%]">
           <label
             for="questionVersion"
             class="block mb-1.5 text-sm font-semibold text-gray-700"
@@ -114,12 +115,11 @@
         >
           <input
             type="text"
-            v-model="inputCheck[index]"
-            class="w-[85%] p-2.5 input input-sm input-primary input-bordered border-gray-300 text-sm"
+            v-model="checkList[index]"
+            class="w-[90%] p-2.5 input input-sm input-primary input-bordered border-gray-300 text-sm"
             placeholder="체크내용을 입력해주세요"
             required
           />
-
           <button type="button" @click="removeCheckList(index)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -130,24 +130,6 @@
               <path
                 fill-rule="evenodd"
                 d="M5.25 12a.75.75 0 01.75-.75h12a.75.75 0 010 1.5H6a.75.75 0 01-.75-.75z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
-          <button
-            type="button"
-            @click="addCheckList(inputCheck[index])"
-            :class="{ 'blue-icon': index === checkList.length - 1 }"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              :fill="index === checkList.length - 1 ? 'black' : 'blue'"
-              class="w-6 h-6"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M12 5.25a.75.75 0 01.75.75v5.25H18a.75.75 0 010 1.5h-5.25V18a.75.75 0 01-1.5 0v-5.25H6a.75.75 0 010-1.5h5.25V6a.75.75 0 01.75-.75z"
                 clip-rule="evenodd"
               />
             </svg>
@@ -191,77 +173,94 @@
           등록
         </button>
       </div>
-    </div>
-  </div>
+    </form>
+  </dialog>
 </template>
 <script setup>
-import { ref } from "vue";
+import {defineEmits, ref} from "vue";
 import { createQuestion } from "@/api/question";
+import { getpositionOption, getTypeOption } from "@/api/select";
 
-const title = ref("");
-const type = ref("");
-const position = ref("");
-const level = ref("");
+const emit = defineEmits(["init"]);
 const checkList = ref([]);
-const inputCheck = ref([]);
+
+//selectOptions
+const positionOptions = ref([]);
+const levelOptions = ref([]);
+const typeOptions = ref([]);
+
+const initialRegisterData = {
+  checklists: [],
+  positionId: "",
+  questionLevelId: "",
+  questionTypeId: "",
+  title: "",
+  version: 1,
+};
+
+const registerData = ref({ ...initialRegisterData });
+
+const init = async () => {
+  const positionOptionInfo = await getpositionOption();
+  positionOptions.value = positionOptionInfo.data;
+};
+
+init();
+
+const changePosition = async () => {
+  const selectedOption = registerData.value.positionId;
+  levelOptions.value = positionOptions?.value.find(
+    (option) => option.positionId === selectedOption,
+  )?.levelListDto;
+  const requestData = {
+    positionId: selectedOption,
+  };
+  const typeOptionInfo = await getTypeOption(requestData);
+  typeOptions.value = typeOptionInfo.data;
+  console.log(typeOptions.value);
+};
 
 const resetFields = () => {
-  title.value = "";
-  type.value = "";
-  position.value = "";
-  level.value = "";
-  checkList.value = [];
-  inputCheck.value = [];
+  registerData.value = { ...initialRegisterData };
 };
 
 const makeCheckList = () => {
-  console.log("1: ", checkList.value.length);
   checkList.value.push("");
-  console.log("2: ", checkList.value.length);
 };
-const addCheckList = (check) => {
-  if (
-    checkList.value.length > 0 &&
-    checkList.value[checkList.value.length - 1] === ""
-  ) {
-    console.log("3: ", checkList.value.length);
-    console.log("inputCheck: ", inputCheck);
-    checkList.value[checkList.value.length - 1] = check;
-    console.log(check);
-    console.log("4: ", checkList.value.length);
-  }
-};
-
 const removeCheckList = (index) => {
   checkList.value.splice(index, 1);
 };
 
 const registerBtn = async () => {
-  if (
-    checkList.value.length > 0 &&
-    checkList.value[checkList.value.length - 1] === ""
-  ) {
-    checkList.value.pop();
+  registerData.value.checklists = checkList.value.filter(
+    (data) => data.trim() !== "",
+  );
+
+  if (!registerData.value.title) {
+    alert("질문 제목을 입력하세요.");
+    return;
   }
-  const registerData = {
-    checklists: checkList.value,
-    positionId: position.value,
-    questionLevelId: level.value,
-    questionTypeId: type.value,
-    title: title.value,
-    version: 0,
-  };
-  console.log(registerData);
-  try {
-    const response = await createQuestion(registerData);
-    console.log(response);
-    alert("등록이 완료되었습니다.");
-  } catch (error) {
-    console.error(error);
+  if (!registerData.value.positionId) {
+    alert("직무를 선택하세요");
+    return;
   }
+  if (!registerData.value.questionTypeId) {
+    alert("질문의 유형을 선택하세요");
+    return;
+  }
+  if (!registerData.value.questionLevelId) {
+    alert("질문의 난이도를 선책하세요.");
+    return;
+  }
+
+  await createQuestion(registerData.value);
+  alert("등록이 완료되었습니다.");
+  emit("init");
+  toggleModal();
 };
 
 const toggleModal = () => {
+  resetFields();
   document.getElementById("registerModal").classList.toggle("modal-open");
 };
 
