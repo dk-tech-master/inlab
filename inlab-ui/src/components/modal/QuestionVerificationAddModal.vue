@@ -1,7 +1,9 @@
 <template>
-  <dialog id="verificationModal" class="modal">
+  <dialog id="verificationAddModal" class="modal">
     <div method="dialog" class="modal-box p-10">
-      <h2 class="mb-8 text-xl font-semibold tracking-tight">질문 접근 권한</h2>
+      <h2 class="mb-8 text-xl font-semibold tracking-tight">
+        질문 접근 권한 추가하기
+      </h2>
       <div class="flex justify-between w-full">
         <div class="w-1/2">
           <label
@@ -13,8 +15,13 @@
             class="font-medium w-[90%] select select-primary select-sm border-gray-300"
             v-model="positionName"
           >
-            <option value="프론트">프론트</option>
-            <option value="백엔드">백엔드</option>
+            <option
+              v-for="position in typeCategory"
+              :key="position.positionId"
+              :value="position.positionId"
+            >
+              {{ position.positionName }}
+            </option>
           </select>
         </div>
         <div class="w-1/2">
@@ -27,9 +34,13 @@
             class="w-[90%] font-medium select select-primary select-sm border-gray-300"
             v-model="levelNumber"
           >
-            <option value="상">상</option>
-            <option value="중">중</option>
-            <option value="하">하</option>
+            <option
+              v-for="level in levelCategory"
+              :key="level.questionLevelId"
+              :value="level.questionLevelId"
+            >
+              {{ level.questionLevelName }}
+            </option>
           </select>
         </div>
         <div
@@ -62,7 +73,7 @@
             <div>
               <span class="mr-2">{{ index + 1 }}.</span>
               <span class="text-primary mr-2">{{ item.positionName }}</span>
-              <span class="mr-2 text-primary">{{ item.levelNumber }}</span>
+              <span class="mr-2 text-primary">{{ item.levelName }}</span>
             </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -97,31 +108,56 @@
         >
           허용
         </button>
+        <!--        {{ typeCategory[0].positionId }}-->
       </div>
     </div>
   </dialog>
 </template>
 <script setup>
 import { ref } from "vue";
-import { getAccessVerification } from "@/api/interviewer";
+import {
+  getAccessVerification,
+  getCategory,
+  updateAccessVerfication,
+} from "@/api/interviewer";
 
 const userId = ref(null);
-const levelId = ref(null);
 const levelNumber = ref("");
-const positionId = ref(null);
 const positionName = ref("");
+
 const accessBox = ref([]);
+const requestBox = ref([]);
+const typeCategory = ref([]);
+const levelCategory = ref([]);
 
 const addVerification = () => {
   if (!levelNumber.value || !positionName.value) {
     alert("직무와 난이도 모두를 입력 해주세요.");
     return;
   }
+  const selectedType = typeCategory.value.find(
+    (position) => position.positionId === positionName.value,
+  );
+  const levelIdValue = selectedType ? selectedType.positionId : null;
+
+  const selectedLevel = levelCategory.value.find(
+    (level) => level.questionLevelId === levelNumber.value,
+  );
+  const positionIdValue = selectedLevel ? selectedLevel.questionLevelId : null;
+
   const inputItem = {
-    levelNumber: levelNumber.value, // select의 입력값
-    positionName: positionName.value, // select의 입력값
+    levelId: levelNumber.value,
+    levelName: selectedLevel ? selectedLevel.questionLevelName : null,
+    positionId: positionName.value,
+    positionName: selectedType ? selectedType.positionName : null,
   };
+  const requestItem = {
+    levelId: levelNumber.value,
+    positionId: positionName.value,
+  };
+  console.log(inputItem);
   accessBox.value.push(inputItem);
+  requestBox.value.push(requestItem);
   levelNumber.value = "";
   positionName.value = "";
 };
@@ -132,33 +168,43 @@ const deleteVerification = (index) => {
 
 const init = async (userId) => {
   const axiosResponse = await getAccessVerification(userId);
-  console.log("wekgjwekgj wejglw", axiosResponse.data.positionIdAndLevelIds);
+  const categories = await getCategory();
+  typeCategory.value = categories.data.positionList;
+  levelCategory.value = categories.data.questionLevelList;
+  console.log(typeCategory);
+  console.log(levelCategory);
 };
 
 const toggleModal = async (id) => {
   userId.value = id;
-  document.getElementById("verificationModal").classList.toggle("modal-open");
+  document
+    .getElementById("verificationAddModal")
+    .classList.toggle("modal-open");
   await init(id);
 };
 
 const permitBtn = async () => {
   const requestData = {
-    positionAndLevelInfos: [
-      {
-        levelId: 0,
-        levelName: "string",
-        positionId: 0,
-        positionName: "string",
-      },
-    ],
+    positionAndLevelInfos: requestBox.value,
     userId: userId.value,
   };
+  try {
+    const axiosResponse = await updateAccessVerfication(requestData);
 
-  console.log(requestData);
-  // const axiosResponse = await updateAccessVerfication(requestData);
+    if (axiosResponse.status >= 200 && axiosResponse.status < 300) {
+      accessBox.value = [];
+      requestBox.value = [];
+      alert("등록이 완료되었습니다.");
+      toggleModal();
+    } else {
+      alert("등록에 실패했습니다. 다시 시도해주세요.");
+    }
+  } catch (error) {
+    // 요청이 실패한 경우 에러 처리
+    console.error("요청 실패:", error);
+    alert("등록에 실패했습니다. 다시 시도해주세요.");
+  }
 };
-
-const deleteinterviewerBtn = () => {};
 
 defineExpose({
   toggleModal,

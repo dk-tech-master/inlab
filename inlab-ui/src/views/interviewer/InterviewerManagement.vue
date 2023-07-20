@@ -116,7 +116,8 @@
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="w-6 h-6"
+                class="w-6 h-6 cursor-pointer"
+                @click="openModal()"
               >
                 <path
                   stroke-linecap="round"
@@ -133,7 +134,7 @@
                 stroke-width="1.5"
                 stroke="currentColor"
                 class="ml-5 w-6 h-6 cursor-pointer"
-                @click="openModal(info.userId)"
+                @click="openAddModal(info.userId)"
               >
                 <path
                   stroke-linecap="round"
@@ -170,6 +171,7 @@
     </section>
     <Pagination :paging-util="pagingUtil" @changePage="changePage" />
     <QuestionVerificationModal ref="verificationModal" />
+    <QuestionVerificationAddModal ref="verificationAddModal" />
   </div>
 </template>
 
@@ -177,26 +179,29 @@
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import { getInterviewers, updateApprove } from "@/api/interviewer";
 import { ref } from "vue";
-import { getQuestion } from "@/api/question";
 import QuestionVerificationModal from "@/components/modal/QuestionVerificationAddModal.vue";
 import Pagination from "@/components/common/Pagination.vue";
 import { deleteUser } from "@/api/auth";
+import QuestionVerificationAddModal from "@/components/modal/QuestionVerificationAddModal.vue";
 
 const pagingUtil = ref({
   page: 1,
-  pageSize: 2,
+  pageSize: 4,
+  nickname: "",
+  isVerified: "",
 });
 
 const infos = ref([]);
 const verificationModal = ref(null);
+const verificationAddModal = ref(null);
 
 const init = async () => {
   console.log(pagingUtil.value);
   const requestData = {
     page: pagingUtil.value.page,
     pageSize: pagingUtil.value.pageSize,
-    nickname: "",
-    isVerified: "",
+    nickname: pagingUtil.value.nickname,
+    isVerified: pagingUtil.value.isVerified,
   };
   const interviewersInfo = await getInterviewers(requestData);
   console.log(interviewersInfo);
@@ -238,8 +243,14 @@ const deleteInterviewerBtn = async (userId) => {
   }
 };
 
-const openModal = (userId) => {
-  verificationModal.value.toggleModal(userId);
+const openModal = () => {
+  console.log("oooooooooooooo");
+  verificationModal.value.toggleModal();
+};
+
+const openAddModal = (userId) => {
+  console.log("xxxxxxxxxxxxx");
+  verificationAddModal.value.toggleModal(userId);
 };
 
 const changePage = async (page) => {

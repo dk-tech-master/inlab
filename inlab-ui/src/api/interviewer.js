@@ -38,3 +38,13 @@ export const updateAccessVerfication = (data) => {
   };
   return request.put(uri, data, config);
 };
+
+export const getCategory = () => {
+  const uri = `/api/category`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return request.get(uri, config);
+};
