@@ -72,7 +72,7 @@
         class="flex border-b hover:bg-gray-100"
         v-for="(interview, index) in interviewList"
         :key="index"
-        @click="clickDetail(interview)"
+        @click="clickDetail(interview.interviewId)"
       >
         <div class="w-[30%] flex flex-col justify-center px-6 py-4 text-left">
           {{ interview.interviewTitle }}
@@ -107,7 +107,7 @@
           <button
             type="button"
             class="flex flex-col items-center ml-3 px-7 py-5 btn btn-outline btn-primary btn-sm hover:bg-indigo-600 hover:text-white"
-            @click="clickInterviewStartBtn(item.interviewResultId)"
+            @click.stop="clickInterviewStartBtn(interview.interviewId)"
           >
             면접 시작
           </button>
@@ -122,39 +122,6 @@
       @change-page="changePage"
     />
   </section>
-
-  <!--수정 조건문으로 구현-->
-  <teleport to="teleport-area">
-    <VModal>
-      <template v-slot:header>
-        <h2 class="mb-6 text-xl font-semibold tracking-tight">면접 등록</h2>
-      </template>
-      <template v-slot:body>
-        <input
-          type="text"
-          name="registerJob"
-          placeholder="면접 제목을 입력하세요"
-          class="input input-bordered w-full mr-2 border-gray-300 text-sm"
-          required
-        />
-      </template>
-      <template v-slot:footer>
-        <div class="flex justify-end mt-12">
-          <button
-            class="flex flex-col mr-3 py-5 px-7 btn btn-sm btn-primary btn-outline"
-          >
-            취소
-          </button>
-          <button
-            class="flex flex-col py-5 px-7 btn btn-sm btn-primary"
-            @click="clickCreateInterview"
-          >
-            등록
-          </button>
-        </div>
-      </template>
-    </VModal>
-  </teleport>
   <CreateInterviewModal ref="createInterviewModal" @init="init" />
   <UpdateInterviewModal ref="updateInterviewModal" @init="init" />
 </template>
@@ -187,8 +154,6 @@ const init = async () => {
   );
   interviewList.value = response.data.responseList;
   pagingUtil.value = response.data.pagingUtil;
-  console.log(interviewList);
-  console.log(response);
   loaded.value = true;
 };
 
@@ -199,9 +164,7 @@ const clickCreateInterviewBtn = () => {
 };
 
 const clickUpdateInterviewBtn = (index) => {
-  console.log(index);
   const interviewData = interviewList.value[index];
-  console.log(interviewData);
   updateInterviewModal.value.toggleModal(interviewData);
 };
 
@@ -219,7 +182,6 @@ const clickSearchInterviewBtn = async () => {
 };
 
 const changePage = async (page) => {
-  console.log(`changePage ${page}`);
   const requestData = {
     interviewTitle: interviewTitle.value,
     nickname: nickname.value,
@@ -232,9 +194,12 @@ const changePage = async (page) => {
   interviewList.value = response.data.responseList;
   pagingUtil.value = response.data.pagingUtil;
 };
-const clickDetail = (interview) => {
-  console.log(interview.interviewId);
-  router.push(`/interview/detail/${interview.interviewId}`);
+const clickDetail = (interviewId) => {
+  router.push(`/interview/detail/${interviewId}`);
+};
+
+const clickInterviewStartBtn = (interviewId) => {
+  router.push(`/interview/start/${interviewId}`);
 };
 </script>
 <style scoped></style>

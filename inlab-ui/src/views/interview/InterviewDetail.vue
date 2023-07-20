@@ -13,6 +13,7 @@
       <div class="flex">
         <button
           class="flex flex-col items-center mr-2 px-7 py-5 btn btn-primary btn-sm"
+          @click.stop="clickInterviewStartBtn(interviewInfo.interviewId)"
         >
           면접 시작
         </button>
@@ -154,6 +155,7 @@ import { getInterviewQuestion } from "@/api/interviewQuestion";
 import { getInterview } from "@/api/interview";
 import { ref } from "vue";
 import UpdateInterviewModal from "@/components/modal/UpdateInterviewModal.vue";
+import router from "@/router";
 
 const route = useRoute();
 const interviewQuestionList = ref([]);
@@ -170,8 +172,6 @@ const init = async () => {
   interviewQuestionList.value = interviewQuestionResponse.data;
 
   interviewInfo.value = interviewInfoResponse.data;
-  console.log(interviewQuestionList.value);
-  console.log(interviewInfo.value);
 };
 
 init();
@@ -180,5 +180,9 @@ const clickUpdateInterviewBtn = () => {
   updateInterviewModal.value.toggleModal(interviewInfo.value);
 };
 const deleteInterviewQuestion = (index) => {};
+
+const clickInterviewStartBtn = (interviewId) => {
+  router.push(`/interview/start/${interviewId}`);
+};
 </script>
 <style scoped></style>
