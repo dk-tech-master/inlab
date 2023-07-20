@@ -40,7 +40,7 @@
             v-model="interviewee"
             type="text"
             name="intervieweeName"
-            placeholder="신다인"
+            placeholder="면접자 이름"
             class="input input-bordered w-full mr-2 border-gray-300 text-sm"
           />
         </div>
