@@ -4,6 +4,7 @@ import kr.inlab.www.common.exception.InterviewAlreadyExistsException;
 import kr.inlab.www.common.exception.InterviewNotFoundException;
 import kr.inlab.www.common.exception.InterviewQuestionNotFoundException;
 import kr.inlab.www.common.exception.QuestionNotFoundException;
+import kr.inlab.www.common.type.InterviewQuestionStatus;
 import kr.inlab.www.dto.common.ChecklistDto;
 import kr.inlab.www.dto.request.RequestCreateInterviewQuestionDto;
 import kr.inlab.www.dto.response.ResponseInterviewQuestionDetailDto;
@@ -55,6 +56,7 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
                 .question(question)
                 .interview(interview)
                 .questionVersion(questionVersion)
+                .interviewQuestionStatus(InterviewQuestionStatus.ACTIVE)
                 .build();
 
         interviewQuestionRepository.save(interviewQuestion);
@@ -66,9 +68,10 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
     }
 
     @Transactional
+    @Override
     public void deleteInterviewQuestion(Long interviewQuestionId) {
         InterviewQuestion interviewQuestion = getInterviewQuestion(interviewQuestionId);
-        interviewQuestionRepository.delete(interviewQuestion);
+        interviewQuestion.updateInterviewQuestion();
     }
 
     public ResponseInterviewQuestionDetailDto getInterviewQuestionDetail(Long interviewQuestionId) {

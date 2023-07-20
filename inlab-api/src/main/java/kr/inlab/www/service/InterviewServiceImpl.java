@@ -4,6 +4,7 @@ import kr.inlab.www.common.exception.InterviewAlreadyExistsException;
 import kr.inlab.www.common.exception.InterviewNotFoundException;
 import kr.inlab.www.common.exception.InterviewTitleDuplicateException;
 import kr.inlab.www.common.exception.UserNotFoundException;
+import kr.inlab.www.common.type.InterviewQuestionStatus;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.ChecklistDto;
 import kr.inlab.www.dto.common.ResponseListDto;
@@ -65,7 +66,8 @@ public class InterviewServiceImpl implements InterviewService{
             .interviewId(interview.getInterviewId())
             .interviewerNickname(interview.getUser().getNickname())
             .interviewTitle(interview.getTitle())
-            .questionCount(interview.getQuestions().size())
+            .questionCount((int) interview.getQuestions().stream().filter( interviewQuestion -> interviewQuestion.getInterviewQuestionStatus().equals(
+                InterviewQuestionStatus.ACTIVE)).count())
             .createdAt(interview.getCreatedAt())
             .build();
     }

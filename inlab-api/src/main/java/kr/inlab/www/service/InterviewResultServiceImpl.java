@@ -86,31 +86,28 @@ public class InterviewResultServiceImpl implements InterviewResultService {
         Interview interview = interviewResult.getInterview();
 
         List<InterviewQuestion> interviewQuestions = interviewQuestionRepository.findAllByInterview(interview);
-        List<ResponseInterviewQuestionResultDto> responseInterviewQuestionResultDtoList = interviewQuestions.stream()
-                .map(interviewQuestion -> {
-                    InterviewQuestionResult interviewQuestionResult =
-                            interviewQuestionResultRepository.findByInterviewQuestionAndInterviewResult(interviewQuestion,
-                                    interviewResult);
+        List<ResponseInterviewQuestionResultDto> responseInterviewQuestionResultDtoList = interviewQuestionResultRepository.findAllByInterviewResult(interviewResult).stream().map(interviewQuestionResult -> {
+            ResponseInterviewAnswerDto responseInterviewAnswerDto =
+                interviewAnswerService.getInterviewAnswer(interviewQuestionResult);
 
-                    ResponseInterviewAnswerDto responseInterviewAnswerDto =
-                            interviewAnswerService.getInterviewAnswer(interviewQuestionResult);
-                    ResponseCommentDto responseCommentDto =
-                            commentService.getComment(interviewQuestionResult);
-                    ResponseGptCommentDto responseGptCommentDto =
-                            gptCommentService.getInterviewResultGptComment(interviewQuestionResult);
-                    List<ResponseChecklistDto> responseChecklistDtoList =
-                            checklistResultService.getChecklistResultList(interviewQuestionResult);
+            ResponseCommentDto responseCommentDto =
+                commentService.getComment(interviewQuestionResult);
 
-                    return ResponseInterviewQuestionResultDto.builder()
-                            .interviewQuestionResultId(interviewQuestionResult.getInterviewQuestionResultId())
-                            .interviewQuestionTitle(interviewQuestion.getQuestionVersion().getTitle())
-                            .responseInterviewAnswerDto(responseInterviewAnswerDto)
-                            .responseCommentDto(responseCommentDto)
-                            .responseGptCommentDto(responseGptCommentDto)
-                            .responseChecklistDtoList(responseChecklistDtoList)
-                            .build();
-                })
-                .collect(Collectors.toList());
+            ResponseGptCommentDto responseGptCommentDto =
+                gptCommentService.getInterviewResultGptComment(interviewQuestionResult);
+
+            List<ResponseChecklistDto> responseChecklistDtoList =
+                checklistResultService.getChecklistResultList(interviewQuestionResult);
+
+            return ResponseInterviewQuestionResultDto.builder()
+                .interviewQuestionResultId(interviewQuestionResult.getInterviewQuestionResultId())
+                .interviewQuestionTitle(interviewQuestionResult.getInterviewQuestion().getQuestionVersion().getTitle())
+                .responseInterviewAnswerDto(responseInterviewAnswerDto)
+                .responseCommentDto(responseCommentDto)
+                .responseGptCommentDto(responseGptCommentDto)
+                .responseChecklistDtoList(responseChecklistDtoList)
+                .build();
+        }).collect(Collectors.toList());
 
         return ResponseInterviewResultDto.builder()
                 .interviewTitle(interview.getTitle())
