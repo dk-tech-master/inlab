@@ -2,6 +2,7 @@ package kr.inlab.www.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.inlab.www.common.type.InterviewQuestionStatus;
 import kr.inlab.www.dto.response.ResponseInterviewQuestionDto;
 import kr.inlab.www.entity.Interview;
 import kr.inlab.www.entity.InterviewQuestion;
@@ -55,6 +56,7 @@ public class InterviewQuestionQueryRepository {
                 .innerJoin(question.position, position)
                 .innerJoin(questionVersion.questionLevel, questionLevel)
                 .where(interview.interviewId.eq(interviewId))
+                .where(interviewQuestion.interviewQuestionStatus.eq(InterviewQuestionStatus.ACTIVE))
                 .fetch();
     }
 
