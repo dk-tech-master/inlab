@@ -8,7 +8,7 @@ import InterviewResultDetail from "@/views/interview/InterviewResultDetail.vue";
 
 const interviewRoutes = [
   {
-    path: "/interview/start",
+    path: "/interview/start/:interviewId",
     name: "startInterview",
     meta: {
       hide: false,
@@ -17,7 +17,7 @@ const interviewRoutes = [
   },
 
   {
-    path: "/interview/process",
+    path: "/interview/process/:interviewId",
     name: "interviewProcess",
     meta: {
       hide: false,

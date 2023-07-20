@@ -1,5 +1,5 @@
 <template>
-  <div id="loadingModal" class="modal">
+  <div id="gptLoadingModal" class="modal">
     <div class="modal-box">
       <h3 class="mb-8 font-bold text-xl text-center">답변 평가 요청 대기</h3>
       <div class="mb-8 text-lg">
@@ -17,7 +17,7 @@
 
 <script setup>
 const toggleModal = () => {
-  document.getElementById("loadingModal").classList.toggle("modal-open");
+  document.getElementById("gptLoadingModal").classList.toggle("modal-open");
 };
 
 defineExpose({

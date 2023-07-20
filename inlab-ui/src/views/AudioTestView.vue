@@ -8,7 +8,7 @@
 <script setup>
 import { ref } from "vue";
 import { uploadAudioFile } from "@/api/file";
-import { speechToText } from "@/api/ncp";
+import { speechToText } from "@/api/clova";
 
 const audioPlayer = ref(null);
 const recording = ref(false);

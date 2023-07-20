@@ -37,11 +37,11 @@
             >면접자 이름</label
           >
           <input
+            v-model="interviewee"
             type="text"
             name="intervieweeName"
             placeholder="신다인"
             class="input input-bordered w-full mr-2 border-gray-300 text-sm"
-            required
           />
         </div>
         <div class="mt-5">
@@ -51,16 +51,37 @@
             >면접자 번호</label
           >
           <input
+            v-model="intervieweeNo"
             type="text"
             name="intervieweeName"
             placeholder="......"
             class="input input-bordered w-full mr-2 border-gray-300 text-sm"
-            required
           />
         </div>
-        <button class="btn btn-primary w-full mt-12">면접 시작</button>
+        <button
+          type="button"
+          class="btn btn-primary w-full mt-12"
+          @click="clickStartInterviewBtn"
+        >
+          면접 시작
+        </button>
       </div>
     </div>
   </section>
 </template>
-<script setup></script>
+
+<script setup>
+import { useRoute, useRouter } from "vue-router";
+import { ref } from "vue";
+
+const route = useRoute();
+const router = useRouter();
+const interviewee = ref();
+const intervieweeNo = ref();
+
+const clickStartInterviewBtn = async () => {
+  await router.push(
+    `/interview/process/${route.params.interviewId}?interviewee=${interviewee.value}&intervieweeNo=${intervieweeNo.value}`,
+  );
+};
+</script>
