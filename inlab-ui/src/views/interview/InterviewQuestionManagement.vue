@@ -25,14 +25,20 @@
         class="mt-3 table flex text-left w-full overflow-x-auto sm:rounded-lg"
       >
         <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-          <div class="w-[40%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[35%] flex flex-col justify-center px-6 py-2 text-left">
             제목
           </div>
-          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
             직무
           </div>
-          <div class="w-[30%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
             유형
+          </div>
+          <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+            난이도
+          </div>
+          <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+            버전
           </div>
           <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
             추가
@@ -43,14 +49,20 @@
           v-for="question in questionList"
           :key="question.questionId"
         >
-          <div class="w-[40%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[35%] flex flex-col justify-center px-6 py-2 text-left">
             {{ question.title }}
           </div>
-          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
             {{ question.positionName }}
           </div>
-          <div class="w-[30%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
             {{ question.questionTypeName }}
+          </div>
+          <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+            {{ question.questionLevelName }}
+          </div>
+          <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+            {{ question.version }}
           </div>
           <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
             <button
@@ -77,14 +89,20 @@
         class="mt-3 table flex text-left w-full overflow-x-auto sm:rounded-lg"
       >
         <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-          <div class="w-[40%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[35%] flex flex-col justify-center px-6 py-2 text-left">
             제목
           </div>
-          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
             직무
           </div>
-          <div class="w-[30%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
             유형
+          </div>
+          <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+            난이도
+          </div>
+          <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+            버전
           </div>
           <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
             추가
@@ -95,19 +113,26 @@
           v-for="interviewQuestion in interviewQuestionList"
           :key="interviewQuestion.questionId"
         >
-          <div class="w-[40%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[35%] flex flex-col justify-center px-6 py-2 text-left">
             {{ interviewQuestion.questionTitle }}
           </div>
           <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
             {{ interviewQuestion.positionName }}
           </div>
-          <div class="w-[30%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[25%] flex flex-col justify-center px-6 py-2 text-left">
             {{ interviewQuestion.questionTypeName }}
+          </div>
+          <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+            {{ interviewQuestion.positionName }}
           </div>
           <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
             <button
               class="customBtn2"
-              @click="deleteInterviewQuestionBtn(interviewQuestion.questionId)"
+              @click="
+                deleteInterviewQuestionBtn(
+                  interviewQuestion.interviewQuestionId,
+                )
+              "
             >
               삭제
             </button>
@@ -137,12 +162,12 @@ const pagingUtil = ref({});
 const router = useRouter();
 const pagingInfos = ref({
   page: 1,
-  pageSize: 2,
+  pageSize: 5,
 });
 
 const requestSearchData = ref({
   page: 1,
-  pageSize: 2,
+  pageSize: 5,
   positionId: null,
   questionLevelId: null,
   questionTypeId: null,
@@ -166,6 +191,7 @@ const init = async () => {
 
   console.log(interviewQuestionInfos);
   interviewQuestionList.value = interviewQuestionInfos.data;
+  console.log(interviewQuestionList.value);
 };
 
 init();
@@ -197,23 +223,29 @@ const handleSearch = async (searchInfos) => {
   pagingUtil.value = searchedInfos.data.pagingUtil;
 };
 
-const addInterviewQuestionBtn = async (questionId) => {
+const addInterviewQuestionBtn = async (questionId, versionId) => {
   const addRequestData = {
     interviewId: interviewId.value,
     questionId: questionId.value,
-    questionVersionId:
-  }
-
-};
-
-const deleteInterviewQuestionBtn = async (questionId) => {
-  const axiosResponse = await deleteInterviewQuestion(questionId);
-  console.log(axiosResponse);
+    questionVersionId: versionId,
+  };
 
   const interviewQuestionInfos = await getInterviewQuestionInfo(
     interviewId.value,
   );
   interviewQuestionList.value = interviewQuestionInfos.data;
+};
+
+const deleteInterviewQuestionBtn = async (questionId) => {
+  console.log(questionId);
+  if (confirm("정말 삭제하시겠습니까?")) {
+    const axiosResponse = await deleteInterviewQuestion(questionId);
+    console.log(axiosResponse);
+    const interviewQuestionInfos = await getInterviewQuestionInfo(
+      interviewId.value,
+    );
+    interviewQuestionList.value = interviewQuestionInfos.data;
+  }
 };
 </script>
 <style scoped></style>

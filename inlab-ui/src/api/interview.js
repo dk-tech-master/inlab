@@ -63,6 +63,16 @@ export const getInterviewQuestionInfo = (interviewId) => {
   return request.get(uri, config);
 };
 
+export const createInterviewQuestion = (data) => {
+  const uri = `/api/interview/questions`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return request.post(uri, data, config);
+};
+
 export const deleteInterviewQuestion = (interviewQuestionId) => {
   const uri = `/api/interview/questions/${interviewQuestionId}`;
   const config = {
@@ -72,4 +82,3 @@ export const deleteInterviewQuestion = (interviewQuestionId) => {
   };
   return request.delete(uri, config);
 };
-
