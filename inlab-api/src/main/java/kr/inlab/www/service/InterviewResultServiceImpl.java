@@ -1,5 +1,8 @@
 package kr.inlab.www.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import javax.persistence.criteria.Predicate;
 import kr.inlab.www.common.exception.InterviewNotFoundException;
 import kr.inlab.www.common.exception.InterviewQuestionNotFoundException;
 import kr.inlab.www.common.exception.InterviewResultNotFoundException;
@@ -145,16 +148,31 @@ public class InterviewResultServiceImpl implements InterviewResultService {
                             criteriaBuilder.like(root.get("intervieweeName"), "%" + requestDto.getIntervieweeName() + "%")
             );
         }
-        if (Strings.isNotEmpty(requestDto.getStartDate()) && Strings.isNotEmpty(requestDto.getEndDate())) {
+        if (Strings.isNotEmpty(requestDto.getStartDate()) || Strings.isNotEmpty(requestDto.getEndDate())) {
             specification = specification.and(
-                    (root, query, criteriaBuilder) ->
-                            criteriaBuilder.between(
-                                    root.get("createdAt"),
-                                    LocalDate.parse(requestDto.getStartDate()).atStartOfDay(),
-                                    LocalDate.parse(requestDto.getEndDate()).atTime(LocalTime.MAX)
-                            )
+                (root, query, criteriaBuilder) -> {
+                    List<Predicate> predicates = new ArrayList<>();
+
+                    if (Strings.isNotEmpty(requestDto.getStartDate()) && Strings.isNotEmpty(requestDto.getEndDate())) {
+                        LocalDateTime startDate = LocalDate.parse(requestDto.getStartDate()).atStartOfDay();
+                        LocalDateTime endDate = LocalDate.parse(requestDto.getEndDate()).atTime(LocalTime.MAX);
+
+                        predicates.add(criteriaBuilder.between(root.get("createdAt"), startDate, endDate));
+                    } else if (Strings.isNotEmpty(requestDto.getStartDate())) {
+                        LocalDateTime startDate = LocalDate.parse(requestDto.getStartDate()).atStartOfDay();
+
+                        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), startDate));
+                    } else if (Strings.isNotEmpty(requestDto.getEndDate())) {
+                        LocalDateTime endDate = LocalDate.parse(requestDto.getEndDate()).atTime(LocalTime.MAX);
+
+                        predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), endDate));
+                    }
+
+                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                }
             );
         }
+
 
         if (!userService.isAdmin()) {
             String loginUserNickname = userService.getLoginUserNickname();
