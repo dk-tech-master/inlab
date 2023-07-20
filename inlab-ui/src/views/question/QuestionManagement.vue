@@ -149,8 +149,8 @@
   </section>
   <EmptyState v-else :message="'질문이 존재하지 않습니다.'" />
   <QuestionDetailModal ref="detailViewModal" />
-  <QuestionRegistrationModal ref="registerModal" />
-  <QuestionUpdateModal ref="updateModal" :questionId="questionId" />
+  <QuestionRegistrationModal ref="registerModal" @init="init"/>
+  <QuestionUpdateModal ref="updateModal" :questionId="questionId" @init="init"/>
 </template>
 
 <script setup>
