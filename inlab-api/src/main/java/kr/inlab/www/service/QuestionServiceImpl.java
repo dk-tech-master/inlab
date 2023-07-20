@@ -160,7 +160,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	private ResponseListDto<ResponseGetQuestionsDto> getAllQuestions(RequestQuestionsDto requestDto) {
 		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
-			Sort.by(Sort.Direction.ASC, "questionVersionId"));
+			Sort.by(Sort.Direction.DESC, "questionVersionId"));
 		Page<ResponseGetQuestionsDto> questionList = questionVersionQueryRepository.findQuestions(
 			Collections.emptyMap(),
 			requestDto,
@@ -184,7 +184,7 @@ public class QuestionServiceImpl implements QuestionService {
                 ));
 
 		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
-			Sort.by(Sort.Direction.ASC, "questionVersionId"));
+			Sort.by(Sort.Direction.DESC, "questionVersionId"));
 		Page<ResponseGetQuestionsDto> questionList = questionVersionQueryRepository.findQuestions(
 			groupedPositionLevels,
 			requestDto,

@@ -78,7 +78,7 @@ public class QuestionVersionQueryRepository {
 			.join(question.position, position)
 			.join(question.questionType, questionType)
 			.join(questionVersion.questionLevel, questionLevel)
-			.where(whereClause);
+			.where(whereClause).orderBy(questionVersion.questionVersionId.desc());
 
 		// Apply pagination manually
 		query.offset(pageable.getOffset());
