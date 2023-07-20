@@ -183,8 +183,7 @@ public class QuestionServiceImpl implements QuestionService {
                         )
                 ));
 
-		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
-			Sort.by(Sort.Direction.ASC, "questionVersionId"));
+		Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize());
 		Page<ResponseGetQuestionsDto> questionList = questionVersionQueryRepository.findQuestions(
 			groupedPositionLevels,
 			requestDto,
