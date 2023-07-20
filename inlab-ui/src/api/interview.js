@@ -52,33 +52,3 @@ export const getInterviewQuestionList = (interviewId) => {
   };
   return request.get(uri, config);
 };
-
-export const getInterviewQuestionInfo = (interviewId) => {
-  const uri = `/api/interview/questions/${interviewId}`;
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-  return request.get(uri, config);
-};
-
-export const createInterviewQuestion = (data) => {
-  const uri = `/api/interview/questions`;
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-  return request.post(uri, data, config);
-};
-
-export const deleteInterviewQuestion = (interviewQuestionId) => {
-  const uri = `/api/interview/questions/${interviewQuestionId}`;
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-  return request.delete(uri, config);
-};

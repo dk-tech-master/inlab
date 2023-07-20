@@ -67,7 +67,12 @@
           <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
             <button
               class="customBtn"
-              @click="addInterviewQuestionBtn(question.questionId)"
+              @click="
+                addInterviewQuestionBtn(
+                  question.questionId,
+                  question.questionVersionId,
+                )
+              "
             >
               추가
             </button>
@@ -116,11 +121,14 @@
           <div class="w-[35%] flex flex-col justify-center px-6 py-2 text-left">
             {{ interviewQuestion.questionTitle }}
           </div>
-          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
             {{ interviewQuestion.positionName }}
           </div>
-          <div class="w-[25%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
             {{ interviewQuestion.questionTypeName }}
+          </div>
+          <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+            {{ interviewQuestion.questionLevelName }}
           </div>
           <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
             {{ interviewQuestion.positionName }}
@@ -148,9 +156,10 @@ import Pagination from "@/components/common/Pagination.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import {
+  createInterviewQuestion,
   deleteInterviewQuestion,
   getInterviewQuestionInfo,
-} from "@/api/interview";
+} from "@/api/interviewQuestion";
 import { getQuestion } from "@/api/question";
 import SearchFilter from "@/components/common/SearchFilter.vue";
 
@@ -224,11 +233,15 @@ const handleSearch = async (searchInfos) => {
 };
 
 const addInterviewQuestionBtn = async (questionId, versionId) => {
+  console.log(versionId);
   const addRequestData = {
-    interviewId: interviewId.value,
-    questionId: questionId.value,
+    interviewId: Number.parseInt(interviewId.value),
+    questionId: questionId,
     questionVersionId: versionId,
   };
+
+  console.log(addRequestData);
+  const axiosResponse = await createInterviewQuestion(addRequestData);
 
   const interviewQuestionInfos = await getInterviewQuestionInfo(
     interviewId.value,
