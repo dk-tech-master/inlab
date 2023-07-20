@@ -38,12 +38,6 @@ public class InterviewResult {
     }
 
     public ResponseInterviewResultListDto toResponseInterviewResultListDto() {
-        return ResponseInterviewResultListDto.builder()
-                .interviewResultId(this.interviewResultId)
-                .interviewTitle(this.interview.getTitle())
-                .intervieweeName(this.intervieweeName)
-                .nickname(this.interview.getUser().getNickname())
-                .createdAt(createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-                .build();
+        return ResponseInterviewResultListDto.builder().interviewResultId(this.interviewResultId).interviewTitle(this.interview.getTitle()).intervieweeName(this.intervieweeName).nickname(this.interview.getUser().getNickname()).createdAt(createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).build();
     }
 }

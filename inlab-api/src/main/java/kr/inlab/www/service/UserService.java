@@ -1,6 +1,9 @@
 package kr.inlab.www.service;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import kr.inlab.www.common.exception.EmailDuplicateException;
 import kr.inlab.www.common.exception.EmailNotVerifiedException;
 import kr.inlab.www.dto.common.ResponseListDto;
@@ -9,7 +12,6 @@ import kr.inlab.www.dto.request.RequestUpdateUserDto;
 import kr.inlab.www.dto.request.RequestUsersDto;
 import kr.inlab.www.dto.response.ResponseGetUserDto;
 import kr.inlab.www.entity.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 // todo [Login]1-5. spring security 가 주관하는 인증 서비스를 사용할 수 있도록 UserDetailsService 상속한다.
 public interface UserService extends UserDetailsService {
@@ -50,4 +52,6 @@ public interface UserService extends UserDetailsService {
     boolean isAdminOrSelf(Long userId);
 
     boolean isAdmin();
+
+    String getLoginUserNickname();
 }

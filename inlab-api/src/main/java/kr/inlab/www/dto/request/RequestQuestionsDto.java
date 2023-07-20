@@ -15,18 +15,17 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class RequestQuestionsDto extends RequestListDto {
 
-	private Integer positionId;
-	private Integer questionTypeId;
-	private Integer questionLevelId;
-	private String titleKeyword;
+    private Integer positionId;
+    private Integer questionTypeId;
+    private Integer questionLevelId;
+    private String titleKeyword;
 
-	@Builder
-
-	public RequestQuestionsDto(Integer positionId, Integer questionTypeId, Integer questionLevelId,
-		String titleKeyword) {
-		this.positionId = positionId;
-		this.questionTypeId = questionTypeId;
-		this.questionLevelId = questionLevelId;
-		this.titleKeyword = titleKeyword;
-	}
+    @Builder
+    public RequestQuestionsDto(Integer positionId, Integer questionTypeId, Integer questionLevelId,
+                               String titleKeyword) {
+        this.positionId = positionId;
+        this.questionTypeId = questionTypeId;
+        this.questionLevelId = questionLevelId;
+        this.titleKeyword = titleKeyword;
+    }
 }
