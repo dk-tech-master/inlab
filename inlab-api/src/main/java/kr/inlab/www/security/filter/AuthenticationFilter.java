@@ -83,6 +83,20 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         User user = userService.getUserByEmail(email);
         userService.resetLoginAttempt(email);
 
+        if (authResult.getAuthorities().stream().collect(Collectors.toList()).get(0).toString().equals("ROLE_GUEST")){
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+
+            ResponseErrorDto responseErrorDto = ResponseErrorDto.builder()
+                .code("UNAUTHORIZED")
+                .message("사이트를 이용하려면 관리자의 승인이 필요합니다.")
+                .build();
+            String jsonResponse = objectMapper.writeValueAsString(responseErrorDto);
+            response.getWriter().write(jsonResponse);
+            return;
+        }
+
         Claims claims = Jwts.claims();
 
         jwtTokenProvider.putPrincipalToClaims(claims, authResult);
