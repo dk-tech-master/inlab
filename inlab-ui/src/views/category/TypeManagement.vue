@@ -184,13 +184,14 @@ const searchInput = ref(null);
 const selectedPosition = ref("");
 
 const init = async () => {
+  selectedPosition.value = "";
+  searchInput.value = "";
   const responseType = await getTypes();
   typeList.value = responseType.data.responseList;
   pagingUtil.value = responseType.data.pagingUtil;
 
   const responseOption = await getpositionOption();
   positionOptions.value = responseOption.data;
-  console.log(positionOptions.value);
   loaded.value = true;
 };
 
@@ -219,7 +220,10 @@ const clickUpdateType = (index) => {
 };
 
 const clickDeleteType = async (typeId) => {
-  window.confirm("유형을 삭제하시겠습니까?");
+  const flag = window.confirm("유형을 삭제하시겠습니까?");
+  if (!flag) {
+    return;
+  }
   await deleteTypes(typeId);
   init();
 };
