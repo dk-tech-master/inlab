@@ -19,11 +19,7 @@
             class="block mb-2 text-base font-bold text-gray-700"
             >질문 제목</label
           >
-          <p
-            class="flex justify-center items-center py-5 pr-36 bg-gray-50 text-primary input input-bordered input-sm text-lg"
-          >
-            {{ questionTitle }}
-          </p>
+          <h2 class="text-xl font-bold">{{ questionTitle }}</h2>
         </div>
       </div>
       <div
