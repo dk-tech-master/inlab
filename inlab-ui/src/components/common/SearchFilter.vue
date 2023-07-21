@@ -108,6 +108,8 @@ const init = async () => {
 init();
 
 const changePosition = async () => {
+  searchInfo.value.type = "";
+  searchInfo.value.level = "";
   const selectedOption = searchInfo.value.position;
   levelOptions.value = positionOptions?.value.find(
     (option) => option.positionId === selectedOption,

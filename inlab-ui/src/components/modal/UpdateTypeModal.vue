@@ -1,7 +1,7 @@
 <template>
   <dialog id="updateTypeModal" class="modal">
     <form method="dialog" class="modal-box">
-      <h2 class="font-bold text-lg mb-6">유형 등록</h2>
+      <h2 class="font-bold text-lg mb-6">유형 수정</h2>
       <label
         for="searchInterview"
         class="block text-sm font-bold text-gray-700 mb-2"
@@ -11,8 +11,9 @@
         class="w-32 h-[3em] bg-gray-50 mb-8 font-medium select select-primary select-sm border-gray-300"
         v-model="selectedPosition"
         ref="positionElement"
+        disabled
       >
-        <option disabled selected>직무 선택</option>
+        <option disabled selected value="">직무 선택</option>
         <option
           v-for="(item, index) in props.positionOptions"
           :key="index"
@@ -60,12 +61,12 @@ import { ref, defineEmits } from "vue";
 import {updateTypes} from "@/api/type";
 
 const typeId = ref();
-const typeName = ref();
+const typeName = ref("");
 
 const emit = defineEmits(["init"]);
 const positionElement = ref(null);
 const typeNameElement = ref(null);
-const selectedPosition = ref();
+const selectedPosition = ref("");
 
 const props = defineProps({
   positionOptions: {

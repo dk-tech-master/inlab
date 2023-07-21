@@ -21,7 +21,7 @@
                 class="w-32 h-[3em] bg-gray-50 font-medium select select-primary select-sm border-gray-300"
                 v-model="selectedPosition"
               >
-                <option disabled selected>직무 선택</option>
+                <option value="">ALL</option>
                 <option
                   v-for="(item, index) in positionOptions"
                   :key="index"
@@ -181,7 +181,7 @@ const updateTypeModal = ref(null);
 const typeList = ref([]);
 const positionOptions = ref([]);
 const searchInput = ref(null);
-const selectedPosition = ref(null);
+const selectedPosition = ref("");
 
 const init = async () => {
   const responseType = await getTypes();
