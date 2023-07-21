@@ -1,7 +1,7 @@
 package kr.inlab.www.service;
 
-import kr.inlab.www.common.exception.InterviewAlreadyExistsException;
 import kr.inlab.www.common.exception.InterviewNotFoundException;
+import kr.inlab.www.common.exception.InterviewQuestionAlreadyExistsException;
 import kr.inlab.www.common.exception.InterviewQuestionNotFoundException;
 import kr.inlab.www.common.exception.QuestionNotFoundException;
 import kr.inlab.www.common.type.InterviewQuestionStatus;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static kr.inlab.www.dto.response.ResponseInterviewQuestionDetailDto.*;
+import static kr.inlab.www.dto.response.ResponseInterviewQuestionDetailDto.InterviewQuestionDetailDto;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +43,7 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
     @Transactional
     public void createInterviewQuestion(RequestCreateInterviewQuestionDto requestDto) {
         if (interviewQuestionQueryRepository.interviewQuestionExist(requestDto.getInterviewId(), requestDto.getQuestionId()))
-            throw new InterviewAlreadyExistsException();
+            throw new InterviewQuestionAlreadyExistsException();
 
         Interview interview = interviewRepository.findById(requestDto.getInterviewId())
                 .orElseThrow(InterviewNotFoundException::new);
