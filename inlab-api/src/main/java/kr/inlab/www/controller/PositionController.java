@@ -1,6 +1,7 @@
 package kr.inlab.www.controller;
 
 import java.util.List;
+import javax.management.relation.RoleNotFoundException;
 import kr.inlab.www.dto.common.PositionAndLevelList;
 import kr.inlab.www.dto.common.ResponseListDto;
 import kr.inlab.www.dto.request.RequestGetPositionDto;
@@ -20,7 +21,7 @@ public class PositionController {
     private final PositionService positionService;
 
     @PostMapping
-    public ResponseEntity createPosition(@RequestBody RequestPositionNameDto requestDto) {
+    public ResponseEntity createPosition(@RequestBody RequestPositionNameDto requestDto) throws RoleNotFoundException {
         positionService.createPosition(requestDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
