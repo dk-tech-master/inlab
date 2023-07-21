@@ -7,7 +7,7 @@
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50">
       <ul class="space-y-2 font-medium">
         <li class="ml-2 mt-5 my-10">
-          <div class="w-1/2">
+          <div class="w-1/2 cursor-pointer" @click="clickHomeBtn">
             <img src="../../images/logo-color.svg" alt="logo" class="w-full" />
           </div>
           <p class="mt-3 ml-1 text-sm text-gray-500">면접 관리 시스템</p>
@@ -217,7 +217,9 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const questionCategoryOpen = ref(false);
 const interviewOpen = ref(false);
 const role = sessionStorage.getItem("role");
@@ -228,6 +230,10 @@ const toggleQuestionCategory = (index) => {
   } else if (index === 2) {
     interviewOpen.value = !interviewOpen.value;
   }
+};
+
+const clickHomeBtn = () => {
+  router.push("/question");
 };
 </script>
 <style scoped>

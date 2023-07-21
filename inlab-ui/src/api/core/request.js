@@ -1,5 +1,5 @@
 import axios, { HttpStatusCode } from "axios";
-import { useRouter } from "vue-router";
+import { authStore } from "@/stores/auth";
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -27,7 +27,6 @@ request.interceptors.response.use(
       HttpStatusCode.Created,
       HttpStatusCode.NoContent,
     ];
-    const router = useRouter();
     if (statuses.includes(response.status)) {
       console.log("axios request success");
     }
@@ -47,7 +46,7 @@ request.interceptors.response.use(
     } else if (response.headers["access-token-invalid"]) {
       sessionStorage.removeItem("refreshToken");
       sessionStorage.removeItem("accessToken");
-      await router.push("/");
+      await authStore().logout();
     }
     return response;
   },
