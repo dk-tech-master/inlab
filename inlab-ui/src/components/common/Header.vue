@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed, ref } from "vue";
 import { authStore } from "@/stores/auth";
 
 // const router = useRouter();

@@ -168,7 +168,14 @@
               @click="registerBtn"
               type="button"
               class="mt-15 btn btn-primary w-full"
-              :disabled="isValidEmail || isDuplicatedEmail || isValidNickname || isDuplicatedNickname || isValidPassword || isValidPasswordCheck"
+              :disabled="
+                isValidEmail ||
+                isDuplicatedEmail ||
+                isValidNickname ||
+                isDuplicatedNickname ||
+                isValidPassword ||
+                isValidPasswordCheck
+              "
             >
               회원가입
             </button>
@@ -186,14 +193,13 @@
 </template>
 <script setup>
 import { useRouter } from "vue-router";
-import { ref } from "vue";
-import { watch } from "vue";
+import { ref, watch } from "vue";
 
 import {
-  checkVerificationCode,
-  createVerificationCode,
   checkEmailDuplicated,
   checkNicknameDuplicated,
+  checkVerificationCode,
+  createVerificationCode,
   register,
 } from "@/api/auth";
 

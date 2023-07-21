@@ -54,7 +54,9 @@
       </div>
     </header>
     <section>
-      <div class="table flex items-center flex-col w-full overflow-x-auto sm:rounded-lg">
+      <div
+        class="table flex items-center flex-col w-full overflow-x-auto sm:rounded-lg"
+      >
         <div
           class="flex bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
         >
@@ -67,7 +69,9 @@
           <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             가입일
           </div>
-          <div class="w-[15%] flex flex-col justify-center items-center py-4 text-left">
+          <div
+            class="w-[15%] flex flex-col justify-center items-center py-4 text-left"
+          >
             회원가입 승인
           </div>
           <div class="w-[15%] flex flex-col justify-center py-4 text-left">
@@ -92,7 +96,9 @@
           <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             {{ info.createdAt.substring(0, 16).replace("T", " ") }}
           </div>
-          <div class="w-[15%] flex flex-col justify-center items-center py-4 text-left">
+          <div
+            class="w-[15%] flex flex-col justify-center items-center py-4 text-left"
+          >
             <div v-if="info.isVerified">
               <p class="text-green-500 font-semibold">승인됨</p>
             </div>

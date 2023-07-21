@@ -100,9 +100,7 @@
         <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           난이도
         </div>
-        <div
-          class="w-[5%] flex flex-col justify-center py-4 text-left"
-        >
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           버전
         </div>
       </div>
@@ -111,7 +109,9 @@
         v-for="(interviewQuestion, index) in interviewQuestionList"
         :key="index"
       >
-        <div class="w-[60%] flex flex-col justify-center py-4 text-left truncate">
+        <div
+          class="w-[60%] flex flex-col justify-center py-4 text-left truncate"
+        >
           {{ interviewQuestion.questionTitle }}
         </div>
         <div class="w-[15%] flex flex-col justify-center py-4 text-left">
@@ -123,9 +123,7 @@
         <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           {{ interviewQuestion.questionLevelName }}
         </div>
-        <div
-          class="w-[5%] flex flex-col justify-center py-4 text-left"
-        >
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           {{ interviewQuestion.version }}
         </div>
       </div>

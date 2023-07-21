@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from "vue";
+import { defineEmits, ref } from "vue";
 import { createJobs } from "@/api/job";
 
 const emit = defineEmits(["init"]);

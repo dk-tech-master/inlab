@@ -4,7 +4,7 @@
       <div class="flex justify-between items-center mb-8">
         <h2 class="font-bold text-xl">질문 접근권한 추가</h2>
         <label class="btn btn-sm btn-circle btn-ghost" @click="toggleModal"
-        >✕</label
+          >✕</label
         >
       </div>
       <div class="flex justify-between w-full">

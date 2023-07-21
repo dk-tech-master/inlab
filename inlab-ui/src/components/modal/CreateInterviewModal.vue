@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from "vue";
+import { defineEmits, ref } from "vue";
 import { createInterview } from "@/api/interview";
 
 const emit = defineEmits(["init"]);

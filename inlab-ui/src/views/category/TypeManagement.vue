@@ -66,7 +66,9 @@
   </header>
   <section v-if="typeList.length > 0" class="mt-8">
     <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
-      <div class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2">
+      <div
+        class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+      >
         <div class="w-[35%] flex flex-col justify-center py-4 text-left">
           직무
         </div>
@@ -79,9 +81,7 @@
         <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           수정
         </div>
-        <div
-          class="w-[10%] flex flex-col justify-center py-4 text-left"
-        >
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           삭제
         </div>
       </div>
@@ -116,9 +116,7 @@
             />
           </svg>
         </div>
-        <div
-          class="w-[10%] flex flex-col justify-center py-4 text-left"
-        >
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -162,7 +160,6 @@
 import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import CreateTypeModal from "@/components/modal/CreateTypeModal.vue";
-import UpdateTypeModal from "@/components/modal/UpdateTypeModal.vue";
 import { ref } from "vue";
 import { deleteTypes, getTypes } from "@/api/type";
 import { getpositionOption } from "@/api/select";

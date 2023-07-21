@@ -29,10 +29,7 @@
               </div>
             </div>
             <div class="flex items-end">
-              <button
-                @click="handleSearch"
-                class="btn btn-primary"
-              >
+              <button @click="handleSearch" class="btn btn-primary">
                 검색
               </button>
             </div>
@@ -43,7 +40,9 @@
   </header>
   <section v-if="userQuestionHistoryList.length > 0">
     <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
-      <div class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2">
+      <div
+        class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+      >
         <div class="w-[50%] flex flex-col justify-center py-4 text-left">
           질문 제목
         </div>

@@ -49,7 +49,9 @@
           v-for="question in questionList"
           :key="question.questionId"
         >
-          <div class="w-[50%] flex flex-col justify-center py-4 text-left truncate">
+          <div
+            class="w-[50%] flex flex-col justify-center py-4 text-left truncate"
+          >
             {{ question.title }}
           </div>
           <div class="w-[15%] flex flex-col justify-center py-4 text-left">
@@ -120,7 +122,9 @@
           v-for="interviewQuestion in interviewQuestionList"
           :key="interviewQuestion.questionId"
         >
-          <div class="w-[50%] flex flex-col justify-center py-4 text-left truncate">
+          <div
+            class="w-[50%] flex flex-col justify-center py-4 text-left truncate"
+          >
             {{ interviewQuestion.questionTitle }}
           </div>
           <div class="w-[15%] flex flex-col justify-center py-4 text-left">

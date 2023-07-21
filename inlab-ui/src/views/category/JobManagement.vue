@@ -30,19 +30,13 @@
               </div>
             </div>
             <div class="flex items-end">
-              <button
-                @click="handleSearch"
-                class="btn btn-primary"
-              >
+              <button @click="handleSearch" class="btn btn-primary">
                 검색
               </button>
             </div>
           </div>
           <div class="self-end">
-            <button
-              class="btn btn-primary"
-              @click="clickCreateJob"
-            >
+            <button class="btn btn-primary" @click="clickCreateJob">
               직무 등록
             </button>
           </div>
@@ -52,7 +46,9 @@
   </header>
   <section v-if="jobList.length > 0">
     <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
-      <div class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2">
+      <div
+        class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+      >
         <div class="w-[40%] flex flex-col justify-center py-4 text-left">
           직무
         </div>
@@ -62,9 +58,7 @@
         <div class="w-[20%] flex flex-col justify-center py-4 text-left">
           수정
         </div>
-        <div
-          class="w-[20%] flex flex-col justify-center py-4 text-left"
-        >
+        <div class="w-[20%] flex flex-col justify-center py-4 text-left">
           삭제
         </div>
       </div>
@@ -96,9 +90,7 @@
             />
           </svg>
         </div>
-        <div
-          class="w-[20%] flex flex-col justify-center py-4 text-left"
-        >
+        <div class="w-[20%] flex flex-col justify-center py-4 text-left">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -135,7 +127,6 @@ import { ref } from "vue";
 import { deleteJobs, getJobs } from "@/api/job";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import CreateJobModal from "@/components/modal/CreateJobModal.vue";
-import UpdateJobModal from "@/components/modal/UpdateJobModal.vue";
 import Pagination from "@/components/common/Pagination.vue";
 import EmptyState from "@/components/common/EmptyState.vue";
 

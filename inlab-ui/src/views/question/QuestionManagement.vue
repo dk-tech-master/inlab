@@ -18,7 +18,9 @@
   </header>
   <section v-if="questionList.length > 0">
     <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
-      <div class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2">
+      <div
+        class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+      >
         <div class="w-[45%] flex flex-col justify-center py-4 text-left">
           질문 제목
         </div>
@@ -52,9 +54,7 @@
         :key="question.title"
         @click="openDetailViewModal(question.questionId)"
       >
-        <div
-          class="w-[45%] py-4 truncate"
-        >
+        <div class="w-[45%] py-4 truncate">
           {{ question.title }}
         </div>
         <div class="w-[15%] flex flex-col justify-center py-4 text-left">

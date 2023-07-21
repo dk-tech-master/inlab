@@ -57,8 +57,8 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from "vue";
-import {updateTypes} from "@/api/type";
+import { defineEmits, ref } from "vue";
+import { updateTypes } from "@/api/type";
 
 const typeId = ref();
 const typeName = ref("");

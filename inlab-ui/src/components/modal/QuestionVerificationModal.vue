@@ -8,9 +8,7 @@
         >
       </div>
       <template v-if="infos.length > 0">
-        <div
-          class="table flex flex-col w-full overflow-x-auto sm:rounded-lg"
-        >
+        <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
           <div
             class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
           >

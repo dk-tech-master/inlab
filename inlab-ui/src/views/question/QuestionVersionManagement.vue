@@ -20,7 +20,9 @@
           <h2 class="text-xl text-gray-700">{{ questionTitle }}</h2>
         </div>
       </div>
-      <div class="table flex items-center flex-col w-full overflow-x-auto sm:rounded-lg">
+      <div
+        class="table flex items-center flex-col w-full overflow-x-auto sm:rounded-lg"
+      >
         <div
           class="flex bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
         >

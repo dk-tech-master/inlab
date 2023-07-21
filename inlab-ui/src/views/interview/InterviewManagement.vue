@@ -47,7 +47,9 @@
   </header>
   <section>
     <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
-      <div class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2">
+      <div
+        class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+      >
         <div class="w-[45%] flex flex-col justify-center py-4 text-left">
           면접 제목
         </div>
@@ -72,9 +74,7 @@
         :key="index"
         @click="clickDetail(interview.interviewId)"
       >
-        <div
-          class="w-[45%] py-4 truncate"
-        >
+        <div class="w-[45%] py-4 truncate">
           {{ interview.interviewTitle }}
         </div>
         <div class="w-[25%] flex flex-col justify-center py-4 text-left">
@@ -101,9 +101,7 @@
             </svg>
           </button>
         </div>
-        <div
-          class="w-[10%] flex flex-col justify-center py-4 text-left"
-        >
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           <button
             type="button"
             class="btn btn-neutral btn-sm"
@@ -131,8 +129,6 @@ import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import { getInterviewList } from "@/api/interview";
 import { ref } from "vue";
-import CreateInterviewModal from "@/components/modal/CreateInterviewModal.vue";
-import UpdateInterviewModal from "@/components/modal/UpdateInterviewModal.vue";
 import router from "@/router";
 
 const interviewList = ref([]);

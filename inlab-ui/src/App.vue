@@ -12,7 +12,6 @@
 
 <script setup>
 import { RouterView } from "vue-router";
-import { ref } from "vue";
 import SideBar from "@/components/common/SideBar.vue";
 import Header from "@/components/common/Header.vue";
 </script>
