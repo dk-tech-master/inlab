@@ -1,90 +1,75 @@
 <template>
   <input type="checkbox" id="detailViewModal" class="modal-toggle" />
   <div class="modal">
-    <div class="modal-box pt-10 px-10">
-      <div class="font-semibold text-2xl text-gray-800 mb-10">
-        <label
-          class="cursor-pointer modal-backdrop text-gray-700 flex items-end justify-end"
-          for="detailViewModal"
-          >x</label
+    <div class="modal-box">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="font-bold text-xl">질문 상세</h2>
+        <label class="btn btn-sm btn-circle btn-ghost" for="detailViewModal"
+          >✕</label
         >
-        질문상세
       </div>
 
-      <div class="mb-5">
-        <label
-          for="questionTitle"
-          class="block mb-1.5 text-sm font-semibold text-gray-700"
+      <div class="mb-4">
+        <label for="questionTitle" class="block mb-2 font-semibold"
           >질문 제목</label
         >
-        <p class="w-full input input-sm text-sm pl-0 text-primary">
+        <p class="input input-sm text-sm pl-0 text-gray-700">
           {{ title }}
         </p>
       </div>
 
-      <div class="mb-5">
-        <label
-          for="questionType"
-          class="block mb-1.5 text-sm font-semibold text-gray-700"
+      <div class="mb-4">
+        <label for="questionType" class="block mb-2 font-semibold"
           >질문 유형</label
         >
-        <p class="w-full input input-sm text-sm pl-0 text-primary">
+        <p class="input input-sm text-sm pl-0 text-gray-700">
           {{ type }}
         </p>
       </div>
 
-      <div class="w-full flex justify-between mb-5">
+      <div class="flex justify-between mb-4">
         <div class="w-[30%]">
-          <label
-            for="job"
-            class="block mb-1.5 text-sm font-semibold text-gray-700"
-            >직무</label
-          >
-          <p class="w-full input input-sm text-sm pl-0 text-primary">
+          <label for="job" class="block mb-2 font-semibold">직무</label>
+          <p class="input input-sm text-sm pl-0 text-gray-700">
             {{ position }}
           </p>
         </div>
 
         <div class="w-[30%]">
-          <label
-            for="questionLevel"
-            class="block mb-1.5 text-sm font-semibold text-gray-700"
+          <label for="questionLevel" class="block mb-2 font-semibold"
             >난이도</label
           >
-          <p class="w-full input input-sm text-sm pl-0 text-primary">
+          <p class="input input-sm text-sm pl-0 text-gray-700">
             {{ level }}
           </p>
         </div>
         <div class="w-[30%]">
-          <label
-            for="questionVersion"
-            class="block mb-1.5 text-sm font-semibold text-gray-700"
+          <label for="questionVersion" class="block mb-2 font-semibold"
             >버전</label
           >
-          <p class="w-full input input-sm text-sm pl-0 text-primary">
+          <p class="w-full input input-sm text-sm pl-0 text-gray-700">
             {{ version }}
           </p>
         </div>
       </div>
-      <div class="mb-5 checkInput">
-        <label
-          for="questionVersion"
-          class="block mb-1.5 text-sm font-semibold text-gray-700"
+      <div class="mb-8 checkInput">
+        <label for="questionVersion" class="block mb-2 font-semibold"
           >체크리스트</label
         >
-        <p
+        <div
           v-for="(check, index) in checkList"
           :key="index"
-          class="w-full input input-sm text-sm pl-0 text-primary"
+          class="flex gap-x-1.5 text-sm pl-0 text-gray-700"
         >
-          {{ index + 1 }}.{{ check }}
-        </p>
+          <span>{{ index + 1 }}.</span>
+          <span>{{ check }}</span>
+        </div>
       </div>
-      <div class="mb-10">
+      <div>
         <label
           for="detailViewModal"
           @click="resetFields"
-          class="btn btn-outline btn-primary btn-md w-full mt-2"
+          class="btn btn-outline btn-primary w-full"
         >
           확인
         </label>
@@ -95,6 +80,7 @@
 <script setup>
 import { ref } from "vue";
 import { getQuestionDetail } from "@/api/question";
+
 const username = ref("");
 const title = ref("");
 const type = ref("");

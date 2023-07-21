@@ -1,7 +1,7 @@
 <template>
-  <header class="mt-8">
+  <header>
     <div class="mb-10">
-      <p class="mb-1 text-sm font-light text-gray-500">
+      <p class="mb-4 text-sm font-light text-gray-500">
         질문 카테고리 관리 >
         <span class="font-medium text-indigo-500">유형 관리</span>
       </p>
@@ -10,15 +10,15 @@
     <div class="flex justify-between">
       <InputSearchFilter>
         <template v-slot:body>
-          <div class="flex">
-            <div class="mr-3">
+          <div class="flex gap-x-4">
+            <div>
               <label
                 for="searchInterview"
                 class="block mb-2 text-base font-bold text-gray-700"
                 >직무</label
               >
               <select
-                class="w-32 h-[3em] bg-gray-50 font-medium select select-primary select-sm border-gray-300"
+                class="w-32 font-medium select select-primary border-gray-300"
                 v-model="selectedPosition"
               >
                 <option value="">ALL</option>
@@ -41,7 +41,7 @@
                 <input
                   type="text"
                   name="interviewTitle"
-                  class="w-64 py-5 input input-bordered input-sm border-gray-300 text-sm"
+                  class="input input-bordered border-gray-300 text-sm"
                   placeholder="면접의 유형을 검색하세요."
                   v-model="searchInput"
                   @keyup.enter="handleSearch"
@@ -50,19 +50,13 @@
               </div>
             </div>
             <div class="flex items-end">
-              <button
-                @click="handleSearch"
-                class="flex flex-col ml-3 px-5 py-5 btn btn-primary btn-sm"
-              >
+              <button @click="handleSearch" class="btn btn-primary">
                 검색
               </button>
             </div>
           </div>
           <div class="self-end">
-            <button
-              class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-5 py-5"
-              @click="clickCreateType"
-            >
+            <button class="btn btn-primary" @click="clickCreateType">
               유형 등록
             </button>
           </div>
@@ -71,48 +65,48 @@
     </div>
   </header>
   <section v-if="typeList.length > 0" class="mt-8">
-    <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
-      <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-        <div class="w-[25%] flex flex-col justify-center px-6 py-2 text-left">
+    <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
+      <div class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2">
+        <div class="w-[35%] flex flex-col justify-center py-4 text-left">
           직무
         </div>
-        <div class="w-[25%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[35%] flex flex-col justify-center py-4 text-left">
           유형
         </div>
-        <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           질문 갯수
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           수정
         </div>
         <div
-          class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-2 text-left"
+          class="w-[10%] flex flex-col justify-center py-4 text-left"
         >
           삭제
         </div>
       </div>
       <div
-        class="flex border-b hover:bg-gray-100"
+        class="flex items-center border-b hover:bg-gray-100 gap-x-4 px-2"
         v-for="(item, index) in typeList"
         :key="index"
       >
-        <div class="w-[25%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[35%] flex flex-col justify-center py-4 text-left">
           {{ item.positionName }}
         </div>
-        <div class="w-[25%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[35%] flex flex-col justify-center py-4 text-left">
           {{ item.questionTypeName }}
         </div>
-        <div class="w-[20%] flex flex-col justify-center px-12 py-4 text-left">
+        <div class="w-[10%] flex flex-col justify-center py-4 py-4 text-left">
           {{ item.questionCount }}
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            class="w-6 h-6 cursor-pointer"
             @click="clickUpdateType(index)"
           >
             <path
@@ -123,7 +117,7 @@
           </svg>
         </div>
         <div
-          class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-1 text-left"
+          class="w-[10%] flex flex-col justify-center py-4 text-left"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +125,7 @@
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            class="w-6 h-6 cursor-pointer"
             @click="clickDeleteType(item.questionTypeId)"
           >
             <path

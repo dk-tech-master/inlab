@@ -1,9 +1,12 @@
 <template>
   <dialog id="verificationAddModal" class="modal">
-    <div method="dialog" class="modal-box p-10">
-      <h2 class="mb-8 text-xl font-semibold tracking-tight">
-        질문 접근 권한 추가하기
-      </h2>
+    <div method="dialog" class="modal-box">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="font-bold text-xl">질문 접근권한 추가</h2>
+        <label class="btn btn-sm btn-circle btn-ghost" @click="toggleModal"
+        >✕</label
+        >
+      </div>
       <div class="flex justify-between w-full">
         <div class="w-1/2">
           <label
@@ -43,25 +46,6 @@
             </option>
           </select>
         </div>
-        <!--        <div-->
-        <!--          class="flex justify-center items-end mb-2 cursor-pointer"-->
-        <!--          @click="addVerification"-->
-        <!--        >-->
-        <!--          <svg-->
-        <!--            xmlns="http://www.w3.org/2000/svg"-->
-        <!--            fill="none"-->
-        <!--            viewBox="0 0 24 24"-->
-        <!--            stroke-width="1.5"-->
-        <!--            stroke="currentColor"-->
-        <!--            class="w-6 h-6"-->
-        <!--          >-->
-        <!--            <path-->
-        <!--              stroke-linecap="round"-->
-        <!--              stroke-linejoin="round"-->
-        <!--              d="M12 4.5v15m7.5-7.5h-15"-->
-        <!--            />-->
-        <!--          </svg>-->
-        <!--        </div>-->
       </div>
 
       <p class="border-t-gray-300 border-t mt-8 pt-8 font-bold mb-5">

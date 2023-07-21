@@ -1,16 +1,15 @@
 <template>
-  <header class="mt-8">
+  <header>
     <div class="mb-10">
-      <p class="mb-1 text-sm font-light text-gray-500">
-        면접 관리 >
+      <p class="mb-4 text-sm font-light text-gray-500">
         <span class="font-medium text-indigo-500">면접 관리</span>
       </p>
       <h2 class="text-3xl tracking-tight font-bold text-gray-800">면접 관리</h2>
     </div>
-    <div class="flex">
+    <div class="flex justify-between mb-8">
       <InputSearchFilter>
         <template v-slot:body>
-          <div class="flex">
+          <div class="flex gap-x-4">
             <div>
               <label
                 for="searchInterview"
@@ -21,7 +20,7 @@
                 <input
                   type="text"
                   name="interviewTitle"
-                  class="py-5 pl-7 pr-36 bg-gray-50 input input-bordered input-sm border-gray-300 text-sm"
+                  class="w-64 input input-bordered border-gray-300 text-sm"
                   placeholder="면접 제목을 입력하세요"
                   v-model="interviewTitle"
                   @keyup.enter="clickSearchInterviewBtn"
@@ -29,61 +28,62 @@
                 />
               </div>
             </div>
-            <div class="flex items-end">
-              <button
-                @click="clickSearchInterviewBtn"
-                class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-7 py-5"
-              >
+            <div class="flex self-end">
+              <button @click="clickSearchInterviewBtn" class="btn btn-primary">
                 검색
               </button>
             </div>
           </div>
+          <button
+            @click="clickCreateInterviewBtn"
+            class="btn btn-primary self-end"
+          >
+            면접 추가
+          </button>
         </template>
         <template v-slot:footer />
       </InputSearchFilter>
     </div>
   </header>
-  <section class="mr-16 mt-8">
-    <button
-      @click="clickCreateInterviewBtn"
-      class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-7 py-5"
-    >
-      면접 추가
-    </button>
-    <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
-      <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-        <div class="w-[30%] flex flex-col justify-center px-6 py-2 text-left">
+  <section>
+    <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
+      <div class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2">
+        <div class="w-[45%] flex flex-col justify-center py-4 text-left">
           면접 제목
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[25%] flex flex-col justify-center py-4 text-left">
           면접관
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           질문 개수
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           수정
         </div>
         <div
-          class="w-[20%] mx-auto flex flex-col items-center justify-center px-6 py-2 text-left"
-        ></div>
+          class="w-[10%] mx-auto flex flex-col justify-center py-4 text-left"
+        >
+          면접 시작
+        </div>
       </div>
       <div
-        class="flex border-b hover:bg-gray-100"
+        class="flex items-center border-b hover:bg-gray-100 gap-x-4 px-2"
         v-for="(interview, index) in interviewList"
         :key="index"
         @click="clickDetail(interview.interviewId)"
       >
-        <div class="w-[30%] flex flex-col justify-center px-6 py-4 text-left">
+        <div
+          class="w-[45%] py-4 truncate"
+        >
           {{ interview.interviewTitle }}
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[25%] flex flex-col justify-center py-4 text-left">
           {{ interview.nickname }}
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           {{ interview.questionCount }}
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[10%] flex flex-col justify-center py-4 text-left">
           <button type="button" @click.stop="clickUpdateInterviewBtn(index)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -102,11 +102,11 @@
           </button>
         </div>
         <div
-          class="w-[20%] mx-auto flex flex-col items-center justify-center px-6 py-1 text-left"
+          class="w-[10%] flex flex-col justify-center py-4 text-left"
         >
           <button
             type="button"
-            class="flex flex-col items-center ml-3 px-7 py-5 btn btn-outline btn-primary btn-sm hover:bg-indigo-600 hover:text-white"
+            class="btn btn-neutral btn-sm"
             @click.stop="clickInterviewStartBtn(interview.interviewId)"
           >
             면접 시작
@@ -115,7 +115,7 @@
       </div>
     </div>
   </section>
-  <section class="ml-72 mr-10 mt-20 mb-32">
+  <section>
     <Pagination
       v-if="loaded"
       :paging-util="pagingUtil"

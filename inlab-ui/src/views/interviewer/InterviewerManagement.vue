@@ -1,17 +1,17 @@
 <template>
   <div>
-    <header class="mt-8">
+    <header>
       <div class="mb-10">
-        <p class="mb-1 text-sm font-light text-gray-500">면접관 관리</p>
+        <p class="mb-4 text-sm font-medium text-indigo-500">면접관 관리</p>
         <h2 class="text-3xl tracking-tight font-bold text-gray-800">
           면접관 관리
         </h2>
       </div>
-      <div class="mr-3">
-        <div class="flex">
+      <div class="flex mb-8">
+        <div class="flex gap-x-4">
           <InputSearchFilter>
             <template v-slot:body>
-              <div class="mr-3">
+              <div>
                 <label
                   for="searchInterview"
                   class="block mb-2 text-base font-bold text-gray-700"
@@ -21,9 +21,8 @@
                   type="text"
                   v-model="pagingUtil.nickname"
                   name="interviewTitle"
-                  class="py-5 pl-7 pr-36 input input-bordered input-sm border-gray-300 text-sm"
+                  class="w-64 input input-bordered border-gray-300 text-sm"
                   placeholder="닉네임을 입력하세요"
-                  required
                 />
               </div>
               <div>
@@ -33,7 +32,7 @@
                   >회원가입 승인</label
                 >
                 <select
-                  class="h-10 text-sm font-medium select select-primary select-sm border-gray-300 max-w-xs"
+                  class="w-32 text-sm font-medium select select-primary border-gray-300"
                   v-model="pagingUtil.isVerified"
                 >
                   <option value="true">승인</option>
@@ -43,17 +42,9 @@
             </template>
 
             <template v-slot:footer>
-              <div class="flex items-end">
-                <button
-                  @click="init()"
-                  class="flex flex-col ml-3 px-7 py-5 btn btn-primary btn-sm"
-                >
-                  검색
-                </button>
-                <button
-                  @click="resetPage"
-                  class="flex flex-col ml-3 px-7 py-5 btn btn-primary btn-sm"
-                >
+              <div class="flex items-end gap-x-4">
+                <button @click="init()" class="btn btn-primary">검색</button>
+                <button @click="resetPage" class="btn btn-neutral">
                   초기화
                 </button>
               </div>
@@ -62,64 +53,59 @@
         </div>
       </div>
     </header>
-    <section class="mr-16 mt-8">
-      <div
-        class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg"
-      >
-        <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-          <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
-            가입일
-          </div>
-          <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
-            닉네임
-          </div>
-          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
+    <section>
+      <div class="table flex items-center flex-col w-full overflow-x-auto sm:rounded-lg">
+        <div
+          class="flex bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+        >
+          <div class="w-[30%] flex flex-col justify-center py-4 text-left">
             이메일
           </div>
-          <div
-            class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-2 text-left"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
+            닉네임
+          </div>
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
+            가입일
+          </div>
+          <div class="w-[15%] flex flex-col justify-center items-center py-4 text-left">
             회원가입 승인
           </div>
-          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             질문 접근 권한
           </div>
-          <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
             삭제
           </div>
         </div>
 
         <div
-          class="flex border-b hover:bg-gray-100"
+          class="flex items-center border-b hover:bg-gray-100 gap-x-4 px-2"
           v-for="(info, index) in infos"
           :key="index"
         >
-          <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
-            {{ info.createdAt.split("T")[0] }}
-          </div>
-          <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
-            {{ info.nickname }}
-          </div>
-          <div class="w-[20%] flex flex-col justify-center px-6 py-4 text-left">
+          <div class="w-[30%] flex flex-col justify-center py-4 text-left">
             {{ info.email }}
           </div>
-          <div
-            class="w-[20%] mx-auto flex flex-col items-center justify-center px-6 py-1 text-left"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
+            {{ info.nickname }}
+          </div>
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
+            {{ info.createdAt.substring(0, 16).replace("T", " ") }}
+          </div>
+          <div class="w-[15%] flex flex-col justify-center items-center py-4 text-left">
             <div v-if="info.isVerified">
               <p class="text-green-500 font-semibold">승인됨</p>
             </div>
             <div v-else>
               <button
-                class="px-5 customBtn"
                 @click="toggleApproval(info.userId, index)"
-                :class="info.isVerified ? 'customBtn1' : 'customBtn2'"
+                class="btn btn-error btn-sm btn-outline"
               >
                 미승인
               </button>
             </div>
           </div>
-          <div class="w-[20%] flex justify-start px-6 py-4 text-left">
+          <div class="w-[15%] flex justify-start py-4 text-left">
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +146,7 @@
               </svg>
             </div>
           </div>
-          <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-left">
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

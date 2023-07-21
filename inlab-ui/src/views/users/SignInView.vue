@@ -1,15 +1,13 @@
 <template>
-  <section>
-    <div
-      class="flex flex-col items-center justify-center w-full px-6 py-8 md:h-screen lg:py-0"
-    >
-      <div class="w-1/3 flex items-center">
-        <a href="#" class="flex w-1/3 items-center mx-auto mb-10">
-          <img class="w-full" src="../../images/logo-color.svg" alt="logo" />
-        </a>
-      </div>
-      <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+  <section class="py-24">
+    <div class="flex flex-col items-center justify-center w-full px-6 py-8">
+      <div class="w-full bg-white rounded-lg shadow border p-12 max-w-lg">
+        <div class="flex items-center">
+          <a href="#" class="flex w-1/3 items-center mx-auto mb-10">
+            <img class="w-full" src="../../images/logo-color.svg" alt="logo" />
+          </a>
+        </div>
+        <div class="">
           <form class="" action="#">
             <div class="mb-4">
               <label

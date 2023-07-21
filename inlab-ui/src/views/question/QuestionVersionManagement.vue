@@ -1,8 +1,8 @@
 <template>
   <div>
-    <header class="mt-8">
+    <header>
       <div class="mb-10">
-        <p class="mb-1 text-sm font-light text-gray-500">
+        <p class="mb-4 text-sm font-light text-gray-500">
           질문 관리 >
           <span class="font-medium text-indigo-500">질문 버전 관리</span>
         </p>
@@ -11,69 +11,59 @@
         </h2>
       </div>
     </header>
-    <section class="mr-16 mt-8">
-      <div class="flex mb-10">
+    <section>
+      <div class="flex mb-8">
         <div>
-          <label
-            for="searchInterview"
-            class="block mb-2 text-base font-bold text-gray-700"
-            >질문 제목</label
-          >
-          <h2 class="text-xl font-bold">{{ questionTitle }}</h2>
+          <div for="searchInterview" class="block mb-2 text-2xl font-bold">
+            질문 제목
+          </div>
+          <h2 class="text-xl text-gray-700">{{ questionTitle }}</h2>
         </div>
       </div>
-      <div
-        class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg"
-      >
-        <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-          <div class="w-[30%] flex flex-col justify-center px-6 py-2 text-left">
+      <div class="table flex items-center flex-col w-full overflow-x-auto sm:rounded-lg">
+        <div
+          class="flex bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+        >
+          <div class="w-[50%] flex flex-col justify-center py-4 text-left">
             제목
           </div>
-          <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             직무
           </div>
-          <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             유형
           </div>
-          <div
-            class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-2 text-left"
-          >
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
             난이도
           </div>
-          <div
-            class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-2 text-left"
-          >
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
             버전
           </div>
         </div>
         <div
-          class="flex border-b hover:bg-gray-100"
+          class="flex items-center border-b hover:bg-gray-100 gap-x-4 px-2"
           v-for="(question, index) in versionList"
           :key="index"
         >
-          <div class="w-[30%] flex flex-col justify-center px-6 py-4 text-left">
+          <div class="w-[50%] py-4 truncate">
             {{ question.title }}
           </div>
-          <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             {{ question.positionName }}
           </div>
-          <div class="w-[20%] flex flex-col justify-center px-6 py-4 text-left">
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             {{ question.questionTypeName }}
           </div>
-          <div
-            class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-1 text-left"
-          >
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
             {{ question.questionLevelName }}
           </div>
-          <div
-            class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-1 text-left"
-          >
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
             {{ question.version }}
           </div>
         </div>
       </div>
     </section>
-    <section class="mt-20 mb-32">
+    <section>
       <Pagination :paging-util="pagingUtil" @changePage="changePage" />
     </section>
   </div>

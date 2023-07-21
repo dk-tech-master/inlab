@@ -1,26 +1,24 @@
 <template>
   <dialog id="createInterviewModal" class="modal">
     <form method="dialog" class="modal-box">
-      <h2 class="font-bold text-lg mb-6">면접 등록</h2>
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="font-bold text-xl">면접 등록</h2>
+        <label class="btn btn-sm btn-circle btn-ghost" @click="toggleModal"
+          >✕</label
+        >
+      </div>
       <input
         v-model="interviewTitle"
         type="text"
         name="registerInterview"
-        class="input input-bordered w-full mr-2 border-gray-300 text-sm"
+        class="input input-bordered w-full border-gray-300 text-sm"
         placeholder="면접 제목을 입력해주세요."
         required
       />
       <div class="modal-action">
         <button
-          class="flex flex-col mr-3 py-5 px-5 btn btn-sm btn-primary btn-outline"
           type="button"
-          @click="toggleModal"
-        >
-          취소
-        </button>
-        <button
-          type="button"
-          class="flex flex-col py-5 px-5 btn btn-sm btn-primary"
+          class="btn btn-primary"
           @click="clickCreateInterviewBtn"
         >
           확인

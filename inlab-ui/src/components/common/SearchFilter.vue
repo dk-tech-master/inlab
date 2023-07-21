@@ -1,13 +1,13 @@
 <template>
   <slot name="header"></slot>
   <slot name="body">
-    <div class="flex justify mt-5">
-      <div class="mr-3">
-        <label for="job" class="block mb-2 text-sm font-medium text-gray-900"
+    <div class="flex gap-x-4">
+      <div>
+        <label for="job" class="block mb-2 text-base font-bold text-gray-700"
           >직무</label
         >
         <select
-          class="font-medium select select-primary select-sm border-gray-300 max-w-xs"
+          class="font-medium select select-primary border-gray-300 max-w-xs"
           v-model="searchInfo.position"
           @change="changePosition()"
         >
@@ -21,14 +21,14 @@
           </option>
         </select>
       </div>
-      <div class="mr-3">
+      <div>
         <label
           for="questionType"
-          class="block mb-2 text-sm font-medium text-gray-900"
+          class="block mb-2 text-base font-bold text-gray-700"
           >유형</label
         >
         <select
-          class="w-32 font-medium select select-primary select-sm border-gray-300 max-w-xs"
+          class="w-32 font-medium select select-primary border-gray-300 max-w-xs"
           v-model="searchInfo.type"
           :disabled="!searchInfo.position"
         >
@@ -42,14 +42,14 @@
           </option>
         </select>
       </div>
-      <div class="mr-3">
+      <div>
         <label
           for="questionLevel"
-          class="block mb-2 text-sm font-medium text-gray-900"
+          class="block mb-2 text-base font-bold text-gray-700"
           >난이도</label
         >
         <select
-          class="w-32 font-medium select select-primary select-sm border-gray-300 max-w-xs"
+          class="w-32 font-medium select select-primary border-gray-300 max-w-xs"
           v-model="searchInfo.level"
           :disabled="!searchInfo.position"
         >
@@ -63,25 +63,23 @@
           </option>
         </select>
       </div>
-      <div class="mr-3">
+      <div>
         <label
           for="nickName"
-          class="block mb-2 text-sm font-medium text-gray-900"
+          class="block mb-2 text-base font-bold text-gray-700"
           >제목</label
         >
         <input
           v-model="searchInfo.title"
           type="text"
           name="title"
-          class="p-2.5 input input-sm input-bordered border-gray-300 text-sm"
+          class="p-2.5 input input-bordered border-gray-300 text-sm"
           placeholder="제목을 입력하세요"
           required
           @keyup.enter="onSearch"
         />
-        <button class="ml-3 px-5 btn btn-primary btn-sm" @click="onSearch">
-          검색
-        </button>
       </div>
+      <button class="btn btn-primary self-end" @click="onSearch">검색</button>
     </div>
   </slot>
 </template>
