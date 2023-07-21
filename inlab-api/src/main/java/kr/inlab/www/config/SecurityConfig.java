@@ -35,13 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/verification_code","/api/verification_code/check","/", "/login", "/docs/index.html", "/swagger-ui/index.html", "/swagger/**", "/swagger-resources/**", "/v2/api-docs").permitAll(); // 로그인과 메인화면과 회원가입 페이지는 누구나 접근 가능하게 설정
+        http.authorizeRequests().antMatchers("/api/users/check-email-duplicated").permitAll();
+        http.authorizeRequests().antMatchers("/api/users/check-nickname-duplicated").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/users").permitAll();
         http.authorizeRequests().antMatchers("/api/users/*/role").hasRole("ADMIN");
         http.authorizeRequests().antMatchers("/api/admin/**").hasRole("ADMIN");
         http.authorizeRequests().antMatchers("/api/user-question-history").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/users").permitAll();
+        http.authorizeRequests().antMatchers("/api/questions/**").hasAnyAuthority("ADMIN","USER");
         http.authorizeRequests().antMatchers("/api/users/*").permitAll();
-        http.authorizeRequests().antMatchers("/api/users/check-email-duplicated").permitAll();
-        http.authorizeRequests().antMatchers("/api/users/check-nickname-duplicated").permitAll();
         http.addFilterBefore(getAuthorizationHeaderFilter(), AuthenticationFilter.class);
         http.addFilter(getAuthenticationFilter());
         http.exceptionHandling()
