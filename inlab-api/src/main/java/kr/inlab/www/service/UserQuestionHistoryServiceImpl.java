@@ -45,7 +45,7 @@ public class UserQuestionHistoryServiceImpl implements UserQuestionHistoryServic
                 .questionTitle(responseUserQuestionHistoryInterface.getQuestionTitle())
                 .questionVersion(responseUserQuestionHistoryInterface.getQuestionVersion())
                 .nickname(responseUserQuestionHistoryInterface.getNickname())
-                .readingTime(responseUserQuestionHistoryInterface.getReadingTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm")))
+                .readingTime(responseUserQuestionHistoryInterface.getReadingTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build()
         ).collect(Collectors.toList());
 
