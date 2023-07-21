@@ -1,8 +1,5 @@
 package kr.inlab.www.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import kr.inlab.www.common.exception.PositionNotFoundException;
 import kr.inlab.www.common.exception.QuestionTypeAlreadyExistsException;
 import kr.inlab.www.common.exception.QuestionTypeDeleteNotAllowedException;
@@ -27,6 +24,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class QuestionTypeServiceImpl implements QuestionTypeService {
@@ -45,21 +46,21 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
         }
         Position position = positionRepository.findById(positionId).orElseThrow(PositionNotFoundException::new);
         QuestionType questionType = QuestionType.builder()
-            .position(position)
-            .questionTypeName(requestDto.getQuestionTypeName())
-            .build();
+                .position(position)
+                .questionTypeName(requestDto.getQuestionTypeName())
+                .build();
         questionTypeRepository.save(questionType);
     }
 
     @Override
     public ResponseListDto<ResponseQuestionTypeDto> getQuestionType(RequestQuestionTypeDto requestDto) {
         Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getPageSize(),
-            Sort.by(Sort.Direction.DESC, "questionTypeId"));
+                Sort.by(Sort.Direction.DESC, "questionTypeId"));
         Page<ResponseQuestionTypeDto> questionTypeList = questionTypeRepository.getQuestionTypeList(
-            requestDto.getQuestionTypeName(), requestDto.getPositionId(), pageable);
+                requestDto.getQuestionTypeName(), requestDto.getPositionId(), pageable);
 
         PagingUtil pagingUtil = new PagingUtil(questionTypeList.getTotalElements(), questionTypeList.getTotalPages(),
-            questionTypeList.getNumber(), questionTypeList.getSize());
+                questionTypeList.getNumber(), questionTypeList.getSize());
         List<ResponseQuestionTypeDto> content = questionTypeList.getContent();
 
         return new ResponseListDto<>(content, pagingUtil);
@@ -68,22 +69,29 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     @Override
     @Transactional
     public List<ResponseGetQuestionTypeByPositionDto> getQuestionTypeByPosition(
-        RequestGetQuestionTypeByPositionDto requestDto) {
+            RequestGetQuestionTypeByPositionDto requestDto) {
         return questionTypeRepository.findAllByPosition_PositionId(
-            requestDto.getPositionId()).stream().map(questionType ->
-                ResponseGetQuestionTypeByPositionDto
-                    .builder()
-                    .questionTypeId(questionType.getQuestionTypeId())
-                    .questionTypeName(questionType.getQuestionTypeName())
-                    .build())
-            .collect(Collectors.toList());
+                        requestDto.getPositionId()).stream().map(questionType ->
+                        ResponseGetQuestionTypeByPositionDto
+                                .builder()
+                                .questionTypeId(questionType.getQuestionTypeId())
+                                .questionTypeName(questionType.getQuestionTypeName())
+                                .build())
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public void updateQuestionType(Integer questionTypeId, RequestUpdateQuestionTypeDto requestDto) {
         QuestionType questionType = questionTypeRepository.findById(questionTypeId)
-            .orElseThrow(QuestionTypeNotFoundException::new);
+                .orElseThrow(QuestionTypeNotFoundException::new);
+
+        if (questionTypeRepository.existsByPosition_PositionIdAndQuestionTypeNameAndQuestionTypeIdIsNot(
+                requestDto.getPositionId(),
+                requestDto.getQuestionTypeName(),
+                questionTypeId)) {
+            throw new QuestionTypeAlreadyExistsException();
+        }
 
         questionType.updateQuestionTypeName(requestDto.getQuestionTypeName());
     }
@@ -92,9 +100,9 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     @Transactional
     public void deleteQuestionType(Integer questionTypeId) {
         QuestionType questionType = questionTypeRepository.findById(questionTypeId)
-            .orElseThrow(QuestionTypeNotFoundException::new);
+                .orElseThrow(QuestionTypeNotFoundException::new);
 
-        if (questionRepository.countByQuestionType(questionType) > 0) {
+        if (questionRepository.existsByQuestionType_QuestionTypeId(questionTypeId)) {
             throw new QuestionTypeDeleteNotAllowedException();
         }
 

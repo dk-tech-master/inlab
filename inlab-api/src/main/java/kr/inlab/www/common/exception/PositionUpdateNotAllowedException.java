@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public class PositionUpdateNotAllowedException extends InlabException{
 
-    public static final String MESSAGE = "직무를 수정할 수 없습니다. 연관된 질문이 존재합니다.";
+    public static final String MESSAGE = "직무를 수정할 수 없습니다. 연관된 유형,질문이 존재합니다.";
 
     public PositionUpdateNotAllowedException() {
         super(MESSAGE);
