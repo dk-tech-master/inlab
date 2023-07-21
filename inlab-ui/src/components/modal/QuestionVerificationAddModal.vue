@@ -43,25 +43,25 @@
             </option>
           </select>
         </div>
-        <div
-          class="flex justify-center items-end mb-2 cursor-pointer"
-          @click="addVerification"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 4.5v15m7.5-7.5h-15"
-            />
-          </svg>
-        </div>
+        <!--        <div-->
+        <!--          class="flex justify-center items-end mb-2 cursor-pointer"-->
+        <!--          @click="addVerification"-->
+        <!--        >-->
+        <!--          <svg-->
+        <!--            xmlns="http://www.w3.org/2000/svg"-->
+        <!--            fill="none"-->
+        <!--            viewBox="0 0 24 24"-->
+        <!--            stroke-width="1.5"-->
+        <!--            stroke="currentColor"-->
+        <!--            class="w-6 h-6"-->
+        <!--          >-->
+        <!--            <path-->
+        <!--              stroke-linecap="round"-->
+        <!--              stroke-linejoin="round"-->
+        <!--              d="M12 4.5v15m7.5-7.5h-15"-->
+        <!--            />-->
+        <!--          </svg>-->
+        <!--        </div>-->
       </div>
 
       <p class="border-t-gray-300 border-t mt-8 pt-8 font-bold mb-5">
@@ -114,7 +114,7 @@
   </dialog>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import {
   getAccessVerification,
   getCategory,
@@ -132,9 +132,26 @@ const levelCategory = ref([]);
 
 const addVerification = () => {
   if (!levelNumber.value || !positionName.value) {
-    alert("직무와 난이도 모두를 입력 해주세요.");
+    // 두 개의 input이 모두 입력되지 않은 경우에는 추가하지 않고 함수 종료
     return;
   }
+
+  // 이미 추가된 접근 권한인지 확인
+  const isDuplicate = accessBox.value.some(
+    (item) =>
+      item.levelId === levelNumber.value &&
+      item.positionId === positionName.value,
+  );
+
+  if (isDuplicate) {
+    // 이미 추가된 접근 권한이라면 alert 창을 띄우고 함수 종료
+    alert("이미 추가된 접근 권한입니다.");
+    // 입력된 값을 원상복구
+    levelNumber.value = "";
+    positionName.value = "";
+    return;
+  }
+
   const selectedType = typeCategory.value.find(
     (position) => position.positionId === positionName.value,
   );
@@ -151,16 +168,21 @@ const addVerification = () => {
     positionId: positionName.value,
     positionName: selectedType ? selectedType.positionName : null,
   };
-  const requestItem = {
-    levelId: levelNumber.value,
-    positionId: positionName.value,
-  };
+
   console.log(inputItem);
   accessBox.value.push(inputItem);
-  requestBox.value.push(requestItem);
   levelNumber.value = "";
   positionName.value = "";
 };
+
+watch(
+  [levelNumber, positionName],
+  ([newLevel, newPosition], [oldLevel, oldPosition]) => {
+    if (newLevel && newPosition) {
+      addVerification();
+    }
+  },
+);
 
 const deleteVerification = (index) => {
   accessBox.value.splice(index, 1); // 해당 인덱스의 항목 삭제
@@ -168,6 +190,20 @@ const deleteVerification = (index) => {
 
 const init = async (userId) => {
   const axiosResponse = await getAccessVerification(userId);
+  console.log(axiosResponse.data.positionIdAndLevelIds);
+
+  if (axiosResponse.status >= 200 && axiosResponse.status < 300) {
+    const accessVerificationData = axiosResponse.data.positionIdAndLevelIds;
+    accessBox.value = accessVerificationData.map((item) => ({
+      levelId: item.levelId,
+      levelName: item.levelName,
+      positionId: item.positionId,
+      positionName: item.positionName,
+    }));
+
+    console.log(accessBox.value);
+  }
+
   const categories = await getCategory();
   typeCategory.value = categories.data.positionList;
   levelCategory.value = categories.data.questionLevelList;
@@ -187,9 +223,10 @@ const toggleModal = async (id) => {
 const permitBtn = async () => {
   console.log("in permitBtn", userId.value);
   const requestData = {
-    positionAndLevelInfos: requestBox.value,
+    positionAndLevelInfos: accessBox.value,
     userId: userId.value,
   };
+  console.log("requestData: ", requestData);
   try {
     const axiosResponse = await updateAccessVerfication(requestData);
 
