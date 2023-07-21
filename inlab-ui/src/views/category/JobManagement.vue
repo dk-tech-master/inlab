@@ -167,7 +167,10 @@ const handleSearch = async () => {
 };
 
 const clickDeleteJob = async (jobId) => {
-  window.confirm("직무를 삭제하시겠습니까?");
+  let flag = window.confirm("직무를 삭제하시겠습니까?");
+  if (!flag) {
+    return;
+  }
   await deleteJobs(jobId);
   init();
 };
