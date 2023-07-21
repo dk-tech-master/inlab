@@ -14,6 +14,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     Long countByPosition(Position position);
 
-    Long countByQuestionType(QuestionType questionType);
+    boolean existsByPosition_PositionId(Integer positionId);
+
+    boolean existsByQuestionType_QuestionTypeId(Integer questionTypeId);
+
 
 }

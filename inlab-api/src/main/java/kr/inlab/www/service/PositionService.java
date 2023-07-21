@@ -1,6 +1,7 @@
 package kr.inlab.www.service;
 
 import java.util.List;
+import javax.management.relation.RoleNotFoundException;
 import kr.inlab.www.dto.common.PositionAndLevelList;
 import kr.inlab.www.dto.common.PositionDto;
 import kr.inlab.www.dto.common.ResponseListDto;
@@ -11,7 +12,7 @@ import kr.inlab.www.dto.response.ResponsePositionDto;
 
 public interface PositionService {
 
-    void createPosition(RequestPositionNameDto requestDto);
+    void createPosition(RequestPositionNameDto requestDto) throws RoleNotFoundException;
 
     ResponseListDto<ResponsePositionDto> getPosition(RequestGetPositionDto requestDto);
 

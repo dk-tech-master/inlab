@@ -24,6 +24,7 @@ public interface QuestionTypeRepository extends JpaRepository<QuestionType, Inte
                                                       Pageable pageable);
 
     boolean existsByPosition_PositionIdAndQuestionTypeName(Integer position_positionId, String questionTypeName);
-
+    boolean existsByPosition_PositionIdAndQuestionTypeNameAndQuestionTypeIdIsNot(Integer position_positionId, String questionTypeName, Integer questionTypeId);
+    boolean existsByPosition_PositionId(Integer positionId);
     List<QuestionType> findAllByPosition_PositionId(Integer positionId);
 }

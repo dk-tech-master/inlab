@@ -1,6 +1,7 @@
 package kr.inlab.www.service;
 
 import kr.inlab.www.common.exception.*;
+import kr.inlab.www.common.type.RoleType;
 import kr.inlab.www.common.util.PagingUtil;
 import kr.inlab.www.dto.common.PositionAndLevelList;
 import kr.inlab.www.dto.common.PositionDto;
@@ -10,11 +11,9 @@ import kr.inlab.www.dto.request.RequestPositionNameDto;
 import kr.inlab.www.dto.response.ResponsePositionDto;
 import kr.inlab.www.entity.Position;
 import kr.inlab.www.entity.PositionLevel;
+import kr.inlab.www.entity.Role;
 import kr.inlab.www.entity.User;
-import kr.inlab.www.repository.PositionLevelRepository;
-import kr.inlab.www.repository.PositionRepository;
-import kr.inlab.www.repository.QuestionRepository;
-import kr.inlab.www.repository.UserRepository;
+import kr.inlab.www.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.RoleNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +36,13 @@ public class PositionServiceImpl implements PositionService {
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
     private final PositionLevelRepository positionLevelRepository;
-    private final QuestionLevelService questionLevelService;
+    private final QuestionTypeRepository questionTypeRepository;
+    private final PositionLevelService positionLevelService;
+    private final RoleRepository roleRepository;
 
     @Override
     @Transactional
-    public void createPosition(RequestPositionNameDto requestDto) {
+    public void createPosition(RequestPositionNameDto requestDto) throws RoleNotFoundException {
         if (positionRepository.existsByPositionName(requestDto.getPositionName()))
             throw new PositionAlreadyExistsException();
 
@@ -48,6 +50,9 @@ public class PositionServiceImpl implements PositionService {
                 .positionName(requestDto.getPositionName())
                 .build();
         positionRepository.save(position);
+        Role role = roleRepository.findByRoleType(RoleType.ROLE_ADMIN).orElseThrow(RoleNotFoundException::new);
+        List<User> adminUserList = userRepository.findAllByRoles(role);
+        positionLevelService.createAdminPositionLevel(adminUserList, position);
     }
 
     @Override
@@ -65,6 +70,11 @@ public class PositionServiceImpl implements PositionService {
         Position position = positionRepository.findById(positionId)
                 .orElseThrow(PositionNotFoundException::new);
 
+        if (questionRepository.existsByPosition_PositionId(positionId) ||
+                questionTypeRepository.existsByPosition_PositionId(positionId))
+            throw new PositionDeleteNotAllowedException();
+
+        positionLevelRepository.deleteAllByPosition(position);
         positionRepository.delete(position);
     }
 
@@ -74,8 +84,11 @@ public class PositionServiceImpl implements PositionService {
         Position position = positionRepository.findById(positionId)
                 .orElseThrow(PositionNotFoundException::new);
 
-        if (questionRepository.countByPosition(position) > 0)
+        if (questionRepository.existsByPosition_PositionId(positionId))
             throw new PositionUpdateNotAllowedException();
+
+        if (positionRepository.existsByPositionName(requestDto.getPositionName()))
+            throw new PositionAlreadyExistsException();
 
         position.updateName(requestDto.getPositionName());
     }

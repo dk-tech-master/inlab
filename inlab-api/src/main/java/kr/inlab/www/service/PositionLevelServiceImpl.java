@@ -10,7 +10,9 @@ import kr.inlab.www.dto.common.PositionAndLevelInfo;
 import kr.inlab.www.dto.response.ResponseGetPositionLevelDto;
 import kr.inlab.www.dto.common.PositionLevelInfoGetter;
 import kr.inlab.www.dto.request.RequestUpdatePositionLevelDto;
+import kr.inlab.www.entity.Position;
 import kr.inlab.www.entity.PositionLevel;
+import kr.inlab.www.entity.User;
 import kr.inlab.www.repository.PositionLevelRepository;
 import kr.inlab.www.repository.PositionRepository;
 import kr.inlab.www.repository.QuestionLevelRepository;
@@ -27,6 +29,16 @@ public class PositionLevelServiceImpl implements PositionLevelService {
     private final PositionRepository positionRepository;
     private final QuestionLevelRepository questionLevelRepository;
     private final UserRepository userRepository;
+
+    @Transactional
+    @Override
+    public void createAdminPositionLevel(List<User> adminUser, Position position){
+        adminUser.forEach(user -> {
+            questionLevelRepository.findAll().stream().map(questionLevel -> {
+                return PositionLevel.builder().position(position).questionLevel(questionLevel).user(user).build();
+            }).forEach(positionLevelRepository::save);
+        });
+    }
 
     @Override
     public ResponseGetPositionLevelDto getPositionLevel(Long userId) {
