@@ -173,6 +173,14 @@ const clickSearchBtn = async () => {
     startDate: startDate.value,
     endDate: endDate.value,
   };
+
+  if (startDate.value && endDate.value && startDate.value > endDate.value) {
+    alert("검색 기간을 다시 확인해주세요");
+    startDate.value = "";
+    endDate.value = "";
+    return;
+  }
+
   const response = await getInterviewResultList(requestData);
   interviewResultList.value = response.data.responseList;
   pagingUtil.value = response.data.pagingUtil;
