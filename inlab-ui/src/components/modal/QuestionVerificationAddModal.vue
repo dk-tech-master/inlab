@@ -48,51 +48,77 @@
         </div>
       </div>
 
-      <p class="border-t-gray-300 border-t mt-8 pt-8 font-bold mb-5">
+      <p class="border-t-gray-300 border-t mt-8 pt-8 font-bold text-lg mb-5">
         추가된 접근 권한
       </p>
-      <div class="accessBox">
-        <div v-for="(item, index) in accessBox" :key="index" class="mb-2">
-          <div class="flex justify-between">
-            <div>
-              <span class="mr-2">{{ index + 1 }}.</span>
-              <span class="text-primary mr-2">{{ item.positionName }}</span>
-              <span class="mr-2 text-primary">{{ item.levelName }}</span>
-            </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6 cursor-pointer"
-              @click="deleteVerification(index)"
+      <div class="text-sm">
+        <template v-if="accessBox.length > 0">
+          <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
+            <div
+              class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M18 12H6"
-              />
-            </svg>
+              <div class="w-[40%] flex flex-col justify-center py-2 text-left">
+                직무
+              </div>
+              <div class="w-[40%] flex flex-col justify-center py-2 text-left">
+                난이도
+              </div>
+              <div class="w-[20%] flex flex-col justify-center py-2 text-left">
+                난이도
+              </div>
+            </div>
           </div>
-        </div>
+
+          <div
+            class="flex items-center border-b hover:bg-gray-100 gap-x-4 px-2"
+            v-for="info in accessBox"
+            :key="info.positionId"
+          >
+            <div class="w-[40%] flex flex-col justify-center py-2 text-left">
+              {{ info.positionName }}
+            </div>
+            <div class="w-[40%] flex flex-col justify-center py-2 text-left">
+              {{ info.levelName }}
+            </div>
+            <div class="w-[20%] flex flex-col justify-center py-2 text-left">
+              <button class="btn btn-error btn-sm btn-outline">삭제</button>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <EmptyState :message="`질문 접근권한이 존재하지 않습니다.`" />
+        </template>
       </div>
+<!--      <div class="accessBox">-->
+<!--        <div v-for="(item, index) in accessBox" :key="index" class="mb-2">-->
+<!--          <div class="flex justify-between">-->
+<!--            <div>-->
+<!--              <span class="mr-2">{{ index + 1 }}.</span>-->
+<!--              <span class="text-primary mr-2">{{ item.positionName }}</span>-->
+<!--              <span class="mr-2 text-primary">{{ item.levelName }}</span>-->
+<!--            </div>-->
+<!--            <svg-->
+<!--              xmlns="http://www.w3.org/2000/svg"-->
+<!--              fill="none"-->
+<!--              viewBox="0 0 24 24"-->
+<!--              stroke-width="1.5"-->
+<!--              stroke="currentColor"-->
+<!--              class="w-6 h-6 cursor-pointer"-->
+<!--              @click="deleteVerification(index)"-->
+<!--            >-->
+<!--              <path-->
+<!--                stroke-linecap="round"-->
+<!--                stroke-linejoin="round"-->
+<!--                d="M18 12H6"-->
+<!--              />-->
+<!--            </svg>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="flex justify-end mt-12">
-        <button
-          class="flex flex-col mr-3 py-5 px-7 btn btn-sm btn-primary btn-outline"
-          type="button"
-          @click="toggleModal"
-        >
-          취소
+        <button class="btn btn-primary w-full" type="button" @click="permitBtn">
+          접근권한 허용
         </button>
-        <button
-          class="flex flex-col py-5 px-7 btn btn-sm btn-primary"
-          type="button"
-          @click="permitBtn"
-        >
-          허용
-        </button>
-        <!--        {{ typeCategory[0].positionId }}-->
       </div>
     </div>
   </dialog>
@@ -104,6 +130,7 @@ import {
   getCategory,
   updateAccessVerfication,
 } from "@/api/interviewer";
+import EmptyState from "@/components/common/EmptyState.vue";
 
 const userId = ref();
 const levelNumber = ref("");

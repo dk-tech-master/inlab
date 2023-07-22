@@ -1,12 +1,12 @@
 <template>
   <nav class="px-20 navbar border-b shadow-sm flex justify-end">
-    <div v-if="isAccessTokenPresent" class="py-2">
-      <a href="/update-userinfo">
+    <div v-if="isAccessTokenPresent" class="flex items-center gap-x-4 py-2">
+      <div class="flex items-center gap-x-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          class="w-5 h-5"
+          class="w-6 h-6"
         >
           <path
             fill-rule="evenodd"
@@ -14,12 +14,16 @@
             clip-rule="evenodd"
           />
         </svg>
-      </a>
-      <p class="ml-2 mr-10">{{ nickname }} 님</p>
+        <span>{{ nickname }} 님</span>
+      </div>
+
+      <button class="btn btn-sm" @click="clickUpdateUserInfoBtn">
+        회원정보 수정
+      </button>
 
       <button
         type="button"
-        class="flex flex-col items-center px-5 py-5 btn btn-primary btn-sm btn btn-outline text-sm"
+        class="btn btn-primary btn-sm btn-outline"
         @click="logoutBtn"
       >
         로그아웃
@@ -41,7 +45,9 @@
 <script setup>
 import { computed, ref } from "vue";
 import { authStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 // const router = useRouter();
 const store = authStore();
 
@@ -56,4 +62,8 @@ const logoutBtn = async () => {
 };
 
 const loginBtn = async () => {};
+
+const clickUpdateUserInfoBtn = () => {
+  router.push("/update-userinfo");
+};
 </script>

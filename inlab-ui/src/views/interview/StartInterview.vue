@@ -1,6 +1,6 @@
 <template>
   <section class="flex items-center justify-center py-24">
-    <div class="w-1/4">
+    <div>
       <div class="flex items-center">
         <a href="#" class="flex w-1/2 items-center mx-auto mb-10">
           <img class="w-full" src="../../images/logo-color.svg" alt="logo" />
@@ -16,7 +16,7 @@
       </div>
       <div class="rounded-lg border p-12 shadow">
         <div>
-          <div class="mb-4">
+          <div class="mb-4">e
             <label
               for="intervieweeName"
               class="block mb-2 text-sm font-semibold text-gray-900"

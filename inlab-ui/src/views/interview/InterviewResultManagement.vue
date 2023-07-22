@@ -23,6 +23,7 @@
             name="interviewTitle"
             class="w-64 input input-bordered border-gray-300 text-sm"
             placeholder="면접자 이름을 입력하세요"
+            @keyup.enter="clickSearchBtn"
           />
         </div>
         <div>
