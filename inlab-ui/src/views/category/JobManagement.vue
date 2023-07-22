@@ -1,16 +1,16 @@
 <template>
   <header>
     <div class="mb-10">
-      <p class="mb-1 text-sm font-light text-gray-500">
+      <p class="mb-4 text-sm font-light text-gray-500">
         질문 카테고리 관리 >
         <span class="font-medium text-indigo-500">직무 관리</span>
       </p>
       <h2 class="text-3xl tracking-tight font-bold text-gray-800">직무 관리</h2>
     </div>
-    <div class="flex justify-between">
+    <div class="flex justify-between mb-8">
       <InputSearchFilter>
         <template v-slot:body>
-          <div class="flex">
+          <div class="flex gap-x-4">
             <div>
               <label
                 for="searchInterview"
@@ -21,7 +21,7 @@
                 <input
                   type="text"
                   name="interviewTitle"
-                  class="w-64 py-5 input input-bordered input-sm border-gray-300 text-sm"
+                  class="w-64 input input-bordered border-gray-300 text-sm"
                   placeholder="면접의 직무를 검색하세요"
                   v-model="searchInput"
                   @keyup.enter="handleSearch"
@@ -30,19 +30,13 @@
               </div>
             </div>
             <div class="flex items-end">
-              <button
-                @click="handleSearch"
-                class="flex flex-col ml-3 px-5 py-5 btn btn-primary btn-sm"
-              >
+              <button @click="handleSearch" class="btn btn-primary">
                 검색
               </button>
             </div>
           </div>
           <div class="self-end">
-            <button
-              class="btn btn-primary btn-sm ml-auto flex flex-col items-center ml-3 px-5 py-5"
-              @click="clickCreateJob"
-            >
+            <button class="btn btn-primary" @click="clickCreateJob">
               직무 등록
             </button>
           </div>
@@ -50,36 +44,36 @@
       </InputSearchFilter>
     </div>
   </header>
-  <section v-if="jobList.length > 0" class="mt-8">
-    <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
-      <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-        <div class="w-[35%] flex flex-col justify-center px-6 py-2 text-left">
+  <section v-if="jobList.length > 0">
+    <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
+      <div
+        class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+      >
+        <div class="w-[40%] flex flex-col justify-center py-4 text-left">
           직무
         </div>
-        <div class="w-[20%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[20%] flex flex-col justify-center py-4 text-left">
           질문 갯수
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[20%] flex flex-col justify-center py-4 text-left">
           수정
         </div>
-        <div
-          class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-2 text-left"
-        >
+        <div class="w-[20%] flex flex-col justify-center py-4 text-left">
           삭제
         </div>
       </div>
       <div
-        class="flex border-b hover:bg-gray-100"
+        class="flex items-center border-b hover:bg-gray-100 gap-x-4 px-2"
         v-for="(item, index) in jobList"
         :key="item"
       >
-        <div class="w-[35%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[40%] flex flex-col justify-center py-4 text-left">
           {{ item.positionName }}
         </div>
-        <div class="w-[20%] flex flex-col justify-center px-10 py-4 text-left">
+        <div class="w-[20%] flex flex-col justify-center py-4 text-left">
           {{ item.questionCount }}
         </div>
-        <div class="w-[15%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[20%] flex flex-col justify-center py-4 text-left">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -96,9 +90,7 @@
             />
           </svg>
         </div>
-        <div
-          class="w-[15%] mx-auto flex flex-col items-center justify-center px-6 py-1 text-left"
-        >
+        <div class="w-[20%] flex flex-col justify-center py-4 text-left">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -135,7 +127,6 @@ import { ref } from "vue";
 import { deleteJobs, getJobs } from "@/api/job";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import CreateJobModal from "@/components/modal/CreateJobModal.vue";
-import UpdateJobModal from "@/components/modal/UpdateJobModal.vue";
 import Pagination from "@/components/common/Pagination.vue";
 import EmptyState from "@/components/common/EmptyState.vue";
 

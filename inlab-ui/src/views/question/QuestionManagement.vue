@@ -1,83 +1,77 @@
 <template>
-  <header class="mr-16">
-    <div class="mb-6">
-      <p class="mb-1 text-sm font-light text-gray-500">질문 관리</p>
+  <header>
+    <div class="mb-10">
+      <p class="text-sm text-indigo-500 mb-4 font-medium">질문 관리</p>
       <h2 class="text-3xl tracking-tight font-bold text-gray-800">질문 관리</h2>
     </div>
-    <div class="flex justify-between">
+    <div class="flex justify-between mb-8">
       <SearchFilter @search-info="handleSearch" />
       <div class="self-end">
         <label
           for="registerModal"
-          class="w-24 mb-4 btn btn-primary btn-sm ml-auto flex flex-col items-center px-7 py-5"
+          class="px-6 btn btn-primary"
           @click="openRegisterModal"
           >등록</label
         >
       </div>
     </div>
   </header>
-  <section v-if="questionList.length > 0" class="mt-8 py-10 mr-16">
-    <div class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg">
-      <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-        <div class="w-[28%] flex flex-col justify-center px-6 py-2 text-left">
+  <section v-if="questionList.length > 0">
+    <div class="table flex flex-col w-full overflow-x-auto sm:rounded-lg">
+      <div
+        class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+      >
+        <div class="w-[45%] flex flex-col justify-center py-4 text-left">
           질문 제목
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[15%] flex flex-col justify-center py-4 text-left">
           직무
         </div>
-        <div class="w-[17%] flex flex-col justify-center px-6 py-2 text-left">
+        <div class="w-[15%] flex flex-col justify-center py-4 text-left">
           유형
         </div>
-        <div class="w-[9%] flex flex-col justify-center px-6 py-2 text-center">
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           난이도
         </div>
-        <div
-          class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-left"
-        >
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           버전
         </div>
-        <div
-          class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-center"
-        >
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           버전관리
         </div>
-        <div
-          class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-center"
-        >
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           꼬리질문
         </div>
-        <div
-          class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-center"
-        >
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           수정
         </div>
       </div>
 
       <label
         for="detailViewModal"
-        class="flex border-b hover:bg-gray-100 cursor-pointer"
+        class="flex items-center border-b hover:bg-gray-100 cursor-pointer gap-x-4 px-2"
         v-for="question in questionList"
         :key="question.title"
         @click="openDetailViewModal(question.questionId)"
       >
-        <div class="w-[28%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[45%] py-4 truncate">
           {{ question.title }}
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[15%] flex flex-col justify-center py-4 text-left">
           {{ question.positionName }}
         </div>
-        <div class="w-[17%] flex flex-col justify-center px-6 py-4 text-left">
+        <div class="w-[15%] flex flex-col justify-center py-4 text-left">
           {{ question.questionTypeName }}
         </div>
-        <div class="w-[9%] flex flex-col px-6 py-4 text-center">
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           {{ question.questionLevelName }}
         </div>
-        <div class="w-[10%] flex flex-col px-6 py-4 text-center">
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           {{ question.version }}
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-4 text-center">
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           <router-link :to="`/question/version/${question?.questionId}`">
-            <label class="flex cursor-pointer justify-center">
+            <label class="flex cursor-pointer justify-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -95,12 +89,12 @@
             </label>
           </router-link>
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-2">
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           <router-link
             :to="`/question/follow-up/${question?.questionId}`"
             @click="store.setQuestionTitle(question.title)"
           >
-            <label class="flex cursor-pointer justify-center">
+            <label class="flex cursor-pointer justify-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -118,10 +112,10 @@
             </label>
           </router-link>
         </div>
-        <div class="w-[10%] flex flex-col justify-center px-6 py-2">
+        <div class="w-[5%] flex flex-col justify-center py-4 text-left">
           <label
             for="updateModal"
-            class="flex cursor-pointer justify-center"
+            class="flex cursor-pointer justify-start"
             :key="question.title"
             @click="openUpdateModal(question.questionId)"
           >
@@ -149,8 +143,12 @@
   </section>
   <EmptyState v-else :message="'질문이 존재하지 않습니다.'" />
   <QuestionDetailModal ref="detailViewModal" />
-  <QuestionRegistrationModal ref="registerModal" @init="init"/>
-  <QuestionUpdateModal ref="updateModal" :questionId="questionId" @init="init"/>
+  <QuestionRegistrationModal ref="registerModal" @init="init" />
+  <QuestionUpdateModal
+    ref="updateModal"
+    :questionId="questionId"
+    @init="init"
+  />
 </template>
 
 <script setup>

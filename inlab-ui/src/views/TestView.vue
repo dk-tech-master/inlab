@@ -5,7 +5,7 @@
       <template v-slot:header>
         <h2 class="mb-6 text-xl font-semibold tracking-tight">직무 접근권한</h2>
       </template>
-      <template v-slot:body> </template>
+      <template v-slot:body></template>
       <template v-slot:footer>
         <div class="flex justify-end mt-12">
           <button
@@ -26,5 +26,4 @@
 // import VSearchFilter from "@/components/teleport/SearchFilter.vue";
 // import VquestionManagement from "@/components/teleport/VQuestionManagement.vue";
 // import Pagination from "@/components/common/Pagination.vue";
-import Pagination from "@/components/common/Pagination.vue";
 </script>

@@ -177,7 +177,7 @@
   </dialog>
 </template>
 <script setup>
-import {defineEmits, ref} from "vue";
+import { defineEmits, ref } from "vue";
 import { createQuestion } from "@/api/question";
 import { getpositionOption, getTypeOption } from "@/api/select";
 
@@ -222,6 +222,7 @@ const changePosition = async () => {
 
 const resetFields = () => {
   registerData.value = { ...initialRegisterData };
+  checkList.value = [];
 };
 
 const makeCheckList = () => {

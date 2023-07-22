@@ -1,6 +1,6 @@
 <template>
-  <nav class="px-10 navbar border flex justify-end">
-    <div v-if="isAccessTokenPresent">
+  <nav class="px-20 navbar border-b shadow-sm flex justify-end">
+    <div v-if="isAccessTokenPresent" class="py-2">
       <a href="/update-userinfo">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,7 @@
 
       <button
         type="button"
-        class="flex flex-col items-center px-7 py-5 btn btn-primary btn-sm btn btn-outline text-sm"
+        class="flex flex-col items-center px-5 py-5 btn btn-primary btn-sm btn btn-outline text-sm"
         @click="logoutBtn"
       >
         로그아웃
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed, ref } from "vue";
 import { authStore } from "@/stores/auth";
 
 // const router = useRouter();

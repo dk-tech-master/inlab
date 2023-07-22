@@ -2,7 +2,7 @@
   <!--Header-->
   <header>
     <div class="mb-10">
-      <p class="mb-1 text-sm font-light text-gray-500">
+      <p class="mb-4 text-sm font-light text-gray-500">
         질문 관리 >
         <span class="font-medium text-indigo-500">꼬리 질문 관리</span>
       </p>
@@ -13,95 +13,73 @@
   </header>
 
   <!--질문 제목-->
-  <section class="mr-16 border border-gray-200 rounded-md p-10">
-    <label
-      for="searchInterview"
-      class="block mb-2 text-base font-bold text-gray-700"
+  <section class="border shadow rounded-md p-8">
+    <label for="searchInterview" class="block mb-2 text-2xl font-bold"
       >질문 제목</label
     >
-    <h2 class="text-xl font-bold">{{ questionTitle }}</h2>
+    <h2 class="text-xl text-gray-700">{{ questionTitle }}</h2>
   </section>
 
   <!--질문 검색-->
-  <div class="mr-16 mt-10 p-10 border border-gray-200 rounded-md">
+  <div class="mt-10 p-8 border shadow rounded-md">
     <div class="flex justify-between">
       <h2 class="mb-10 text-2xl font-bold">질문 검색</h2>
     </div>
 
     <div class="flex">
-      <div class="mr-5 mb-5">
+      <div class="mb-4">
         <SearchFilter @search-info="handleSearch" />
       </div>
     </div>
     <section v-if="questionList.length > 0">
       <div
-        class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg"
+        class="mt-3 table flex items-center flex-col w-full overflow-x-auto sm:rounded-lg"
       >
-        <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-          <div
-            class="w-[40%] flex flex-col justify-center px-6 py-2 text-left"
-          >
+        <div
+          class="flex bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+        >
+          <div class="w-[50%] flex flex-col justify-center py-4 text-left">
             질문 제목
           </div>
-          <div
-            class="w-[15%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             직무
           </div>
-          <div
-            class="w-[15%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             유형
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[5%] flex flex-col justify-center py-4 text-left">
             난이도
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[5%] flex flex-col justify-center py-4 text-left">
             버전
           </div>
-          <div
-            class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-left"
-          ></div>
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
+            추가
+          </div>
         </div>
         <div
-          class="flex border-b hover:bg-gray-100"
+          class="flex items-center border-b hover:bg-gray-100 gap-x-4 px-2"
           v-for="(question, index) in questionList"
           :key="index"
         >
-          <div
-            class="w-[40%] flex flex-col justify-center px-6 py-2 text-left"
-          >
+          <div class="w-[50%] py-4 truncate">
             {{ question.title }}
           </div>
-          <div
-            class="w-[15%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             {{ question.positionName }}
           </div>
-          <div
-            class="w-[15%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             {{ question.questionTypeName }}
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[5%] flex flex-col justify-center py-4 text-left">
             {{ question.questionLevelId }}
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[5%] flex flex-col justify-center py-4 text-left">
             {{ question.version }}
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-left"
-          >
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
             <button
-              class="customBtn"
+              class="btn btn-success btn-sm btn-outline"
               @click="addFollowUpQuestionBtn(question.questionId)"
             >
               추가
@@ -117,78 +95,60 @@
   </div>
 
   <!--꼬리질문 리스트-->
-  <div class="mr-16 mt-10 p-10 border border-gray-200 rounded-md">
-    <div class="flex justify-between">
-      <h2 class="mb-10 text-2xl font-bold">꼬리 질문 리스트</h2>
+  <div class="mt-10 p-8 border shadow rounded-md">
+    <div class="flex justify-between mb-8">
+      <h2 class="text-2xl font-bold">꼬리 질문 리스트</h2>
     </div>
 
     <section v-if="followUpQuestionList.length > 0">
       <div
-        class="mt-3 table flex flex-col w-full overflow-x-auto sm:rounded-lg"
+        class="table flex items-center flex-col w-full overflow-x-auto sm:rounded-lg"
       >
-        <div class="flex bg-gray-50 font-bold text-sm text-gray-800">
-          <div class="w-[40%] flex flex-col justify-center px-6 py-2 text-left">
+        <div
+          class="flex bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
+        >
+          <div class="w-[50%] flex flex-col justify-center py-4 text-left">
             질문 제목
           </div>
-          <div
-            class="w-[15%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             직무
           </div>
-          <div
-            class="w-[15%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             유형
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[5%] flex flex-col justify-center py-4 text-left">
             난이도
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[5%] flex flex-col justify-center py-4 text-left">
             버전
           </div>
-          <div
-            class="w-[10%] flex flex-col items-center justify-center px-6 py-2 text-left"
-          ></div>
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
+            삭제
+          </div>
         </div>
         <div
-          class="flex border-b hover:bg-gray-100"
+          class="flex items-center border-b hover:bg-gray-100 gap-x-4 px-2"
           v-for="(followQuestion, index) in followUpQuestionList"
           :key="index"
         >
-          <div
-            class="w-[40%] flex flex-col justify-center px-6 py-2 text-left"
-          >
+          <div class="w-[50%] py-4 truncate">
             {{ followQuestion.title }}
           </div>
-          <div
-            class="w-[15%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             {{ followQuestion.positionName }}
           </div>
-          <div
-            class="w-[15%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[15%] flex flex-col justify-center py-4 text-left">
             {{ followQuestion.questionTypeName }}
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[5%] flex flex-col justify-center py-4 text-left">
             {{ followQuestion.questionLevelId }}
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-center"
-          >
+          <div class="w-[5%] flex flex-col justify-center py-4 text-left">
             {{ followQuestion.version }}
           </div>
-          <div
-            class="w-[10%] flex flex-col justify-center px-6 py-2 text-left"
-          >
+          <div class="w-[10%] flex flex-col justify-center py-4 text-left">
             <button
-              class="customBtn2"
+              class="btn btn-error btn-sm btn-outline"
               @click="
                 deleteFollowUpQuestionBtn(followQuestion.relatedQuestionId)
               "
@@ -224,7 +184,7 @@ const questionTitle = ref("");
 const router = useRouter();
 const pagingInfos = ref({
   page: 1,
-  pageSize: 5
+  pageSize: 5,
 });
 
 const questionId = ref(null);
@@ -240,7 +200,7 @@ const init = async () => {
   const requestData = {
     page: pagingInfos.value.page,
     pageSize: pagingInfos.value.pageSize,
-    questionId: isNaN(questionId.value) ? null : questionId.value
+    questionId: isNaN(questionId.value) ? null : questionId.value,
   };
   if (requestData.questionId) {
     // 전체질문조회
@@ -265,7 +225,7 @@ const requestSearchDate = ref({
   positionId: null,
   questionLevelId: null,
   questionTypeId: null,
-  titleKeyword: null
+  titleKeyword: null,
 });
 
 const handleSearch = async (searchInfos) => {
@@ -275,7 +235,7 @@ const handleSearch = async (searchInfos) => {
     positionId: searchInfos.position,
     questionLevelId: searchInfos.level,
     questionTypeId: searchInfos.type,
-    titleKeyword: searchInfos.title
+    titleKeyword: searchInfos.title,
   };
   requestSearchDate.value = inputRequest;
   console.log("요청데이터는 이거다 : ", requestSearchDate.value);
@@ -301,7 +261,7 @@ const changeFollowUpPage = async (page) => {
   const requestData = {
     page: followUpQuestionPagingUtil.value.page,
     pageSize: pagingInfos.value.pageSize,
-    questionId: questionId.value
+    questionId: questionId.value,
   };
   const followUpQuestionInfos = await getFollowUpQuestion(requestData);
   followUpQuestionList.value = followUpQuestionInfos.data.responseList;
@@ -311,7 +271,7 @@ const changeFollowUpPage = async (page) => {
 const addFollowUpQuestionBtn = async (followUpId) => {
   const addRequestData = {
     headQuestionId: questionId.value,
-    tailQuestionId: followUpId
+    tailQuestionId: followUpId,
   };
   const axiosResponse = await addFollowUpQuestion(addRequestData);
 
@@ -322,7 +282,7 @@ const addFollowUpQuestionBtn = async (followUpId) => {
   const requestData = {
     page: pagingInfos.value.page,
     pageSize: pagingInfos.value.pageSize,
-    questionId: questionId.value
+    questionId: questionId.value,
   };
 
   // 꼬리질문조회
@@ -346,7 +306,7 @@ const deleteFollowUpQuestionBtn = async (id) => {
   const requestData = {
     page: pagingInfos.value.page,
     pageSize: pagingInfos.value.pageSize,
-    questionId: questionId.value
+    questionId: questionId.value,
   };
 
   // 꼬리질문조회

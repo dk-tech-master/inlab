@@ -1,16 +1,14 @@
 <template>
   <dialog id="updateModal" class="modal">
     <form method="dialog" class="modal-box">
-      <div class="flex justify-between items-center mb-10">
-        <h2 class="font-bold text-xl">질문 제목</h2>
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="font-bold text-xl">질문 수정</h2>
         <label class="btn btn-sm btn-circle btn-ghost" @click="toggleModal"
           >✕</label
         >
       </div>
-      <div class="mb-5">
-        <label
-          for="questionTitle"
-          class="block mb-1.5 text-sm font-semibold text-gray-700"
+      <div class="mb-4">
+        <label for="questionTitle" class="block mb-2 font-semibold"
           >질문 제목</label
         >
         <input
@@ -22,33 +20,25 @@
           autofocus
         />
       </div>
-      <div class="mb-5">
-        <label
-          for="questionType"
-          class="block mb-1.5 text-sm font-semibold text-gray-700"
+      <div class="mb-4">
+        <label for="questionType" class="block mb-2 font-semibold"
           >질문 유형</label
         >
-        <p class="w-full input input-sm text-sm pl-0 text-primary">
+        <p class="w-full input input-sm text-sm pl-0 text-gray-700">
           {{ type }}
         </p>
       </div>
 
-      <div class="w-full flex justify-between mb-5">
+      <div class="w-full flex justify-between mb-4">
         <div class="w-[30%]">
-          <label
-            for="job"
-            class="block mb-1.5 text-sm font-semibold text-gray-700"
-            >직무</label
-          >
-          <p class="w-full input input-sm text-sm pl-0 text-primary">
+          <label for="job" class="block mb-2 font-semibold">직무</label>
+          <p class="w-full input input-sm text-sm pl-0 text-gray-700">
             {{ position }}
           </p>
         </div>
 
         <div class="w-[30%]">
-          <label
-            for="questionLevel"
-            class="block mb-1.5 text-sm font-semibold text-gray-700"
+          <label for="questionLevel" class="block mb-2 font-semibold"
             >난이도</label
           >
           <select
@@ -61,20 +51,16 @@
           </select>
         </div>
         <div class="w-[30%]">
-          <label
-            for="questionVersion"
-            class="block mb-1.5 text-sm font-semibold text-gray-700"
+          <label for="questionVersion" class="block mb-2 font-semibold"
             >버전</label
           >
-          <p class="w-full input input-sm text-sm pl-0 text-primary">
+          <p class="w-full input input-sm text-sm pl-0 text-gray-700">
             {{ version }}
           </p>
         </div>
       </div>
-      <div class="mb-5 checkInput">
-        <label
-          for="questionVersion"
-          class="block mb-1.5 text-sm font-semibold text-gray-700"
+      <div class="mb-4 checkInput">
+        <label for="questionVersion" class="block mb-2 font-semibold"
           >체크리스트</label
         >
         <div
@@ -85,7 +71,7 @@
           <input
             type="text"
             v-model="newCheckList[index]"
-            class="w-[85%] p-2.5 input input-sm input-primary input-bordered border-gray-300 text-sm"
+            class="w-[90%] input input-sm input-primary input-bordered border-gray-300 text-sm"
             placeholder="체크내용을 입력해주세요"
             required
           />
@@ -126,18 +112,18 @@
           </p>
         </button>
       </div>
-      <div class="mb-10">
+      <div>
         <button
           @click="init(questionId)"
           type="submit"
-          class="btn btn-outline btn-primary btn-md w-full mt-2"
+          class="btn btn-outline btn-primary btn-md w-full mb-4"
         >
           초기화
         </button>
         <button
           @click="updateBtn"
           type="button"
-          class="btn btn-primary btn-md w-full mt-2"
+          class="btn btn-primary btn-md w-full"
         >
           수정
         </button>
@@ -146,7 +132,7 @@
   </dialog>
 </template>
 <script setup>
-import {defineEmits, ref} from "vue";
+import { defineEmits, ref } from "vue";
 import { getQuestionDetail, updateQuestion } from "@/api/question";
 
 const emit = defineEmits(["init"]);
@@ -160,7 +146,6 @@ const newCheckList = ref([]);
 const oldCheckList = ref([]);
 const version = ref("");
 const questionId = ref();
-
 
 const init = async (id) => {
   username.value = sessionStorage.getItem("email");
