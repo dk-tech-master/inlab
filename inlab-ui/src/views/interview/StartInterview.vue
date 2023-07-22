@@ -1,6 +1,6 @@
 <template>
   <section class="flex items-center justify-center py-24">
-    <div>
+    <div class="rounded-lg border p-12 shadow">
       <div class="flex items-center">
         <a href="#" class="flex w-1/2 items-center mx-auto mb-10">
           <img class="w-full" src="../../images/logo-color.svg" alt="logo" />
@@ -14,9 +14,9 @@
           오늘도 훌륭한 인재를 선발해봅시다😀
         </p>
       </div>
-      <div class="rounded-lg border p-12 shadow">
+      <div class="">
         <div>
-          <div class="mb-4">e
+          <div class="mb-4">
             <label
               for="intervieweeName"
               class="block mb-2 text-sm font-semibold text-gray-900"
