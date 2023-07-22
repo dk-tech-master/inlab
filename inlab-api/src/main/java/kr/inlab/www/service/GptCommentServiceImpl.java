@@ -62,7 +62,7 @@ public class GptCommentServiceImpl implements GptCommentService {
     private String getRequestContent(String title, List<Checklist> checklists, String content) {
         String result = "";
 
-        result += "면집 질문, 그에대한 답변, 답변을 평가할 수 있는 체크리스트를 줄게. 너가 체크리스트를 기준으로 질문에 대한 답변을 잘 했는지 평가해줘. 평가에 대한 응답은 json 형태로 부탁해.\n";
+        result += "다음 제공된 조건으로 개발자 채용 면접의 질문과 답변과 체크리스트를 분석하고, 평가 결과를 반환해주세요.\n1. 질문에 대한 답변 안에 각 체크리스트의 내용이 포함되어 있는지 확인하고, 질문과 체크리스트를 기준으로 답변을 평가한 후 피드백을 해주세요.\n2. 면접자의 답변이 각 체크리스트에 충족되는지 여부(yes,no,partially)를 알려주세요.\n3. 면접자의 답변의 피드백을 해주세요.\n4. 면접자의 답변을 최종 평가해주세요.\n\n";
         result += "면접 질문: ";
         result += title + "\n";
         result += "답변: ";
