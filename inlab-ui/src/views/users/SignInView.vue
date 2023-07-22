@@ -36,6 +36,7 @@
                 v-model="password"
                 placeholder="비밀번호 입력"
                 class="input input-bordered border-gray-300 w-full text-sm"
+                @keyup.enter="clickSignInBtn"
                 required
               />
             </div>

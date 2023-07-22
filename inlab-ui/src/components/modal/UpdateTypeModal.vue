@@ -1,7 +1,12 @@
 <template>
   <dialog id="updateTypeModal" class="modal">
     <form method="dialog" class="modal-box">
-      <h2 class="font-bold text-lg mb-6">유형 수정</h2>
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="font-bold text-xl">유형 수정</h2>
+        <label class="btn btn-sm btn-circle btn-ghost" @click="toggleModal"
+          >✕</label
+        >
+      </div>
       <label
         for="searchInterview"
         class="block text-sm font-bold text-gray-700 mb-2"
@@ -37,13 +42,6 @@
         required
       />
       <div class="modal-action">
-        <button
-          class="flex flex-col mr-3 py-5 px-5 btn btn-sm btn-primary btn-outline"
-          type="button"
-          @click="toggleModal"
-        >
-          취소
-        </button>
         <button
           type="button"
           class="flex flex-col py-5 px-5 btn btn-sm btn-primary"

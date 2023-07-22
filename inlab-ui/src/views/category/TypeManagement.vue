@@ -157,6 +157,7 @@
 </template>
 
 <script setup>
+import UpdateTypeModal from "@/components/modal/UpdateTypeModal.vue";
 import Pagination from "@/components/common/Pagination.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import CreateTypeModal from "@/components/modal/CreateTypeModal.vue";

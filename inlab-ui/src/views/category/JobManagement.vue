@@ -125,6 +125,7 @@
 <script setup>
 import { ref } from "vue";
 import { deleteJobs, getJobs } from "@/api/job";
+import UpdateJobModal from "@/components/modal/UpdateJobModal.vue";
 import InputSearchFilter from "@/components/common/InputSearchFilter.vue";
 import CreateJobModal from "@/components/modal/CreateJobModal.vue";
 import Pagination from "@/components/common/Pagination.vue";

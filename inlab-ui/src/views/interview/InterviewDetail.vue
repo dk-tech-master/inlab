@@ -9,7 +9,7 @@
   </header>
   <section class="p-8 shadow border rounded-lg mb-8">
     <div class="flex justify-between">
-      <h2 class="text-2xl font-bold mb-4">면접 정보</h2>
+      <h2 class="text-2xl font-bold mb-8">{{ interviewInfo.interviewTitle }}</h2>
       <div class="flex gap-x-4">
         <button
           class="btn btn-primary btn-sm"
@@ -25,51 +25,51 @@
         </button>
       </div>
     </div>
-    <div class="flex">
-      <div class="mr-4">
+    <div class="flex gap-x-20 ">
+<!--      <div>-->
+<!--        <span>면접관</span>-->
+<!--        <span>{{ interviewInfo.interviewerNickname }}</span>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <span>질문 개수</span>-->
+<!--        <span>{{ interviewInfo.questionCount }}</span>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <span>생성일</span>-->
+<!--        <span>{{ interviewInfo.createdAt.substring(0, 16).replace("T", " ") }}</span>-->
+<!--      </div>-->
+      <div>
         <label
           for="interviewer"
-          class="block mb-2 text-base font-bold text-gray-700"
+          class="block mb-2 text-base font-bold text-gray-500"
           >면접관</label
         >
         <div
-          class="flex items-center py-6 pl-5 w-48 bg-gray-50 input input-sm input-bordered text-base text-primary"
+          class="flex text-gray-500"
         >
           {{ interviewInfo.interviewerNickname }}
         </div>
       </div>
-      <div class="mr-4">
+      <div>
         <label
           for="nickName"
-          class="block mb-2 text-base font-bold text-gray-700"
-          >면접 제목</label
-        >
-        <div
-          class="flex items-center py-6 pl-5 w-96 bg-gray-50 input input-sm input-bordered text-base text-primary"
-        >
-          {{ interviewInfo.interviewTitle }}
-        </div>
-      </div>
-      <div class="mr-4">
-        <label
-          for="nickName"
-          class="block mb-2 text-base font-bold text-gray-700"
+          class="block mb-2 text-base font-bold text-gray-500"
           >질문 개수</label
         >
         <div
-          class="flex items-center py-6 pl-5 w-30 bg-gray-50 input input-sm input-bordered text-base text-primary"
+          class="flex text-gray-500"
         >
           {{ interviewInfo.questionCount }}
         </div>
       </div>
-      <div class="mr-4">
+      <div>
         <label
           for="nickName"
-          class="block mb-2 text-base font-bold text-gray-700"
+          class="block mb-2 text-base font-bold text-gray-500"
           >생성일</label
         >
         <div
-          class="flex items-center py-6 pl-5 w-52 bg-gray-50 input input-sm input-bordered text-base text-primary"
+          class="flex text-gray-500"
         >
           {{ interviewInfo.createdAt.split("T")[0] }}
         </div>
@@ -110,7 +110,7 @@
         :key="index"
       >
         <div
-          class="w-[60%] flex flex-col justify-center py-4 text-left truncate"
+          class="w-[60%] py-4 truncate"
         >
           {{ interviewQuestion.questionTitle }}
         </div>
@@ -133,6 +133,7 @@
 </template>
 
 <script setup>
+import UpdateInterviewModal from "@/components/modal/UpdateInterviewModal.vue";
 import { useRoute } from "vue-router";
 import { getInterviewQuestion } from "@/api/interviewQuestion";
 import { getInterview } from "@/api/interview";

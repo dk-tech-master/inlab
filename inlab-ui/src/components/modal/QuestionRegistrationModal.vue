@@ -157,7 +157,7 @@
           </p>
         </button>
       </div>
-      <div class="mb-10">
+      <div>
         <button
           @click="resetFields"
           type="submit"

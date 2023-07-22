@@ -12,10 +12,10 @@
           <div
             class="flex items-center bg-gray-50 font-bold text-sm text-gray-800 gap-x-4 px-2"
           >
-            <div class="w-[50%] flex flex-col justify-center py-4 text-left">
+            <div class="w-[50%] flex flex-col justify-center py-2 text-left">
               직무
             </div>
-            <div class="w-[50%] flex flex-col justify-center py-4 text-left">
+            <div class="w-[50%] flex flex-col justify-center py-2 text-left">
               난이도
             </div>
           </div>
@@ -26,10 +26,10 @@
           v-for="info in infos"
           :key="info.positionId"
         >
-          <div class="w-[50%] flex flex-col justify-center py-4 text-left">
+          <div class="w-[50%] flex flex-col justify-center py-2 text-left">
             {{ info.positionName }}
           </div>
-          <div class="w-[50%] flex flex-col justify-center py-4 text-left">
+          <div class="w-[50%] flex flex-col justify-center py-2 text-left">
             {{ info.levelName }}
           </div>
         </div>
