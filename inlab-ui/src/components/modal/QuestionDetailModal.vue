@@ -13,56 +13,70 @@
         <label for="questionTitle" class="block mb-2 font-semibold"
           >질문 제목</label
         >
-        <p class="input input-sm text-sm pl-0 text-gray-700">
-          {{ title }}
-        </p>
+        <div class="flex items-center rounded-lg p-3 bg-gray-100">
+          <p class="input input-sm text-sm pl-0 text-gray-700 bg-gray-100">
+            {{ title }}
+          </p>
+        </div>
       </div>
 
       <div class="mb-4">
         <label for="questionType" class="block mb-2 font-semibold"
           >질문 유형</label
         >
-        <p class="input input-sm text-sm pl-0 text-gray-700">
-          {{ type }}
-        </p>
+        <div class="flex items-center rounded-lg p-3 bg-gray-100">
+          <p class="input input-sm text-sm pl-0 text-gray-700 bg-gray-100">
+            {{ type }}
+          </p>
+        </div>
       </div>
 
       <div class="flex justify-between mb-4">
         <div class="w-[30%]">
           <label for="job" class="block mb-2 font-semibold">직무</label>
-          <p class="input input-sm text-sm pl-0 text-gray-700">
-            {{ position }}
-          </p>
+          <div class="flex items-center rounded-lg p-3 bg-gray-100">
+            <p class="input input-sm text-sm pl-0 text-gray-700 bg-gray-100">
+              {{ position }}
+            </p>
+          </div>
         </div>
 
         <div class="w-[30%]">
           <label for="questionLevel" class="block mb-2 font-semibold"
             >난이도</label
           >
-          <p class="input input-sm text-sm pl-0 text-gray-700">
-            {{ level }}
-          </p>
+          <div class="flex items-center rounded-lg p-3 bg-gray-100">
+            <p class="input input-sm text-sm pl-0 text-gray-700 bg-gray-100">
+              {{ level }}
+            </p>
+          </div>
         </div>
         <div class="w-[30%]">
           <label for="questionVersion" class="block mb-2 font-semibold"
             >버전</label
           >
-          <p class="w-full input input-sm text-sm pl-0 text-gray-700">
-            {{ version }}
-          </p>
+          <div class="flex items-center rounded-lg p-3 bg-gray-100">
+            <p
+              class="w-full input input-sm text-sm pl-0 text-gray-700 bg-gray-100"
+            >
+              {{ version }}
+            </p>
+          </div>
         </div>
       </div>
       <div class="mb-8 checkInput">
         <label for="questionVersion" class="block mb-2 font-semibold"
           >체크리스트</label
         >
-        <div
-          v-for="(check, index) in checkList"
-          :key="index"
-          class="flex gap-x-1.5 text-sm pl-0 text-gray-700"
-        >
-          <span>{{ index + 1 }}.</span>
-          <span>{{ check }}</span>
+        <div class="rounded-lg p-3 pt-3 bg-gray-100">
+          <div
+            v-for="(check, index) in checkList"
+            :key="index"
+            class="flex gap-x-1.5 text-sm pl-0 text-gray-700 mb-3"
+          >
+            <span>{{ index + 1 }}.</span>
+            <span>{{ check }}</span>
+          </div>
         </div>
       </div>
       <div>

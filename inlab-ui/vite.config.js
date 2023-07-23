@@ -17,7 +17,7 @@ export default defineConfig({
     proxy: {
       "/ncp": {
         target:
-          "https://clovaspeech-gw.ncloud.com/external/v1/5406/2d009610689a0476b0a5736b5d7f35a70a544d7feef6e8f81de2271b2794300a",
+          "https://clovaspeech-gw.ncloud.com/external/v1/5597/747ce67261a19415ee7cea70a3e0f11f3b007e98629a3b9d5fde50ee6caa514e",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/ncp/, ""),
       },
