@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface InterviewRepository extends JpaRepository<Interview, Long> {
 
-    boolean existsByTitle(String title);
+    boolean existsByTitleAndUser_UserId(String title,Long userId);
 
     boolean existsByTitleAndInterviewIdNot(String title, Long interviewId);
 
