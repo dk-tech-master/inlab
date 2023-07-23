@@ -22,8 +22,8 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,16 +50,18 @@ class PositionControllerTest {
         String json = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(post("/api/position")
-                .header(HttpHeaders.AUTHORIZATION, "jwt token")
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andDo(document(
-                        "create-position",
-                        requestHeaders(headerWithName("Authorization").description("JWT Token")),
+                                "create-position",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                requestHeaders(headerWithName("Authorization").description("JWT Token")),
                                 requestFields(
                                         fieldWithPath("positionName").description("직무 명")
                                 )
@@ -73,14 +75,16 @@ class PositionControllerTest {
         //given
         Integer positionId = getTestPositionId();
         mockMvc.perform(get("/api/position")
-                    .param("page","1")
-                    .param("positionName","")
-                    .header(HttpHeaders.AUTHORIZATION, "jwt token")
-                    .accept(MediaType.APPLICATION_JSON))
+                        .param("page", "1")
+                        .param("positionName", "")
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(
                         "get-position",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         requestParameters(
                                 parameterWithName("page").description("paging 위한 파리미터"),
@@ -96,7 +100,7 @@ class PositionControllerTest {
                                 fieldWithPath("pagingUtil.startPage").description("시작 페이지"),
                                 fieldWithPath("pagingUtil.endPage").description("끝 페이지"),
                                 fieldWithPath("pagingUtil.existPrePageGroup").description("이전 페이지 그룹 존재 여부"),
-                                 fieldWithPath("pagingUtil.existNextPageGroup").description("다음 페이지 그룹 존재 여부"),
+                                fieldWithPath("pagingUtil.existNextPageGroup").description("다음 페이지 그룹 존재 여부"),
                                 fieldWithPath("responseList[].positionId").description("직책의 ID"),
                                 fieldWithPath("responseList[].positionName").description("직책의 이름"),
                                 fieldWithPath("responseList[].questionCount").description("직책에 대한 질문 수")))
@@ -109,14 +113,16 @@ class PositionControllerTest {
         //given
         Integer positionId = getTestPositionId();
         mockMvc.perform(delete("/api/position/{positionId}", positionId)
-                    .header(HttpHeaders.AUTHORIZATION, "jwt token")
-                    .accept(MediaType.APPLICATION_JSON)
-                    .characterEncoding(StandardCharsets.UTF_8)
-                    .contentType(MediaType.APPLICATION_JSON))
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andDo(document(
                         "delete-position",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("positionId").description("직무의 ID path variable")),
                         requestHeaders(headerWithName("Authorization").description("JWT Token"))
                 ));
@@ -127,7 +133,7 @@ class PositionControllerTest {
     void 직무_수정_테스트() throws Exception {
         //given
         Integer positionId = getTestPositionId();
-        RequestPositionNameDto requestDto = RequestPositionNameDto.builder().positionName("백앤드").build();
+        RequestPositionNameDto requestDto = RequestPositionNameDto.builder().positionName("백엔드").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(put("/api/position/{positionId}", positionId)
@@ -140,6 +146,8 @@ class PositionControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document(
                                 "put-position",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerWithName("Authorization").description("JWT Token")),
                                 pathParameters(parameterWithName("positionId").description("직무의 ID path variable")),
                                 requestFields(

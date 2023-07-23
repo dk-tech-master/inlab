@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -143,6 +145,8 @@ class InterviewResultControllerTest {
                 .andExpect(status().isCreated())
                 .andDo(document(
                         "create-interview-result",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         requestFields(
                                 fieldWithPath("intervieweeName").description("면접자 이름"),
@@ -170,12 +174,15 @@ class InterviewResultControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document(
                         "get-interview-result",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("interviewResultId").description("인터뷰 결과 ID")),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         responseFields(
                                 fieldWithPath("interviewTitle").description("면접 제목"),
                                 fieldWithPath("intervieweeName").description("면접자 이름"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[]").description("면접 질문 결과 데이터 리스트"),
+                                fieldWithPath("responseInterviewQuestionResultDtoList[].interviewQuestionResultId").description("면접 질문 결과 ID"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].interviewQuestionTitle").description("면접 질문 제목"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto").description("면접 질문에 대한 답변 데이터"),
                                 fieldWithPath("responseInterviewQuestionResultDtoList[].responseInterviewAnswerDto.interviewAnswerId").description("면접 답변 ID"),
@@ -201,9 +208,10 @@ class InterviewResultControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @Transactional
     void 면접결과_리스트_조회() throws Exception {
-        mockMvc.perform(get("/api/interview-result?startDate=2023-07-05&endDate=2023-07-11")
+        mockMvc.perform(get("/api/interview-result")
                         .header(HttpHeaders.AUTHORIZATION, "jwt token")
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -211,6 +219,8 @@ class InterviewResultControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document(
                         "get-interview-result-list",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         requestParameters(
                                 parameterWithName("page").optional().description("요청 페이지(default=0)"),
@@ -226,7 +236,7 @@ class InterviewResultControllerTest {
                                 fieldWithPath("responseList[].interviewResultId").description("면접 결과 ID"),
                                 fieldWithPath("responseList[].interviewTitle").description("면접 이름"),
                                 fieldWithPath("responseList[].intervieweeName").description("면접자 이름"),
-                                fieldWithPath("responseList[].interviewerName").description("면접관 이름"),
+                                fieldWithPath("responseList[].nickname").description("면접관 이름"),
                                 fieldWithPath("responseList[].createdAt").description("면접 생성일자"),
                                 fieldWithPath("pagingUtil.totalElements").description("Total number of elements"),
                                 fieldWithPath("pagingUtil.totalPages").description("총 페이지 수"),
