@@ -46,7 +46,7 @@ public class InterviewServiceImpl implements InterviewService{
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
-        if(interviewRepository.existsByTitle(requestDto.getInterviewTitle()))
+        if(interviewRepository.existsByTitleAndUser_UserId(requestDto.getInterviewTitle(), user.getUserId()))
             throw new InterviewAlreadyExistsException();
 
         Interview interview = Interview.builder()
