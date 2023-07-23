@@ -23,6 +23,8 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -46,21 +48,26 @@ public class QuestionTypeControllerTest {
     @Transactional
     @Test
     void 질문유형_생성_테스트() throws Exception {
-        RequestCreateQuestionTypeDto requestDto = RequestCreateQuestionTypeDto.builder().questionTypeName("테스트 유형 생성").build();
+        RequestCreateQuestionTypeDto requestDto = RequestCreateQuestionTypeDto.builder().positionId(1).questionTypeName("테스트 유형 생성").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(post("/api/question-type")
-                .header(HttpHeaders.AUTHORIZATION, "jwt token")
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andDo(document(
                                 "create-question-type",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerWithName("Authorization").description("JWT Token")),
-                                requestFields(fieldWithPath("questionTypeName").description("유형 명"))
+                                requestFields(
+                                        fieldWithPath("positionId").description("직무 ID"),
+                                        fieldWithPath("questionTypeName").description("유형 명")
+                                )
                         )
                 );
     }
@@ -71,14 +78,16 @@ public class QuestionTypeControllerTest {
         Integer questionTypeId = getTestQuestionTypeId();
 
         mockMvc.perform(get("/api/question-type")
-                        .param("page","1")
-                        .param("questionTypeName","")
-                .header(HttpHeaders.AUTHORIZATION, "jwt token")
-                .accept(MediaType.APPLICATION_JSON))
+                        .param("page", "1")
+                        .param("questionTypeName", "")
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(
                         "get-question-type",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         requestParameters(
                                 parameterWithName("page").description("paging 위한 파리미터"),
@@ -95,6 +104,7 @@ public class QuestionTypeControllerTest {
                                 fieldWithPath("pagingUtil.endPage").description("끝 페이지"),
                                 fieldWithPath("pagingUtil.existPrePageGroup").description("이전 페이지 그룹 존재 여부"),
                                 fieldWithPath("pagingUtil.existNextPageGroup").description("다음 페이지 그룹 존재 여부"),
+                                fieldWithPath("responseList[].positionId").description("직무 ID"),
                                 fieldWithPath("responseList[].questionTypeId").description("유형 ID"),
                                 fieldWithPath("responseList[].positionName").description("직무명"),
                                 fieldWithPath("responseList[].questionTypeName").description("유형 이름"),
@@ -107,10 +117,10 @@ public class QuestionTypeControllerTest {
     public void 질문유형_수정_테스트() throws Exception {
         Integer questionTypeId = getTestQuestionTypeId();
 
-        RequestCreateQuestionTypeDto requestDto = RequestCreateQuestionTypeDto.builder().questionTypeName("질문 유형 수정").build();
+        RequestCreateQuestionTypeDto requestDto = RequestCreateQuestionTypeDto.builder().positionId(1).questionTypeName("질문 유형 수정").build();
         String json = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(put("/api/question-type/{questionTypeId}",questionTypeId)
+        mockMvc.perform(put("/api/question-type/{questionTypeId}", questionTypeId)
                         .header(HttpHeaders.AUTHORIZATION, "jwt token")
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -120,12 +130,18 @@ public class QuestionTypeControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document(
                                 "update-question-type",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerWithName("Authorization").description("JWT Token")),
                                 pathParameters(parameterWithName("questionTypeId").description("유형의 ID path variable")),
-                                requestFields(fieldWithPath("questionTypeName").description("유형 명"))
+                                requestFields(
+                                        fieldWithPath("positionId").description("직무 ID"),
+                                        fieldWithPath("questionTypeName").description("유형 명")
+                                )
                         )
                 );
     }
+
     @Transactional
     @Test
     void 질문유형_삭제_테스트() throws Exception {
@@ -140,6 +156,8 @@ public class QuestionTypeControllerTest {
                 .andExpect(status().isNoContent())
                 .andDo(document(
                         "delete-question-type",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         pathParameters(parameterWithName("questionTypeId").description("유형의 ID path variable"))
                 ));
@@ -149,7 +167,7 @@ public class QuestionTypeControllerTest {
         QuestionType questionType = QuestionType.builder()
                 .questionTypeName("테스트 질문 유형")
                 .build();
-       questionTypeRepository.save(questionType);
-       return questionType.getQuestionTypeId();
+        questionTypeRepository.save(questionType);
+        return questionType.getQuestionTypeId();
     }
 }

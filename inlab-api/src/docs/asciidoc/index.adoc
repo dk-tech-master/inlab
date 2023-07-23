@@ -1,58 +1,294 @@
-= Test API
+= 인랩(inlab) API 명세서
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
-:toc: left
+:toc: auto
 :toclevels: 2
 :sectlinks:
 
-== TEST CONTROLLER
+== Gpt Comment API
 
-=== GET 요청 REST DOCS 테스트
-GET 요청에 대한 REST DOCS 생성을 테스트합니다.
+=== GPT 코멘트 조회 / GET
+GPT 코멘트 조회에 대한 API 입니다.
 
 ==== 요청 URL
 
-include::{snippets}/get-test-rest-docs/http-request.adoc[]
+include::{snippets}/get-gpt-comment/http-request.adoc[]
 
 ==== Path Variables
 
-include::{snippets}/get-test-rest-docs/path-parameters.adoc[]
+include::{snippets}/get-gpt-comment/path-parameters.adoc[]
 
 ==== Headers
 
-include::{snippets}/get-test-rest-docs/request-headers.adoc[]
-
-==== Parameters
-
-include::{snippets}/get-test-rest-docs/request-parameters.adoc[]
+include::{snippets}/get-gpt-comment/request-headers.adoc[]
 
 ==== 응답 Body
 
-include::{snippets}/get-test-rest-docs/http-response.adoc[]
-include::{snippets}/get-test-rest-docs/response-fields.adoc[]
+include::{snippets}/get-gpt-comment/http-response.adoc[]
+include::{snippets}/get-gpt-comment/response-fields.adoc[]
 
-=== POST 요청 REST DOCS 테스트
-POST 요청에 대한 REST DOCS 생성을 테스트합니다.
+---
+
+== Interview API
+
+=== 면접 생성 / POST
+면접 생성에 대한 API 입니다.
 
 ==== 요청 URL
 
-include::{snippets}/post-test-rest-docs/http-request.adoc[]
+include::{snippets}/create-interview/http-request.adoc[]
 
 ==== Headers
 
-include::{snippets}/post-test-rest-docs/request-headers.adoc[]
+include::{snippets}/create-interview/request-headers.adoc[]
 
 ==== 요청 Body
 
-include::{snippets}/post-test-rest-docs/request-fields.adoc[]
+include::{snippets}/create-interview/request-fields.adoc[]
 
 ==== 응답 Body
 
-include::{snippets}/post-test-rest-docs/http-response.adoc[]
-include::{snippets}/post-test-rest-docs/response-fields.adoc[]
+include::{snippets}/create-interview/http-response.adoc[]
+include::{snippets}/create-interview/response-body.adoc[]
 
-== POSITION CONTROLLER
+=== 면접 조회 / GET
+면접 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-interview/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview/http-response.adoc[]
+include::{snippets}/get-interview/response-fields.adoc[]
+
+=== 면접 수정 / PUT
+면접 수정에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/put-interview/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/put-interview/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/put-interview/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/put-interview/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/put-interview/http-response.adoc[]
+
+=== 면접 시작 질문 리스트 조회 / GET
+면접 시작 후 질문과 체크리스트를 조회하는 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-start-questionList/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-interview-start-questionList/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-start-questionList/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-start-questionList/http-response.adoc[]
+include::{snippets}/get-interview-start-questionList/response-fields.adoc[]
+
+---
+
+== Interview Question API
+
+=== 면접 질문 리스트 생성 / POST
+면접 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-interview-question/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/create-interview-question/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-interview-question/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-interview-question/http-response.adoc[]
+include::{snippets}/create-interview-question/response-body.adoc[]
+
+=== 면접 질문 리스트 조회 / GET
+면접 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-question/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-interview-question/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-question/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-question/http-response.adoc[]
+include::{snippets}/get-interview-question/response-fields.adoc[]
+
+=== 면접 질문 리스트 삭제 / DELETE
+면접 질문 리스트  삭제에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/delete-interview-question/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/delete-interview-question/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/delete-interview-question/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/delete-interview-question/http-response.adoc[]
+
+=== 면접 질문에 대한 상세 조회 / GET
+면접 질문 리스트의 각 질문에 대한 상세 조회 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-questions-detail/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-interview-questions-detail/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-questions-detail/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-questions-detail/http-response.adoc[]
+include::{snippets}/get-interview-questions-detail/response-fields.adoc[]
+
+---
+
+== Interview Question Result API
+
+=== 면접질문 결과 수정 / PATCH
+면접질문 결과 수정에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/update-interview-question-result/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/update-interview-question-result/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/update-interview-question-result/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/update-interview-question-result/http-response.adoc[]
+include::{snippets}/update-interview-question-result/response-fields.adoc[]
+
+---
+
+== Interview Result API
+
+=== 면접결과 생성 / POST
+면접결과 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-interview-result/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/create-interview-result/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-interview-result/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-interview-result/http-response.adoc[]
+include::{snippets}/create-interview-result/response-body.adoc[]
+
+=== 면접결과 조회 / GET
+면접결과 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-result/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-interview-result/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-result/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-result/http-response.adoc[]
+include::{snippets}/get-interview-result/response-fields.adoc[]
+
+=== 면접결과 리스트 조회 / GET
+면접결과 리스트 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-interview-result-list/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/get-interview-result-list/request-headers.adoc[]
+
+==== Parameters
+
+include::{snippets}/get-interview-result-list/request-parameters.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-interview-result-list/http-response.adoc[]
+include::{snippets}/get-interview-result-list/response-fields.adoc[]
+
+---
+
+== Position API
 
 === 직무 생성 / POST
 직무 생성에 대한 API 입니다.
@@ -135,7 +371,147 @@ include::{snippets}/put-position/request-fields.adoc[]
 
 include::{snippets}/put-position/http-response.adoc[]
 
-== QuestionType Controller
+---
+
+== Position Level API
+
+=== 질문 접근 권한 조회 / GET
+질문 접근 권한 조회에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/get-position-level/http-request.adoc[]
+
+==== 요청 Header
+
+include::{snippets}/get-position-level/request-headers.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/get-position-level/http-response.adoc[]
+
+==== 응답 HTTP Body
+
+include::{snippets}/get-position-level/response-body.adoc[]
+
+==== 응답 Field
+
+include::{snippets}/get-position-level/response-fields.adoc[]
+
+=== 질문 접근 권한 수정 / PUT
+질문 접근 권한 수정에 관한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/update-position-level/http-request.adoc[]
+
+==== 요청 HTTP Header
+
+include::{snippets}/update-position-level/request-headers.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/update-position-level/request-body.adoc[]
+
+==== 요청 Field
+
+include::{snippets}/update-position-level/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/update-position-level/http-response.adoc[]
+
+---
+
+== Question API
+
+=== 질문 생성 / POST
+질문 생성에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/create-question/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/create-question/request-headers.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/create-question/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/create-question/http-response.adoc[]
+
+
+=== 질문 전체 및 검색 조회 / GET
+질문 전체 및 검색 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-questions/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/get-questions/request-headers.adoc[]
+
+==== Parameters
+include::{snippets}/get-questions/request-parameters.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-questions/http-response.adoc[]
+include::{snippets}/get-questions/response-fields.adoc[]
+
+
+=== 질문 상세 조회 / GET
+질문 상세 조회에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/get-question/http-request.adoc[]
+
+==== Path Variables
+
+include::{snippets}/get-question/path-parameters.adoc[]
+
+==== Headers
+
+include::{snippets}/get-question/request-headers.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/get-question/http-response.adoc[]
+include::{snippets}/get-question/response-fields.adoc[]
+
+
+=== 질문 수정 / POST
+질문 수정에 대한 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/update-question/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/update-question/request-headers.adoc[]
+
+==== Path Variables
+
+include::{snippets}/update-question/path-parameters.adoc[]
+
+==== 요청 Body
+
+include::{snippets}/update-question/request-fields.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/update-question/http-response.adoc[]
+
+---
+
+== Question Type API
 
 === 질문 유형 생성 / POST
 질문 유형 생성에 대한 API 입니다.
@@ -218,371 +594,73 @@ include::{snippets}/update-question-type/request-fields.adoc[]
 
 include::{snippets}/update-question-type/http-response.adoc[]
 
-
-
-== VerificationCode CONTROLLER
-
-=== 인증번호 생성(회원가입 시) / POST
-인증번호 생성에 대한 API 입니다.
-
-==== 요청 HTTP
-
-include::{snippets}/create-verification-code/http-request.adoc[]
-
-==== 요청 Parameter
-
-include::{snippets}/create-verification-code/request-parameters.adoc[]
-
-==== 응답 HTTP
-
-include::{snippets}/create-verification-code/http-response.adoc[]
-
 ---
 
-=== 인증번호 생성(회원 정보 수정 시) / PUT
-개인정보 변경을 위한 인증번호 생성에 대한 API 입니다.
+== Related Question API
 
-==== 요청 HTTP
-
-include::{snippets}/update-verification-code/http-request.adoc[]
-
-==== 요청 Parameter
-
-include::{snippets}/update-verification-code/request-parameters.adoc[]
-
-==== 응답 HTTP
-
-include::{snippets}/update-verification-code/http-response.adoc[]
-
----
-
-=== 인증번호 인증 / POST
-인증번호 확인에 대한 API 입니다.
-
-==== 요청 HTTP
-
-include::{snippets}/check-verification-code/http-request.adoc[]
-
-==== 요청 HTTP Body
-
-include::{snippets}/check-verification-code/request-fields.adoc[]
-
-==== 응답 HTTP
-
-include::{snippets}/check-verification-code/http-response.adoc[]
-
-==== 응답 HTTP Header
-
-include::{snippets}/check-verification-code/response-headers.adoc[]
-
----
-
-== INTERVIEW RESULT CONTROLLER
-
-=== 면접결과 생성 / POST
-면접결과 생성에 대한 API 입니다.
+=== 꼬리질문 등록 / POST
+해당 질문에 꼬리질문을 등록하는 API 입니다.
 
 ==== 요청 URL
 
-include::{snippets}/create-interview-result/http-request.adoc[]
+include::{snippets}/create-related-question/http-request.adoc[]
 
 ==== Headers
 
-include::{snippets}/create-interview-result/request-headers.adoc[]
+include::{snippets}/create-related-question/request-headers.adoc[]
 
 ==== 요청 Body
 
-include::{snippets}/create-interview-result/request-fields.adoc[]
+include::{snippets}/create-related-question/request-fields.adoc[]
 
 ==== 응답 Body
 
-include::{snippets}/create-interview-result/http-response.adoc[]
-include::{snippets}/create-interview-result/response-body.adoc[]
+include::{snippets}/create-related-question/http-response.adoc[]
 
-=== 면접결과 조회 / GET
-면접결과 조회에 대한 API 입니다.
 
-==== 요청 URL
-
-include::{snippets}/get-interview-result/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/get-interview-result/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/get-interview-result/request-headers.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/get-interview-result/http-response.adoc[]
-include::{snippets}/get-interview-result/response-fields.adoc[]
-
-=== 면접결과 리스트 조회 / GET
-면접결과 리스트 조회에 대한 API 입니다.
+=== 꼬리질문 조회 / GET
+해당 질문의 꼬리질문을 조회하는 API 입니다.
 
 ==== 요청 URL
 
-include::{snippets}/get-interview-result-list/http-request.adoc[]
+include::{snippets}/get-related-questions/http-request.adoc[]
 
 ==== Headers
 
-include::{snippets}/get-interview-result-list/request-headers.adoc[]
+include::{snippets}/get-related-questions/request-headers.adoc[]
 
 ==== Parameters
 
-include::{snippets}/get-interview-result-list/request-parameters.adoc[]
+include::{snippets}/get-related-questions/request-parameters.adoc[]
 
 ==== 응답 Body
 
-include::{snippets}/get-interview-result-list/http-response.adoc[]
-include::{snippets}/get-interview-result-list/response-fields.adoc[]
+include::{snippets}/get-related-questions/http-response.adoc[]
+include::{snippets}/get-related-questions/response-fields.adoc[]
+
+
+=== 꼬리질문 삭제 / DELETE
+해당 질문에 등록된 꼬리질문을 삭제하는 API 입니다.
+
+==== 요청 URL
+
+include::{snippets}/delete-related-question/http-request.adoc[]
+
+==== Headers
+
+include::{snippets}/delete-related-question/request-headers.adoc[]
+
+==== Path Variables
+
+include::{snippets}/delete-related-question/path-parameters.adoc[]
+
+==== 응답 Body
+
+include::{snippets}/delete-related-question/http-response.adoc[]
 
 ---
 
-== GPT COMMENT CONTROLLER
-
-=== GPT 코멘트 조회 / GET
-GPT 코멘트 조회에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/get-gpt-comment/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/get-gpt-comment/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/get-gpt-comment/request-headers.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/get-gpt-comment/http-response.adoc[]
-include::{snippets}/get-gpt-comment/response-fields.adoc[]
-
----
-
-== INTERVIEW CONTROLLER
-
-=== 면접 생성 / POST
-면접 생성에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/create-interview/http-request.adoc[]
-
-==== Headers
-
-include::{snippets}/create-interview/request-headers.adoc[]
-
-==== 요청 Body
-
-include::{snippets}/create-interview/request-fields.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/create-interview/http-response.adoc[]
-include::{snippets}/create-interview/response-body.adoc[]
-
-=== 면접 조회 / GET
-면접 조회에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/get-interview/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/get-interview/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/get-interview/request-headers.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/get-interview/http-response.adoc[]
-include::{snippets}/get-interview/response-fields.adoc[]
-
-=== 면접 수정 / PUT
-면접 수정에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/put-interview/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/put-interview/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/put-interview/request-headers.adoc[]
-
-==== 요청 Body
-
-include::{snippets}/put-interview/request-fields.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/put-interview/http-response.adoc[]
-
-
-=== 면접 시작 질문 리스트 조회 / GET
-면접 시작 후 질문과 체크리스트를 조회하는 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/get-interview-start-questionList/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/get-interview-start-questionList/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/get-interview-start-questionList/request-headers.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/get-interview-start-questionList/http-response.adoc[]
-include::{snippets}/get-interview-start-questionList/response-fields.adoc[]
-
-
-== INTERVIEW QUESTION CONTROLLER
-
-=== 면접 질문 리스트 생성 / POST
-면접 생성에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/create-interview-question/http-request.adoc[]
-
-==== Headers
-
-include::{snippets}/create-interview-question/request-headers.adoc[]
-
-==== 요청 Body
-
-include::{snippets}/create-interview-question/request-fields.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/create-interview-question/http-response.adoc[]
-include::{snippets}/create-interview-question/response-body.adoc[]
-
-=== 면접 질문 리스트 조회 / GET
-면접 조회에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/get-interview-question/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/get-interview-question/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/get-interview-question/request-headers.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/get-interview-question/http-response.adoc[]
-include::{snippets}/get-interview-question/response-fields.adoc[]
-
-=== 면접 질문 리스트 삭제 / DELETE
-면접 질문 리스트  삭제에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/delete-interview-question/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/delete-interview-question/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/delete-interview-question/request-headers.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/delete-interview-question/http-response.adoc[]
-
-=== 면접 질문에 대한 상세 조회 / GET
-면접 질문 리스트의 각 질문에 대한 상세 조회 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/get-interview-questions-detail/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/get-interview-questions-detail/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/get-interview-questions-detail/request-headers.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/get-interview-questions-detail/http-response.adoc[]
-include::{snippets}/get-interview-questions-detail/response-fields.adoc[]
-
-
-== POSITIONLEVEL CONTROLLER
-
-=== 질문 접근 권한 조회 / GET
-질문 접근 권한 조회에 관한 API 입니다.
-
-==== 요청 HTTP
-
-include::{snippets}/get-position-level/http-request.adoc[]
-
-==== 요청 Header
-
-include::{snippets}/get-position-level/request-headers.adoc[]
-
-==== 응답 HTTP
-
-include::{snippets}/get-position-level/http-response.adoc[]
-
-==== 응답 HTTP Body
-
-include::{snippets}/get-position-level/response-body.adoc[]
-
-==== 응답 Field
-
-include::{snippets}/get-position-level/response-fields.adoc[]
-
-=== 질문 접근 권한 수정 / PUT
-질문 접근 권한 수정에 관한 API 입니다.
-
-==== 요청 HTTP
-
-include::{snippets}/update-position-level/http-request.adoc[]
-
-==== 요청 HTTP Header
-
-include::{snippets}/update-position-level/request-headers.adoc[]
-
-==== 요청 HTTP Body
-
-include::{snippets}/update-position-level/request-body.adoc[]
-
-==== 요청 Field
-
-include::{snippets}/update-position-level/request-fields.adoc[]
-
-==== 응답 HTTP
-
-include::{snippets}/update-position-level/http-response.adoc[]
-
-== USER CONTROLLER
+== User API
 
 === 회원 등록 / POST
 회원 등록에 관한 API 입니다.
@@ -753,215 +831,9 @@ include::{snippets}/delete-user/http-response.adoc[]
 
 include::{snippets}/delete-user/response-body.adoc[]
 
-
-
-== Question CONTROLLER
-
-
-=== 질문 생성 / POST
-질문 생성에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/create-question/http-request.adoc[]
-
-==== Headers
-
-include::{snippets}/create-question/request-headers.adoc[]
-
-==== 요청 Body
-
-include::{snippets}/create-question/request-fields.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/create-question/http-response.adoc[]
-
-
-=== 질문 전체 및 검색 조회 / GET
-질문 전체 및 검색 조회에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/get-questions/http-request.adoc[]
-
-==== Headers
-
-include::{snippets}/get-questions/request-headers.adoc[]
-
-==== Parameters
-include::{snippets}/get-questions/request-parameters.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/get-questions/http-response.adoc[]
-include::{snippets}/get-questions/response-fields.adoc[]
-
-
-=== 질문 상세 조회 / GET
-질문 상세 조회에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/get-question/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/get-question/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/get-question/request-headers.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/get-question/http-response.adoc[]
-include::{snippets}/get-question/response-fields.adoc[]
-
-
-=== 질문 수정 / POST
-질문 수정에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/update-question/http-request.adoc[]
-
-==== Headers
-
-include::{snippets}/update-question/request-headers.adoc[]
-
-==== Path Variables
-
-include::{snippets}/update-question/path-parameters.adoc[]
-
-==== 요청 Body
-
-include::{snippets}/update-question/request-fields.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/update-question/http-response.adoc[]
-
-
-== RelatedQuestion CONTROLLER
-
-
-=== 꼬리질문 등록 / POST
-해당 질문에 꼬리질문을 등록하는 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/create-related-question/http-request.adoc[]
-
-==== Headers
-
-include::{snippets}/create-related-question/request-headers.adoc[]
-
-==== 요청 Body
-
-include::{snippets}/create-related-question/request-fields.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/create-related-question/http-response.adoc[]
-
-
-=== 꼬리질문 조회 / GET
-해당 질문의 꼬리질문을 조회하는 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/get-related-questions/http-request.adoc[]
-
-==== Headers
-
-include::{snippets}/get-related-questions/request-headers.adoc[]
-
-==== Parameters
-
-include::{snippets}/get-related-questions/request-parameters.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/get-related-questions/http-response.adoc[]
-include::{snippets}/get-related-questions/response-fields.adoc[]
-
-
-=== 꼬리질문 삭제 / DELETE
-해당 질문에 등록된 꼬리질문을 삭제하는 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/delete-related-question/http-request.adoc[]
-
-==== Headers
-
-include::{snippets}/delete-related-question/request-headers.adoc[]
-
-==== Path Variables
-
-include::{snippets}/delete-related-question/path-parameters.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/delete-related-question/http-response.adoc[]
 ---
 
-== COMMENT CONTROLLER
-
-=== 코멘트 수정 / PATCH
-코멘트 수정에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/update-comment/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/update-comment/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/update-comment/request-headers.adoc[]
-
-==== 요청 Body
-
-include::{snippets}/update-comment/request-fields.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/update-comment/http-response.adoc[]
-
----
-
-== CHECKLIST RESULT CONTROLLER
-
-=== 체크리스트 결과 수정 / PATCH
-체크리스트 결과 수정에 대한 API 입니다.
-
-==== 요청 URL
-
-include::{snippets}/update-checklist-result/http-request.adoc[]
-
-==== Path Variables
-
-include::{snippets}/update-checklist-result/path-parameters.adoc[]
-
-==== Headers
-
-include::{snippets}/update-checklist-result/request-headers.adoc[]
-
-==== 요청 Body
-
-include::{snippets}/update-checklist-result/request-fields.adoc[]
-
-==== 응답 Body
-
-include::{snippets}/update-checklist-result/http-response.adoc[]
-
----
-
-== USER QUESTION HISTORY CONTROLLER
+== User Question History API
 
 === 질문 열람기록 리스트 조회 / GET
 질문 열람기록 리스트 조회에 대한 API 입니다.
@@ -985,26 +857,59 @@ include::{snippets}/get-user-question-history-list/response-fields.adoc[]
 
 ---
 
-== INTERVIEW QUESTION RESULT CONTROLLER
+== Verification Code API
 
-=== 면접질문 결과 수정 / PATCH
-면접질문 결과 수정에 대한 API 입니다.
+=== 인증번호 생성(회원가입 시) / POST
+인증번호 생성에 대한 API 입니다.
 
-==== 요청 URL
+==== 요청 HTTP
 
-include::{snippets}/update-interview-question-result/http-request.adoc[]
+include::{snippets}/create-verification-code/http-request.adoc[]
 
-==== Headers
+==== 요청 Parameter
 
-include::{snippets}/update-interview-question-result/request-headers.adoc[]
+include::{snippets}/create-verification-code/request-parameters.adoc[]
 
-==== 요청 Body
+==== 응답 HTTP
 
-include::{snippets}/update-interview-question-result/request-fields.adoc[]
+include::{snippets}/create-verification-code/http-response.adoc[]
 
-==== 응답 Body
+---
 
-include::{snippets}/update-interview-question-result/http-response.adoc[]
-include::{snippets}/update-interview-question-result/response-fields.adoc[]
+=== 인증번호 생성(회원 정보 수정 시) / PUT
+개인정보 변경을 위한 인증번호 생성에 대한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/update-verification-code/http-request.adoc[]
+
+==== 요청 Parameter
+
+include::{snippets}/update-verification-code/request-parameters.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/update-verification-code/http-response.adoc[]
+
+---
+
+=== 인증번호 인증 / POST
+인증번호 확인에 대한 API 입니다.
+
+==== 요청 HTTP
+
+include::{snippets}/check-verification-code/http-request.adoc[]
+
+==== 요청 HTTP Body
+
+include::{snippets}/check-verification-code/request-fields.adoc[]
+
+==== 응답 HTTP
+
+include::{snippets}/check-verification-code/http-response.adoc[]
+
+==== 응답 HTTP Header
+
+include::{snippets}/check-verification-code/response-headers.adoc[]
 
 ---

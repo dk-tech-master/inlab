@@ -13,24 +13,20 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.transaction.Transactional;
+import java.nio.charset.StandardCharsets;
+
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-
-import javax.persistence.Id;
-import javax.transaction.Transactional;
-
-import java.nio.charset.StandardCharsets;
-
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,15 +71,17 @@ class InterviewControllerTest {
 
         //when-then
         mockMvc.perform(post("/api/interview")
-                .header(HttpHeaders.AUTHORIZATION, "jwt token")
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andDo(document(
                                 "create-interview",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 requestHeaders(headerWithName("Authorization").description("JWT Token")),
                                 requestFields(fieldWithPath("userId").description("로그인한 사용자"),
                                         fieldWithPath("interviewTitle").description("면접 제목"))
@@ -96,15 +94,17 @@ class InterviewControllerTest {
     @WithMockUser(username = "jwoo1016@naver.com", authorities = {"ROLE_ADMIN"})
     void 면접_조회_테스트() throws Exception {
         createInterview();
-        mockMvc.perform(get("/api/interview/{userId}",1L)
-                        .param("page","1")
+        mockMvc.perform(get("/api/interview/{userId}", 1L)
+                        .param("page", "1")
                         .param("interviewTitle", "")
-                    .header(HttpHeaders.AUTHORIZATION, "jwt token")
-                    .accept(MediaType.APPLICATION_JSON))
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(
                         "get-interview",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         requestParameters(
                                 parameterWithName("page").description("paging 위한 파리미터"),
@@ -137,16 +137,18 @@ class InterviewControllerTest {
                 .build();
         String json = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(put("/api/interview/{interviewId}",interview.getInterviewId())
-                    .header(HttpHeaders.AUTHORIZATION, "jwt token")
-                    .accept(MediaType.APPLICATION_JSON)
-                    .characterEncoding(StandardCharsets.UTF_8)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(json))
+        mockMvc.perform(put("/api/interview/{interviewId}", interview.getInterviewId())
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(
                         "put-interview",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         pathParameters(parameterWithName("interviewId").description("면접 Id path variable")),
                         requestFields(fieldWithPath("userId").description("로그인한 사용자"),
@@ -157,14 +159,16 @@ class InterviewControllerTest {
     // document 수정
     @Test
     void 면접시작_질문리스트_테스트() throws Exception {
-        mockMvc.perform(get("/api/interview/start/{interviewId}",1L)
-                .header(HttpHeaders.AUTHORIZATION, "jwt token")
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8))
+        mockMvc.perform(get("/api/interview/start/{interviewId}", 1L)
+                        .header(HttpHeaders.AUTHORIZATION, "jwt token")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(
                         "get-interview-start-questionList",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         pathParameters(parameterWithName("interviewId").description("면접 Id path variable")),
                         responseFields(

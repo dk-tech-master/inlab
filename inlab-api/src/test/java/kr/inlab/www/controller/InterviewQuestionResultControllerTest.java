@@ -25,10 +25,9 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -49,8 +48,8 @@ class InterviewQuestionResultControllerTest {
     void 면접질문결과_수정() throws Exception {
         List<RequestUpdateChecklistResultDto> list = new ArrayList<>();
         list.add(RequestUpdateChecklistResultDto.builder()
-                        .checklistResultId(505L)
-                        .isChecked(YesNo.Y)
+                .checklistResultId(505L)
+                .isChecked(YesNo.Y)
                 .build());
         list.add(RequestUpdateChecklistResultDto.builder()
                 .checklistResultId(506L)
@@ -80,6 +79,8 @@ class InterviewQuestionResultControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document(
                         "update-interview-question-result",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestHeaders(headerWithName("Authorization").description("JWT Token")),
                         requestFields(
                                 fieldWithPath("commentDto").description("수정할 코멘트 데이터를 담은 DTO"),
