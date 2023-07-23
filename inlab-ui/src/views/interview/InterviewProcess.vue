@@ -177,6 +177,7 @@ const currentIndex = ref();
 
 const init = async () => {
   const response = await getInterviewQuestionList(route.params.interviewId);
+  console.log(response.data);
   interviewQuestionList.value = response.data;
   interviewTitle.value = interviewQuestionList.value[0].interviewTitle;
   commentList.value = Array(interviewQuestionList.value.length).fill("");
