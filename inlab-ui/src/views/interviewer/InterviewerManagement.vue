@@ -45,9 +45,6 @@
             <template v-slot:footer>
               <div class="flex items-end gap-x-4">
                 <button @click="init" class="btn btn-primary">검색</button>
-                <button @click="resetPage" class="btn btn-neutral">
-                  초기화
-                </button>
               </div>
             </template>
           </InputSearchFilter>
