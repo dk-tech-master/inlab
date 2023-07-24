@@ -64,14 +64,14 @@
                 난이도
               </div>
               <div class="w-[20%] flex flex-col justify-center py-2 text-left">
-                난이도
+                삭제
               </div>
             </div>
           </div>
 
           <div
             class="flex items-center border-b hover:bg-gray-100 gap-x-4 px-2"
-            v-for="info in accessBox"
+            v-for="(info, index) in accessBox"
             :key="info.positionId"
           >
             <div class="w-[40%] flex flex-col justify-center py-2 text-left">
@@ -81,7 +81,7 @@
               {{ info.levelName }}
             </div>
             <div class="w-[20%] flex flex-col justify-center py-2 text-left">
-              <button class="btn btn-error btn-sm btn-outline">삭제</button>
+              <button class="btn btn-error btn-sm btn-outline" @click="deleteVerification(index)">삭제</button>
             </div>
           </div>
         </template>

@@ -109,6 +109,7 @@ class InterviewControllerTest {
                         requestParameters(
                                 parameterWithName("page").description("paging 위한 파리미터"),
                                 parameterWithName("interviewTitle").description("interview 검색 조건을 위한 파라미터")),
+                        pathParameters(parameterWithName("userId").description("사용자 ID")),
                         responseFields(
                                 fieldWithPath("pagingUtil.totalElements").description("Total number of elements"),
                                 fieldWithPath("pagingUtil.totalPages").description("총 페이지 수"),
