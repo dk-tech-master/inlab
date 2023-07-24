@@ -1,7 +1,15 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.13'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'kr.inlab'
@@ -15,28 +23,93 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+
+    asciidoctorExt
 }
 
 repositories {
     mavenCentral()
 }
 
+ext {
+    asciidocVersion = "2.0.6.RELEASE"
+    snippetsDir = file('build/generated-snippets')
+}
+
 dependencies {
+    asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor:${asciidocVersion}"
+    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:${asciidocVersion}"
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+    implementation 'com.jcraft:jsch:0.1.55'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+compileQuerydsl.doFirst {
+    if(file(querydslDir).exists() )
+        delete(file(querydslDir))
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+//    from ("${asciidoctor.outputDir}/html5") {
+//        into 'static/docs'
+//    }
+    copy {
+        from asciidoctor.outputDir
+        into "src/main/resources/static/docs"
+    }
 }
 
 ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
@@ -47,4 +120,5 @@ sourceSets {
             srcDirs "src/main/resources-env/${profile}"
         }
     }
+    main.java.srcDir querydslDir
 }

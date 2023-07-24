@@ -41,3 +41,4 @@ application.pid
 
 ### production config
 resources-env
+index.html
