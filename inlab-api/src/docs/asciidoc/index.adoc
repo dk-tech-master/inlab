@@ -785,10 +785,6 @@ include::{snippets}/update-user-role/request-body.adoc[]
 
 include::{snippets}/update-user-role/http-response.adoc[]
 
-==== 응답 HTTP Header
-
-include::{snippets}/update-user-role/response-headers.adoc[]
-
 ==== 응답 HTTP Body
 
 include::{snippets}/update-user-role/response-body.adoc[]
