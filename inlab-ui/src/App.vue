@@ -14,4 +14,8 @@
 import { RouterView } from "vue-router";
 import SideBar from "@/components/common/SideBar.vue";
 import Header from "@/components/common/Header.vue";
+
+if (import.meta.env.PROD) {
+  console.log = () => {};
+}
 </script>
